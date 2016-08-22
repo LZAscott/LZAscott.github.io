@@ -268,6 +268,134 @@
             
               
                 
+                <a class="post-title-link" href="/2016/08/22/Next主题添加留言本页面/" itemprop="url">
+                  Next主题添加留言本页面
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-22T21:34:24+08:00" content="2016-08-22">
+              2016-08-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Hexo/" itemprop="url" rel="index">
+                    <span itemprop="name">Hexo</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/22/Next主题添加留言本页面/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/22/Next主题添加留言本页面/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="添加留言本page"><a href="#添加留言本page" class="headerlink" title="添加留言本page"></a>添加留言本page</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo new page guestbook</div></pre></td></tr></table></figure>
+<h3 id="留言本页面"><a href="#留言本页面" class="headerlink" title="留言本页面"></a>留言本页面</h3><p>在上一步使用<code>hexo</code>命令新建了的page页面，添加以下代码</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;div class="ds-recent-visitors" data-num-items="28" data-avatar-size="42" id="ds-recent-visitors"&gt;&lt;/div&gt;</div></pre></td></tr></table></figure>
+<p>然后登陆自己的多说站点，进入设置-&gt;自定义CSS,添加：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#ds-reset .ds-avatar img,</div><div class="line">#ds-recent-visitors .ds-avatar img &#123;</div><div class="line">   width: 54px;</div><div class="line">   height: 54px;     /*設置圖像的長和寬，這裏要根據自己的評論框情況更改*/</div><div class="line">   border-radius: 27px;     /*設置圖像圓角效果,在這裏我直接設置了超過width/2的像素，即為圓形了*/</div><div class="line">   -webkit-border-radius: 27px;     /*圓角效果：兼容webkit瀏覽器*/</div><div class="line">   -moz-border-radius: 27px;</div><div class="line">   box-shadow: inset 0 -1px 0 #3333sf;     /*設置圖像陰影效果*/</div><div class="line">   -webkit-box-shadow: inset 0 -1px 0 #3333sf;</div><div class="line">&#125;</div><div class="line">#ds-recent-visitors .ds-avatar &#123;</div><div class="line">   float: left</div><div class="line">&#125;</div><div class="line">/*隱藏多說底部版權*/</div><div class="line">#ds-thread #ds-reset .ds-powered-by &#123;</div><div class="line">   display: none;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="菜单设置中添加留言本"><a href="#菜单设置中添加留言本" class="headerlink" title="菜单设置中添加留言本"></a>菜单设置中添加留言本</h3><p>找到<code>NexT</code>主题设置的<code>_config.yml</code>文件里面的<code>menu</code>项</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">menu:</span></div><div class="line"> <span class="symbol">home:</span> /</div><div class="line"> <span class="symbol">categories:</span> /categories</div><div class="line"> <span class="symbol">archives:</span> /archives</div><div class="line"> <span class="symbol">tags:</span> /tags</div><div class="line"> <span class="symbol">about:</span> /about</div><div class="line"> <span class="symbol">guestbook:</span> /guestbook</div><div class="line"> <span class="comment">#commonweal: /404.html</span></div></pre></td></tr></table></figure>
+<h3 id="添加多语言文件的值"><a href="#添加多语言文件的值" class="headerlink" title="添加多语言文件的值"></a>添加多语言文件的值</h3><p>因为这里使用的是中文，找到<code>languages</code>文件夹里面的<code>zh-Hans.yml</code>文件，<code>menu</code>子项中添加留言：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">menu:</span></div><div class="line"> <span class="symbol">home:</span> 首页</div><div class="line"> <span class="symbol">archives:</span> 归档</div><div class="line"> <span class="symbol">categories:</span> 分类</div><div class="line"> <span class="symbol">tags:</span> 标签</div><div class="line"> <span class="symbol">about:</span> 关于</div><div class="line"> <span class="symbol">search:</span> 搜索</div><div class="line"> <span class="symbol">commonweal:</span> 公益<span class="number">404</span></div><div class="line"> <span class="symbol">guestbook:</span> 留言</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/08/15/React-Native-环境配置/" itemprop="url">
                   React Native--环境配置
                 </a>
@@ -735,128 +863,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/14/初识RunTime/" itemprop="url">
-                  初识Runtime
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-14T22:26:43+08:00" content="2016-06-14">
-              2016-06-14
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Runtime/" itemprop="url" rel="index">
-                    <span itemprop="name">Runtime</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/06/14/初识RunTime/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/14/初识RunTime/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前在看一些第三方源码的时候，时不时的能碰到一些关于运行时相关的代码。于是乎，就阅读了一些关于运行时的文章，感觉写的都不错，写此篇文章为了记录一下，同时也重新学习一遍。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/06/14/初识RunTime/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -902,7 +908,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-count">19</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -910,7 +916,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -919,7 +925,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
