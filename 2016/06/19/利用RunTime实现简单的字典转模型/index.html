@@ -104,7 +104,7 @@
 <meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension12.png">
 <meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension13.png">
 <meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension14.png">
-<meta property="og:updated_time" content="2016-08-15T08:29:36.000Z">
+<meta property="og:updated_time" content="2016-08-22T03:25:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="利用Runtime实现简单的字典转模型">
 <meta name="twitter:description" content="前言我们都知道，开发中会有这么一个过程，就是将服务器返回的数据转换成我们自己定义的模型对象。当然服务器返回的数据结构有xml类型的，也有json类型的。本文只讨论json格式的。">
@@ -346,47 +346,13 @@
 <p><strong>大家在项目中一般是怎么样将服务器返回的<code>json</code>转化成自己定义的模型类呢？</strong></p>
 <p>我在项目中一般都是使用的<a href="https://github.com/CoderMJLee/MJExtension" target="_blank" rel="external">MJExtension</a>。<br>本文讲解的也基本就是解读<code>MJExtension</code>中的部分源码。<br>好了，废话不多说，直接上代码，let’s go</p>
 <h2 id="简单字典转模型"><a href="#简单字典转模型" class="headerlink" title="简单字典转模型"></a>简单字典转模型</h2><p>首先，从最简单的字典开始，例如我们需要将如下的字典转化成自定义的模型。</p>
-<pre><code>NSDictionary *dict = @{@&quot;name&quot;:@&quot;Scott&quot;,
-                       @&quot;icon&quot; : @&quot;lufy.png&quot;,
-                       @&quot;age&quot; : @&quot;20&quot;,
-                       @&quot;height&quot; : @1.75,
-                       @&quot;money&quot; : @&quot;100.9&quot;,
-                       @&quot;sex&quot; : @(SexMale),
-                       @&quot;gay&quot; : @&quot;ture&quot;,
-                       };
-</code></pre><p>我们定义一个<code>ScottUser</code>类，并且定义好属性名如下：</p>
-<pre><code>#import &lt;Foundation/Foundation.h&gt;
-
-typedef NS_ENUM(NSInteger, Sex) {
-    SexMale,    // 男
-    SexFemale   // 女
-};
-
-@interface ScottUser : NSObject
-
-/**  姓名 */
-@property (nonatomic, copy) NSString *name;
-/**  头像 */
-@property (nonatomic, copy) NSString *icon;
-/**  年龄 */
-@property (nonatomic, assign) unsigned int age;
-/**  身高 */
-@property (nonatomic, strong) NSNumber *height;
-/**  财富 */
-@property (nonatomic, copy) NSString *money;
-/**  性别 */
-@property (nonatomic, assign) Sex sex;
-/**  是否同性 */
-@property (nonatomic, assign, getter=isGay) BOOL gay;
-
-@end
-</code></pre><p>到此为止，我们下一步的目标就是拿到字典里面的值(<code>value</code>)对<code>ScottUser</code>模型属性进行赋值，模型的属性名对应着字典里面的<code>key</code>。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSDictionary</span> *dict = @&#123;<span class="string">@"name"</span>:<span class="string">@"Scott"</span>,</div><div class="line">                       <span class="string">@"icon"</span> : <span class="string">@"lufy.png"</span>,</div><div class="line">                       <span class="string">@"age"</span> : <span class="string">@"20"</span>,</div><div class="line">                       <span class="string">@"height"</span> : @<span class="number">1.75</span>,</div><div class="line">                       <span class="string">@"money"</span> : <span class="string">@"100.9"</span>,</div><div class="line">                       <span class="string">@"sex"</span> : @(SexMale),</div><div class="line">                       <span class="string">@"gay"</span> : <span class="string">@"ture"</span>,</div><div class="line">                       &#125;;</div></pre></td></tr></table></figure>
+<p>我们定义一个<code>ScottUser</code>类，并且定义好属性名如下：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></div><div class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSInteger</span>, Sex) &#123;</div><div class="line">    SexMale,    <span class="comment">// 男</span></div><div class="line">    SexFemale   <span class="comment">// 女</span></div><div class="line">&#125;;</div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ScottUser</span> : <span class="title">NSObject</span></span></div><div class="line"><span class="comment">/**  姓名 */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *name;</div><div class="line"><span class="comment">/**  头像 */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *icon;</div><div class="line"><span class="comment">/**  年龄 */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">unsigned</span> <span class="keyword">int</span> age;</div><div class="line"><span class="comment">/**  身高 */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *height;</div><div class="line"><span class="comment">/**  财富 */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *money;</div><div class="line"><span class="comment">/**  性别 */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) Sex sex;</div><div class="line"><span class="comment">/**  是否同性 */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>, <span class="keyword">getter</span>=isGay) <span class="built_in">BOOL</span> gay;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p>到此为止，我们下一步的目标就是拿到字典里面的值(<code>value</code>)对<code>ScottUser</code>模型属性进行赋值，模型的属性名对应着字典里面的<code>key</code>。</p>
 <p>最直接的方法就是：</p>
-<pre><code>ScottUser *user = [[ScottUser alloc] init];
-user.name = dict[@&quot;name&quot;];
-user.icon = dict[@&quot;icon&quot;];
-...
-</code></pre><p>但是，对于每一次的数据转模型，你都要这样去写大量的重复代码，毫无意义。<br>当然我们利用<code>setValuesForKeysWithDictionary:(NSDictionary *)dict</code>进行<code>kvc</code>赋值。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ScottUser *user = [[ScottUser alloc] init];</div><div class="line">   user.name = dict[<span class="string">@"name"</span>];</div><div class="line">   user.icon = dict[<span class="string">@"icon"</span>];</div><div class="line">   ...</div></pre></td></tr></table></figure>
+<p>但是，对于每一次的数据转模型，你都要这样去写大量的重复代码，毫无意义。<br>当然我们利用<code>setValuesForKeysWithDictionary:(NSDictionary *)dict</code>进行<code>kvc</code>赋值。</p>
 <p><strong>KVC赋值</strong></p>
 <ul>
 <li><strong>优点：</strong>不需要去手动一个一个属性赋值。</li>
@@ -403,37 +369,11 @@ user.icon = dict[@&quot;icon&quot;];
 <h3 id="遍历模型中的属性，拿到属性名作为键值去字典中寻找值"><a href="#遍历模型中的属性，拿到属性名作为键值去字典中寻找值" class="headerlink" title="遍历模型中的属性，拿到属性名作为键值去字典中寻找值"></a>遍历模型中的<code>属性</code>，拿到<code>属性名</code>作为<code>键值</code>去字典中寻找<code>值</code></h3><p>方法伪代码：</p>
 <pre><code>[模型类 遍历属性的方法];
 </code></pre><p>为了方便使用，创建一个叫<code>NSObject+ScottProperty</code>的分类，写一个获取所有属性的方法。</p>
-<pre><code>#import &lt;Foundation/Foundation.h&gt;
-
-@interface NSObject (ScottProperty)
-
-+ (NSArray *)properties;
-
-@end
-</code></pre><p>假设我们在看不到一个类的<code>.h</code>和<code>.m</code>文件的前提下，有什么办法可以获取它所有的实例变量呢？</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSObject</span> (<span class="title">ScottProperty</span>)</span></div><div class="line">+ (<span class="built_in">NSArray</span> *)properties;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p>假设我们在看不到一个类的<code>.h</code>和<code>.m</code>文件的前提下，有什么办法可以获取它所有的实例变量呢？</p>
 <p>答案是通过<code>Runtime</code>。</p>
-<pre><code>#import &quot;NSObject+ScottProperty.h&quot;
-#import &lt;objc/runtime.h&gt;
-
-@implementation NSObject (ScottProperty)
-
-+ (NSArray *)properties {
-
-    NSMutableArray *propertiesArr = [NSMutableArray array];
-
-    unsigned int outCount = 0;
-    objc_property_t *properties = class_copyPropertyList(self, &amp;outCount);
-    for (int i=0; i&lt;outCount; i++) {
-        objc_property_t property = properties[i];
-        [propertiesArr addObject:propertyObj];
-        char *name = property_getName(property);
-        char *att = property_getAttributes(property);
-        NSLog(@&quot;name:%s-----att:%s&quot;,name,att);
-    }
-
-    return propertiesArr;
-}
-</code></pre><p>在外部调用<code>+ (NSArray *)properties</code>方法能够打印出一个类的所有属性，如：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">"NSObject+ScottProperty.h"</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">&lt;objc/runtime.h&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">NSObject</span> (<span class="title">ScottProperty</span>)</span></div><div class="line">+ (<span class="built_in">NSArray</span> *)properties &#123;</div><div class="line">    <span class="built_in">NSMutableArray</span> *propertiesArr = [<span class="built_in">NSMutableArray</span> array];</div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> outCount = <span class="number">0</span>;</div><div class="line">    objc_property_t *properties = class_copyPropertyList(<span class="keyword">self</span>, &amp;outCount);</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;outCount; i++) &#123;</div><div class="line">        objc_property_t property = properties[i];</div><div class="line">        [propertiesArr addObject:propertyObj];</div><div class="line">        <span class="keyword">char</span> *name = property_getName(property);</div><div class="line">        <span class="keyword">char</span> *att = property_getAttributes(property);</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"name:%s-----att:%s"</span>,name,att);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> propertiesArr;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在外部调用<code>+ (NSArray *)properties</code>方法能够打印出一个类的所有属性，如：</p>
 <pre><code>NSArray *arr = [ScottUser properties];
 </code></pre><p>运行程序，能够看到控制台的输出：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension1.png" alt="图1"></p>
 <p>从输出中可以看到通过<code>property_getName()</code>获取每一个<code>objc_property_t</code>的<code>name</code>表示成员属性的名字，通过<code>property_getAttributes()</code>获取每一个<code>objc_property_t</code>的<code>attributes</code>表示成员属性中的一些特性(如是什么类，原子性还是非原子性，是strong还是weak还是copy,生成的成员变量名等信息…)</p>
@@ -442,597 +382,114 @@ user.icon = dict[@&quot;icon&quot;];
 <p>实际上，<code>Runtime</code>已经给我们提供获取属性名和属性特性的函数了，也就是通过<code>property_getName()</code>和<code>property_getAttributes()</code>。</p>
 <p>这时候我们就可以获取到属性名和属性对应的属性特性了。</p>
 <h3 id="找到值后，根据属性类型将值转化成正确的类型"><a href="#找到值后，根据属性类型将值转化成正确的类型" class="headerlink" title="找到值后，根据属性类型将值转化成正确的类型"></a>找到<code>值</code>后，根据<code>属性类型</code>将<code>值</code>转化成正确的<code>类型</code></h3><p>现在已经完成了第一步，并且拿到了<code>属性名</code>,但是数据类型还需要我们进一步截取，截取方法如下：</p>
-<pre><code>for (int i=0; i&lt;outCount; i++) {
-    objc_property_t property = properties[i];
-
-    // 为了以后方便使用，将C字符串转化成OC对象
-//    char *name = property_getName(property);
-    NSString *name = @(property_getName(property));
-
-//    char *att = property_getAttributes(property);
-    NSString *att = @(property_getAttributes(property));
-
-    NSUInteger loc = 1;
-    NSUInteger len = [att rangeOfString:@&quot;,&quot;].location - loc;
-
-    NSString *type = [att substringWithRange:NSMakeRange(loc, len)];
-    NSLog(@&quot;%@&quot;,type);
-}
-</code></pre><p>控制台结果显示，我们能够截取到其中的类型了：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension2.png" alt="图2"></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;outCount; i++) &#123;</div><div class="line">       objc_property_t property = properties[i];</div><div class="line">       <span class="comment">// 为了以后方便使用，将C字符串转化成OC对象</span></div><div class="line"><span class="comment">//    char *name = property_getName(property);</span></div><div class="line">    <span class="built_in">NSString</span> *name = @(property_getName(property));</div><div class="line"><span class="comment">//    char *att = property_getAttributes(property);</span></div><div class="line">    <span class="built_in">NSString</span> *att = @(property_getAttributes(property));</div><div class="line">       <span class="built_in">NSUInteger</span> loc = <span class="number">1</span>;</div><div class="line">       <span class="built_in">NSUInteger</span> len = [att rangeOfString:<span class="string">@","</span>].location - loc;</div><div class="line">       <span class="built_in">NSString</span> *type = [att substringWithRange:<span class="built_in">NSMakeRange</span>(loc, len)];</div><div class="line">       <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,type);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>控制台结果显示，我们能够截取到其中的类型了：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension2.png" alt="图2"></p>
 <p>回归到我们拿到这些<code>属性类型</code>的初衷，是为了用字典中的<code>值的类型</code>与模型中<code>属性的类型</code>进行对比，想要对比，需要拿到<code>属性的类型</code>,因此需要将这些编码转换成一个<strong>表示类的类</strong>，创建一个类用来包装类型。</p>
-<pre><code>#import &lt;Foundation/Foundation.h&gt;
-
-@interface ScottPropertyType : NSObject
-
-/**  是否为id类型 */
-@property (nonatomic, readonly, getter=isIdType) BOOL idType;
-/**  是否为基本数据类型(int、float等) */
-@property (nonatomic, readonly, getter=isNumberType) BOOL numberType;
-/**  是否为bool类型 */
-@property (nonatomic, readonly, getter=isBoolType) BOOL boolType;
-/**  对象类型(如果是基本数据类型，此值为nil) */
-@property (nonatomic, readonly) Class typeClass;
-
-@end
-</code></pre><p>OC对象可以通过<code>Class</code>来表示类型，而基本数据类型只能用布尔来标识。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ScottPropertyType</span> : <span class="title">NSObject</span></span></div><div class="line"><span class="comment">/**  是否为id类型 */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">getter</span>=isIdType) <span class="built_in">BOOL</span> idType;</div><div class="line"><span class="comment">/**  是否为基本数据类型(int、float等) */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">getter</span>=isNumberType) <span class="built_in">BOOL</span> numberType;</div><div class="line"><span class="comment">/**  是否为bool类型 */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">getter</span>=isBoolType) <span class="built_in">BOOL</span> boolType;</div><div class="line"><span class="comment">/**  对象类型(如果是基本数据类型，此值为nil) */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) Class typeClass;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p>OC对象可以通过<code>Class</code>来表示类型，而基本数据类型只能用布尔来标识。</p>
 <p>把这些名字和类型遍历出来，肯定是为了以后有用，所以需要把它们存起来，由于它们是一个”整体”,所以还是设计一个类将他们包装起来比较好，创建一个包装成员属性的类–<code>ScottProperty</code>。</p>
-<pre><code>#import &lt;Foundation/Foundation.h&gt;
-
-@class ScottPropertyType;
-@interface ScottProperty : NSObject
-
-/**  属性名 */
-@property (nonatomic, readonly) NSString *name;
-
-/**  成员属性的类型 */
-@property (nonatomic, readonly) ScottPropertyType *type;
-
-@end
-</code></pre><p>这时，代码就可以进行重构了，将属于不同类的功能封装到对应的类上，让<code>ScottProperty</code>提供一个类方法用于返回一个将<code>objc_property_t</code>进行包装的类。</p>
-<pre><code>for (int i=0; i&lt;outCount; i++) {
-       objc_property_t property = properties[i];
-       ScottProperty *propertyObj = [ScottProperty propertyWithProperty:property];
-       [propertiesArr addObject:propertyObj];
-   }
-</code></pre><p><code>propertyWithProperty:</code>方法实现如下：</p>
-<pre><code>@implementation ScottProperty
-
-+ (instancetype)propertyWithProperty:(objc_property_t)property {
-    return [[ScottProperty alloc] initWithProperty:property];
-}
-
-- (instancetype)initWithProperty:(objc_property_t)property {
-    if (self = [super init]) {
-        _name = @(property_getName(property));
-        _type = [ScottPropertyType propertiesWithAttributeString:@(property_getAttributes(property))];
-    }
-    return self;
-}
-
-@end
-</code></pre><p><code>ScottPropertyType</code>也提供类方法用于包装类型：</p>
-<pre><code>#import &quot;ScottPropertyType.h&quot;
-
-@implementation ScottPropertyType
-
-+ (instancetype)propertiesWithAttributeString:(NSString *)att {
-    return [[ScottPropertyType alloc] initWithTypeString:att];
-}
-
-- (instancetype)initWithTypeString:(NSString *)typeString {
-
-    if (self = [super init]) {
-        NSUInteger loc = 1;
-        NSUInteger len = [typeString rangeOfString:@&quot;,&quot;].location - loc;
-        NSString *typeCode = [typeString substringWithRange:NSMakeRange(loc, len)];
-        NSLog(@&quot;%@&quot;,typeCode);
-    }
-    return self;
-}
-
-@end
-</code></pre><p>重构完成之后，结构显得更加清晰，更加有利于接下来的工作，下面继续完成<code>typeCode</code>的提取。<br>运行重构之后的代码，可以看到和重构之前是一样的：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension3.png" alt="图3"></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">@class</span> <span class="title">ScottPropertyType</span>;</span></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ScottProperty</span> : <span class="title">NSObject</span></span></div><div class="line"><span class="comment">/**  属性名 */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSString</span> *name;</div><div class="line"><span class="comment">/**  成员属性的类型 */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) ScottPropertyType *type;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p>这时，代码就可以进行重构了，将属于不同类的功能封装到对应的类上，让<code>ScottProperty</code>提供一个类方法用于返回一个将<code>objc_property_t</code>进行包装的类。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;outCount; i++) &#123;</div><div class="line">       objc_property_t property = properties[i];</div><div class="line">       ScottProperty *propertyObj = [ScottProperty propertyWithProperty:property];</div><div class="line">       [propertiesArr addObject:propertyObj];</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p><code>propertyWithProperty:</code>方法实现如下：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ScottProperty</span></span></div><div class="line">+ (<span class="keyword">instancetype</span>)propertyWithProperty:(objc_property_t)property &#123;</div><div class="line">    <span class="keyword">return</span> [[ScottProperty alloc] initWithProperty:property];</div><div class="line">&#125;</div><div class="line">- (<span class="keyword">instancetype</span>)initWithProperty:(objc_property_t)property &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">self</span> = [<span class="keyword">super</span> init]) &#123;</div><div class="line">        _name = @(property_getName(property));</div><div class="line">        _type = [ScottPropertyType propertiesWithAttributeString:@(property_getAttributes(property))];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p><code>ScottPropertyType</code>也提供类方法用于包装类型：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">"ScottPropertyType.h"</span></span></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ScottPropertyType</span></span></div><div class="line">+ (<span class="keyword">instancetype</span>)propertiesWithAttributeString:(<span class="built_in">NSString</span> *)att &#123;</div><div class="line">    <span class="keyword">return</span> [[ScottPropertyType alloc] initWithTypeString:att];</div><div class="line">&#125;</div><div class="line">- (<span class="keyword">instancetype</span>)initWithTypeString:(<span class="built_in">NSString</span> *)typeString &#123;   </div><div class="line">    <span class="keyword">if</span> (<span class="keyword">self</span> = [<span class="keyword">super</span> init]) &#123;</div><div class="line">        <span class="built_in">NSUInteger</span> loc = <span class="number">1</span>;</div><div class="line">        <span class="built_in">NSUInteger</span> len = [typeString rangeOfString:<span class="string">@","</span>].location - loc;</div><div class="line">        <span class="built_in">NSString</span> *typeCode = [typeString substringWithRange:<span class="built_in">NSMakeRange</span>(loc, len)];</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,typeCode);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p>重构完成之后，结构显得更加清晰，更加有利于接下来的工作，下面继续完成<code>typeCode</code>的提取。<br>运行重构之后的代码，可以看到和重构之前是一样的：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension3.png" alt="图3"></p>
 <p>上面提到的这些类型，是类型编码，在苹果文档中告诉我们编码对应的类型：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension4.png" alt="图4"><br>根据这个对应关系的图表，我们将常用的几个编码定义成常量字符串或者宏表示它所对应的类型，利于编码和阅读：<br>在<code>ScottPropertyType</code>类定义以下属性类型：</p>
-<pre><code>/**
- *  成员变量类型（属性类型）
- */
-NSString *const ScottPropertyTypeInt = @&quot;i&quot;;
-NSString *const ScottPropertyTypeShort = @&quot;s&quot;;
-NSString *const ScottPropertyTypeFloat = @&quot;f&quot;;
-NSString *const ScottPropertyTypeDouble = @&quot;d&quot;;
-NSString *const ScottPropertyTypeLong = @&quot;q&quot;;
-NSString *const ScottPropertyTypeChar = @&quot;c&quot;;
-NSString *const ScottPropertyTypeBOOL1 = @&quot;c&quot;;
-NSString *const ScottPropertyTypeBOOL2 = @&quot;b&quot;;
-NSString *const ScottPropertyTypePointer = @&quot;*&quot;;
-
-NSString *const ScottPropertyTypeIvar = @&quot;^{objc_ivar=}&quot;;
-NSString *const ScottPropertyTypeMethod = @&quot;^{objc_method=}&quot;;
-NSString *const ScottPropertyTypeBlock = @&quot;@?&quot;;
-NSString *const ScottPropertyTypeClass = @&quot;#&quot;;
-NSString *const ScottPropertyTypeSEL = @&quot;:&quot;;
-NSString *const ScottPropertyTypeId = @&quot;@&quot;;
-</code></pre><p>并写一个方法用于提取每个属性的类型：</p>
-<pre><code>- (instancetype)initWithTypeString:(NSString *)typeString {
-
-    if (self = [super init]) {
-        NSUInteger loc = 1;
-        NSUInteger len = [typeString rangeOfString:@&quot;,&quot;].location - loc;
-        NSString *typeCode = [typeString substringWithRange:NSMakeRange(loc, len)];
-
-        [self getTypeCode:typeCode];
-    }
-    return self;
-}
-
-- (void)getTypeCode:(NSString *)code {
-    if ([code isEqualToString:ScottPropertyTypeId]) {
-        _idType = YES;
-    }else if (code.length &gt; 3 &amp;&amp; [code hasPrefix:@&quot;@\&quot;&quot;]){
-        // 去掉@&quot;和&quot;，截取中间的类型名称
-        code = [code substringWithRange:NSMakeRange(2, code.length - 3)];
-        _typeClass = NSClassFromString(code);
-        _numberType = (_typeClass == [NSNumber class] || [_typeClass isSubclassOfClass:[NSNumber class]]);
-    }
-
-    // 是否为数字类型
-    NSString *lowerCode = code.lowercaseString;
-    NSArray *numberTypes = @[ScottPropertyTypeInt,
-                             ScottPropertyTypeShort,
-                             ScottPropertyTypeFloat,
-                             ScottPropertyTypeDouble,
-                             ScottPropertyTypeLong,
-                             ScottPropertyTypeChar,
-                             ScottPropertyTypeBOOL1,
-                             ScottPropertyTypeBOOL2];
-    if ([numberTypes containsObject:lowerCode]) {
-        _numberType = YES;
-        if ([lowerCode isEqualToString:ScottPropertyTypeBOOL1] || [lowerCode isEqualToString:ScottPropertyTypeBOOL2]) {
-            _boolType = YES;
-        }
-    }
-}
-</code></pre><p>到这里，我们一个<code>ScottProperty</code>的骨架大致就搭好了。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> *  成员变量类型（属性类型）</div><div class="line"> */</div><div class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> ScottPropertyTypeInt = <span class="string">@"i"</span>;</div><div class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> ScottPropertyTypeShort = <span class="string">@"s"</span>;</div><div class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> ScottPropertyTypeFloat = <span class="string">@"f"</span>;</div><div class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> ScottPropertyTypeDouble = <span class="string">@"d"</span>;</div><div class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> ScottPropertyTypeLong = <span class="string">@"q"</span>;</div><div class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> ScottPropertyTypeChar = <span class="string">@"c"</span>;</div><div class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> ScottPropertyTypeBOOL1 = <span class="string">@"c"</span>;</div><div class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> ScottPropertyTypeBOOL2 = <span class="string">@"b"</span>;</div><div class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> ScottPropertyTypePointer = <span class="string">@"*"</span>;</div><div class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> ScottPropertyTypeIvar = <span class="string">@"^&#123;objc_ivar=&#125;"</span>;</div><div class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> ScottPropertyTypeMethod = <span class="string">@"^&#123;objc_method=&#125;"</span>;</div><div class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> ScottPropertyTypeBlock = <span class="string">@"@?"</span>;</div><div class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> ScottPropertyTypeClass = <span class="string">@"#"</span>;</div><div class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> ScottPropertyTypeSEL = <span class="string">@":"</span>;</div><div class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> ScottPropertyTypeId = <span class="string">@"@"</span>;</div></pre></td></tr></table></figure>
+<p>并写一个方法用于提取每个属性的类型：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">instancetype</span>)initWithTypeString:(<span class="built_in">NSString</span> *)typeString &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">self</span> = [<span class="keyword">super</span> init]) &#123;</div><div class="line">        <span class="built_in">NSUInteger</span> loc = <span class="number">1</span>;</div><div class="line">        <span class="built_in">NSUInteger</span> len = [typeString rangeOfString:<span class="string">@","</span>].location - loc;</div><div class="line">        <span class="built_in">NSString</span> *typeCode = [typeString substringWithRange:<span class="built_in">NSMakeRange</span>(loc, len)];</div><div class="line">        [<span class="keyword">self</span> getTypeCode:typeCode];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">&#125;</div><div class="line">- (<span class="keyword">void</span>)getTypeCode:(<span class="built_in">NSString</span> *)code &#123;</div><div class="line">    <span class="keyword">if</span> ([code isEqualToString:ScottPropertyTypeId]) &#123;</div><div class="line">        _idType = <span class="literal">YES</span>;</div><div class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (code.length &gt; <span class="number">3</span> &amp;&amp; [code hasPrefix:<span class="string">@"@\""</span>])&#123;</div><div class="line">        <span class="comment">// 去掉@"和"，截取中间的类型名称</span></div><div class="line">        code = [code substringWithRange:<span class="built_in">NSMakeRange</span>(<span class="number">2</span>, code.length - <span class="number">3</span>)];</div><div class="line">        _typeClass = <span class="built_in">NSClassFromString</span>(code);</div><div class="line">        _numberType = (_typeClass == [<span class="built_in">NSNumber</span> <span class="keyword">class</span>] || [_typeClass isSubclassOfClass:[<span class="built_in">NSNumber</span> <span class="keyword">class</span>]]);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 是否为数字类型</span></div><div class="line">    <span class="built_in">NSString</span> *lowerCode = code.lowercaseString;</div><div class="line">    <span class="built_in">NSArray</span> *numberTypes = @[ScottPropertyTypeInt,</div><div class="line">                             ScottPropertyTypeShort,</div><div class="line">                             ScottPropertyTypeFloat,</div><div class="line">                             ScottPropertyTypeDouble,</div><div class="line">                             ScottPropertyTypeLong,</div><div class="line">                             ScottPropertyTypeChar,</div><div class="line">                             ScottPropertyTypeBOOL1,</div><div class="line">                             ScottPropertyTypeBOOL2];</div><div class="line">    <span class="keyword">if</span> ([numberTypes containsObject:lowerCode]) &#123;</div><div class="line">        _numberType = <span class="literal">YES</span>;</div><div class="line">        <span class="keyword">if</span> ([lowerCode isEqualToString:ScottPropertyTypeBOOL1] || [lowerCode isEqualToString:ScottPropertyTypeBOOL2]) &#123;</div><div class="line">            _boolType = <span class="literal">YES</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>到这里，我们一个<code>ScottProperty</code>的骨架大致就搭好了。</p>
 <p>在<code>NSObject+ScottProperty</code>分类中遍历属性的时候，打印属性名和属性类型看看：</p>
-<pre><code>for (int i=0; i&lt;outCount; i++) {
-        objc_property_t property = properties[i];
-        ScottProperty *propertyObj = [ScottProperty propertyWithProperty:property];
-        [propertiesArr addObject:propertyObj];
-        NSLog(@&quot;name:%@--type:%@&quot;,propertyObj.name,propertyObj.type.typeClass);
-    }
-</code></pre><p><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension5.png" alt="图5"><br>从图中可以看出，属于基本类型的属性打印出来的类型是<code>null</code>，其他的都能正确打印出对应类型。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;outCount; i++) &#123;</div><div class="line">        objc_property_t property = properties[i];</div><div class="line">        ScottProperty *propertyObj = [ScottProperty propertyWithProperty:property];</div><div class="line">        [propertiesArr addObject:propertyObj];</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"name:%@--type:%@"</span>,propertyObj.name,propertyObj.type.typeClass);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension5.png" alt="图5"><br>从图中可以看出，属于基本类型的属性打印出来的类型是<code>null</code>，其他的都能正确打印出对应类型。</p>
 <p>当我们想要使用字典转模型功能的时候，提供一个类方法方便转换，该方法放在<code>NSObject+ScottKeyValue</code>分类中，该分类负责字典转模型的方法实现。</p>
-<pre><code>+ (instancetype)objectWithKeyValues:(id)keyValues {
-    if (!keyValues) return nil;
-
-    return [[[self alloc] init] setKeyValues:keyValues];
-}
-
-- (instancetype)setKeyValues:(id)keyValues {
-    NSArray *propertiesArray = [self.class properties];
-    for (ScottProperty *property in propertiesArray) {
-        ScottPropertyType *type = property.type;
-        Class typeClass = type.typeClass;
-        if (type.isBoolType) {
-            NSLog(@&quot;Bool&quot;);
-        }else if (type.isIdType){
-            NSLog(@&quot;ID&quot;);
-        }else if (type.isNumberType){
-            NSLog(@&quot;Number&quot;);
-        }else{
-            NSLog(@&quot;%@&quot;,typeClass);
-        }
-    }
-
-    return self;
-}
-</code></pre><p>我们想要字典转模型的时候，直接如下使用：</p>
-<pre><code>NSDictionary *dict = @{@&quot;name&quot;:@&quot;Scott&quot;,
-                       @&quot;icon&quot; : @&quot;lufy.png&quot;,
-                       @&quot;age&quot; : @&quot;20&quot;,
-                       @&quot;height&quot; : @1.75,
-                       @&quot;money&quot; : @&quot;100.9&quot;,
-                       @&quot;sex&quot; : @(SexMale),
-                       @&quot;gay&quot; : @&quot;ture&quot;,
-                       };
-
-
-ScottUser *userModel = [ScottUser objectWithKeyValues:dict];
-</code></pre><p>ok,运行程序，可以看到控制台输出<code>ScottUser</code>类中各属性对应的类型：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension6.png" alt="图6"></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">+ (<span class="keyword">instancetype</span>)objectWithKeyValues:(<span class="keyword">id</span>)keyValues &#123;</div><div class="line">    <span class="keyword">if</span> (!keyValues) <span class="keyword">return</span> <span class="literal">nil</span>;</div><div class="line">    <span class="keyword">return</span> [[[<span class="keyword">self</span> alloc] init] setKeyValues:keyValues];</div><div class="line">&#125;</div><div class="line">- (<span class="keyword">instancetype</span>)setKeyValues:(<span class="keyword">id</span>)keyValues &#123;</div><div class="line">    <span class="built_in">NSArray</span> *propertiesArray = [<span class="keyword">self</span>.class properties];</div><div class="line">    <span class="keyword">for</span> (ScottProperty *property <span class="keyword">in</span> propertiesArray) &#123;</div><div class="line">        ScottPropertyType *type = property.type;</div><div class="line">        Class typeClass = type.typeClass;</div><div class="line">        <span class="keyword">if</span> (type.isBoolType) &#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"Bool"</span>);</div><div class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (type.isIdType)&#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"ID"</span>);</div><div class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (type.isNumberType)&#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"Number"</span>);</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,typeClass);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们想要字典转模型的时候，直接如下使用：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSDictionary</span> *dict = @&#123;<span class="string">@"name"</span>:<span class="string">@"Scott"</span>,</div><div class="line">                          <span class="string">@"icon"</span> : <span class="string">@"lufy.png"</span>,</div><div class="line">                          <span class="string">@"age"</span> : <span class="string">@"20"</span>,</div><div class="line">                          <span class="string">@"height"</span> : @<span class="number">1.75</span>,</div><div class="line">                          <span class="string">@"money"</span> : <span class="string">@"100.9"</span>,</div><div class="line">                          <span class="string">@"sex"</span> : @(SexMale),</div><div class="line">                          <span class="string">@"gay"</span> : <span class="string">@"ture"</span>,</div><div class="line">                          &#125;;</div><div class="line">   ScottUser *userModel = [ScottUser objectWithKeyValues:dict];</div></pre></td></tr></table></figure>
+<p>ok,运行程序，可以看到控制台输出<code>ScottUser</code>类中各属性对应的类型：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension6.png" alt="图6"></p>
 <p>我们进行下一步：<strong>用该属性名作为键去字典中寻找对应的值</strong></p>
 <p>伪代码：</p>
 <pre><code>[字典 valueForKey:属性名];
 </code></pre><p>此处的属性名会有点问题，例如我们定义属性名的时候不能是关键字，而如果字典中的<code>key</code>是涉及到关键字的，那么我们需要转换，但是也并非所有的都有这种情况，因此我们可以想到使用代理。我们在<code>NSObject+ScottKeyValue</code>分类中写一个<code>ScottKeyValue</code>协议，并且让它遵守该协议:</p>
-<pre><code>@protocol ScottKeyValue &lt;NSObject&gt;
-
-@optional
-+ (NSDictionary *)replacedKeyFromPropertyName;
-@end
-</code></pre><p>然后我们提供一个类方法，用于处理将属性名与字典中的<code>key</code>达到一致。</p>
-<pre><code>+ (NSString *)propertyKey:(NSString *)propertyName {
-    NSString *key;
-    if ([self respondsToSelector:@selector(replacedKeyFromPropertyName)]) {
-        key = [self replacedKeyFromPropertyName][propertyName];
-    }
-    return key ? key : propertyName;
-}
-</code></pre><p>调用：</p>
-<pre><code>// 属性名作为键去寻找对应的值
-id value = [keyValues valueForKey:[self.class propertyKey:property.name]];
-if (!value) continue;
-NSLog(@&quot;%@&quot;,value);
-</code></pre><p>运行，我们可以看到已经能够拿到值了：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension7.png" alt="图7"></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">ScottKeyValue</span> &lt;<span class="title">NSObject</span>&gt;</span></div><div class="line"><span class="keyword">@optional</span></div><div class="line">+ (<span class="built_in">NSDictionary</span> *)replacedKeyFromPropertyName;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p>然后我们提供一个类方法，用于处理将属性名与字典中的<code>key</code>达到一致。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">+ (<span class="built_in">NSString</span> *)propertyKey:(<span class="built_in">NSString</span> *)propertyName &#123;</div><div class="line">    <span class="built_in">NSString</span> *key;</div><div class="line">    <span class="keyword">if</span> ([<span class="keyword">self</span> respondsToSelector:<span class="keyword">@selector</span>(replacedKeyFromPropertyName)]) &#123;</div><div class="line">        key = [<span class="keyword">self</span> replacedKeyFromPropertyName][propertyName];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> key ? key : propertyName;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>调用：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">   <span class="comment">// 属性名作为键去寻找对应的值</span></div><div class="line">   <span class="keyword">id</span> value = [keyValues valueForKey:[<span class="keyword">self</span>.class propertyKey:property.name]];</div><div class="line">   <span class="keyword">if</span> (!value) <span class="keyword">continue</span>;</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,value);</div></pre></td></tr></table></figure>
+<p>运行，我们可以看到已经能够拿到值了：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension7.png" alt="图7"></p>
 <p>接下来，我们拿到值后将值的类型转换为属性对应的数据类型。</p>
 <p>首先需要处理数字类型，如果模型的属性是数字类型，即<code>type.isNumberType == YES</code>,如果字典中的值是字符串类型，需要将其转成NSNumber类型，如果本来就是基本数据类型，则不用进行任何转换。</p>
-<pre><code>if (type.isNumberType == YES) {
-   // 字符串--&gt;数字
-   if ([value isKindOfClass:[NSString class]]) {
-       value = [[[NSNumberFormatter alloc] init] numberFromString:value];
-   }
-}
-</code></pre><p>其中有一种情况，是需要进行特殊处理的，当模型的属性是<code>char</code>类型或者<code>bool</code>类型时，获取到的编码都是<code>c</code>,并且<code>bool</code>还有可能是<code>B</code>编码，它们都对应<code>_boolType</code>，因为数字类型包含布尔类型，所以<code>bool</code>类型要在数字类型的条件下进行额外判断。</p>
-<pre><code>if (type.isNumberType == YES) {
-    NSString *oldValue = value;
-    // 字符串--&gt;数字
-    if ([value isKindOfClass:[NSString class]]) {
-        value = [[[NSNumberFormatter alloc] init] numberFromString:value];
-        if (type.isBoolType) {
-            NSString *lower = [oldValue lowercaseString];
-            if ([lower isEqualToString:@&quot;yes&quot;] || [lower isEqualToString:@&quot;ture&quot;]) {
-                value = @YES;
-            }else if ([lower isEqualToString:@&quot;no&quot;] || [lower isEqualToString:@&quot;false&quot;]){
-                value = @NO;
-            }
-        }
-    }
-} else { //  然后处理其他类型转化成字符串类型的情况：
-      if (typeClass == [NSString class]) {
-          if ([value isKindOfClass:[NSNumber class]]) {
-              if (type.isNumberType)
-                  // NSNumber -&gt; NSString
-                  value = [value description];
-          }else if ([value isKindOfClass:[NSURL class]]){
-              // NSURL -&gt; NSString
-              value = [value absoluteString];
-          }
-      }
-  }
-  // 最后赋值      
-  [self setValue:value forKey:property.name];
-</code></pre><p>最后我们调用并打印</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (type.isNumberType == <span class="literal">YES</span>) &#123;</div><div class="line">      <span class="comment">// 字符串--&gt;数字</span></div><div class="line">      <span class="keyword">if</span> ([value isKindOfClass:[<span class="built_in">NSString</span> <span class="keyword">class</span>]]) &#123;</div><div class="line">          value = [[[<span class="built_in">NSNumberFormatter</span> alloc] init] numberFromString:value];</div><div class="line">      &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中有一种情况，是需要进行特殊处理的，当模型的属性是<code>char</code>类型或者<code>bool</code>类型时，获取到的编码都是<code>c</code>,并且<code>bool</code>还有可能是<code>B</code>编码，它们都对应<code>_boolType</code>，因为数字类型包含布尔类型，所以<code>bool</code>类型要在数字类型的条件下进行额外判断。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (type.isNumberType == <span class="literal">YES</span>) &#123;</div><div class="line">       <span class="built_in">NSString</span> *oldValue = value;</div><div class="line">       <span class="comment">// 字符串--&gt;数字</span></div><div class="line">       <span class="keyword">if</span> ([value isKindOfClass:[<span class="built_in">NSString</span> <span class="keyword">class</span>]]) &#123;</div><div class="line">           value = [[[<span class="built_in">NSNumberFormatter</span> alloc] init] numberFromString:value];</div><div class="line">           <span class="keyword">if</span> (type.isBoolType) &#123;</div><div class="line">               <span class="built_in">NSString</span> *lower = [oldValue lowercaseString];</div><div class="line">               <span class="keyword">if</span> ([lower isEqualToString:<span class="string">@"yes"</span>] || [lower isEqualToString:<span class="string">@"ture"</span>]) &#123;</div><div class="line">                   value = @YES;</div><div class="line">               &#125;<span class="keyword">else</span> <span class="keyword">if</span> ([lower isEqualToString:<span class="string">@"no"</span>] || [lower isEqualToString:<span class="string">@"false"</span>])&#123;</div><div class="line">                   value = @NO;</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line">	&#125;</div><div class="line">&#125; <span class="keyword">else</span> &#123; <span class="comment">//  然后处理其他类型转化成字符串类型的情况：</span></div><div class="line">         <span class="keyword">if</span> (typeClass == [<span class="built_in">NSString</span> <span class="keyword">class</span>]) &#123;</div><div class="line">             <span class="keyword">if</span> ([value isKindOfClass:[<span class="built_in">NSNumber</span> <span class="keyword">class</span>]]) &#123;</div><div class="line">                 <span class="keyword">if</span> (type.isNumberType)</div><div class="line">                     <span class="comment">// NSNumber -&gt; NSString</span></div><div class="line">                     value = [value description];</div><div class="line">             &#125;<span class="keyword">else</span> <span class="keyword">if</span> ([value isKindOfClass:[<span class="built_in">NSURL</span> <span class="keyword">class</span>]])&#123;</div><div class="line">                 <span class="comment">// NSURL -&gt; NSString</span></div><div class="line">                 value = [value absoluteString];</div><div class="line">             &#125;</div><div class="line">         &#125;</div><div class="line">     &#125;</div><div class="line">  <span class="comment">// 最后赋值      </span></div><div class="line">     [<span class="keyword">self</span> setValue:value forKey:property.name];</div></pre></td></tr></table></figure>
+<p>最后我们调用并打印</p>
 <pre><code>ScottUser *userModel = [ScottUser objectWithKeyValues:dict];
     NSLog(@&quot;name:%@,icon:%@,age:%d,height:%@,money:%@,sex:%ld,gay:%d&quot;,userModel.name,userModel.icon,userModel.age,userModel.height,userModel.money,(long)userModel.sex,userModel.gay);
 </code></pre><p><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension8.png" alt="图8"></p>
 <p>到这里最简单的字典转模型大致完成了，当然还有很多的细节没有完善，后面再做处理。</p>
 <h2 id="JSON字符串转模型"><a href="#JSON字符串转模型" class="headerlink" title="JSON字符串转模型"></a>JSON字符串转模型</h2><p>定义一个<code>json</code>字符串转成模型：</p>
-<pre><code>#pragma mark - JSON字符串转模型
-void keyValues2object1(){
-    // 1.定义一个json字符串
-    NSString *jsonString = @&quot;{\&quot;name\&quot;:\&quot;scott\&quot;,\&quot;icon\&quot;:\&quot;lufy.png\&quot;,\&quot;age\&quot;:20}&quot;;
-
-    // 2.将json字符串转为LZUser模型
-    ScottUser *user = [ScottUser objectWithKeyValues:jsonString];
-
-    // 3.打印模型属性
-    NSLog(@&quot;name=%@, icon=%@, age=%d&quot;,user.name,user.icon,user.age);
-}
-</code></pre><p>运行程序，这时程序会华丽丽的崩溃，因为程序原来只对字典类型作了处理：</p>
-<pre><code>// 我们可以定位到程序崩溃在这里
-id value = [keyValues valueForKey:[self.class propertyKey:property.name]];
-</code></pre><p>所以在这之前需要将<code>JSON</code>转成<code>Foundation</code>框架中的对象，苹果提供了强大的<code>NSJSONSerialization</code>，利用它，在刚开始传入字典/<code>JSON</code>字符串的时候将其进行转换。</p>
-<pre><code>- (instancetype)setKeyValues:(id)keyValues {
-
-    keyValues = [keyValues JSONObject]; 
-
-    NSArray *propertiesArray = [self.class properties];
-    ......
-}
-</code></pre><p>该方法的实现如下，如果当前是字符串，则转换成<code>NSData</code>再进行序列化。</p>
-<pre><code>- (id)JSONObject {
-    id foundationObj;
-    if ([self isKindOfClass:[NSString class]]) {
-        NSString *str = (NSString *)self;
-        foundationObj = [NSJSONSerialization  JSONObjectWithData:[str dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
-    }else if ([self isKindOfClass:[NSData class]]){
-        foundationObj = [NSJSONSerialization JSONObjectWithData:(NSData *)self options:kNilOptions error:nil];
-    }
-
-    // 如果foundationObj有值，则返回foundationObj，否则返回self
-    return foundationObj ? : self;
-}
-</code></pre><p>此时，运行程序，OK，能够看到控制台能正确输入结果：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension9.png" alt="图9"></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#pragma mark - JSON字符串转模型</span></div><div class="line"><span class="keyword">void</span> keyValues2object1()&#123;</div><div class="line">    <span class="comment">// 1.定义一个json字符串</span></div><div class="line">    <span class="built_in">NSString</span> *jsonString = <span class="string">@"&#123;\"name\":\"scott\",\"icon\":\"lufy.png\",\"age\":20&#125;"</span>;</div><div class="line">    <span class="comment">// 2.将json字符串转为LZUser模型</span></div><div class="line">    ScottUser *user = [ScottUser objectWithKeyValues:jsonString];</div><div class="line">    <span class="comment">// 3.打印模型属性</span></div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"name=%@, icon=%@, age=%d"</span>,user.name,user.icon,user.age);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行程序，这时程序会华丽丽的崩溃，因为程序原来只对字典类型作了处理：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 我们可以定位到程序崩溃在这里</span></div><div class="line"><span class="keyword">id</span> value = [keyValues valueForKey:[<span class="keyword">self</span>.class propertyKey:property.name]];</div></pre></td></tr></table></figure>
+<p>所以在这之前需要将<code>JSON</code>转成<code>Foundation</code>框架中的对象，苹果提供了强大的<code>NSJSONSerialization</code>，利用它，在刚开始传入字典/<code>JSON</code>字符串的时候将其进行转换。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">instancetype</span>)setKeyValues:(<span class="keyword">id</span>)keyValues &#123; </div><div class="line">    keyValues = [keyValues JSONObject]; </div><div class="line">    <span class="built_in">NSArray</span> *propertiesArray = [<span class="keyword">self</span>.class properties];</div><div class="line">    ......</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>该方法的实现如下，如果当前是字符串，则转换成<code>NSData</code>再进行序列化。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">id</span>)JSONObject &#123;</div><div class="line">    <span class="keyword">id</span> foundationObj;</div><div class="line">    <span class="keyword">if</span> ([<span class="keyword">self</span> isKindOfClass:[<span class="built_in">NSString</span> <span class="keyword">class</span>]]) &#123;</div><div class="line">        <span class="built_in">NSString</span> *str = (<span class="built_in">NSString</span> *)<span class="keyword">self</span>;</div><div class="line">        foundationObj = [<span class="built_in">NSJSONSerialization</span>  JSONObjectWithData:[str dataUsingEncoding:<span class="built_in">NSUTF8StringEncoding</span>] options:kNilOptions error:<span class="literal">nil</span>];</div><div class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> ([<span class="keyword">self</span> isKindOfClass:[<span class="built_in">NSData</span> <span class="keyword">class</span>]])&#123;</div><div class="line">        foundationObj = [<span class="built_in">NSJSONSerialization</span> JSONObjectWithData:(<span class="built_in">NSData</span> *)<span class="keyword">self</span> options:kNilOptions error:<span class="literal">nil</span>];</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 如果foundationObj有值，则返回foundationObj，否则返回self</span></div><div class="line">    <span class="keyword">return</span> foundationObj ? : <span class="keyword">self</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>此时，运行程序，OK，能够看到控制台能正确输入结果：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension9.png" alt="图9"></p>
 <h2 id="复杂字典转模型"><a href="#复杂字典转模型" class="headerlink" title="复杂字典转模型"></a>复杂字典转模型</h2><p>定义一个模型中包含模型的复杂字典：</p>
-<pre><code>NSDictionary *dict = @{@&quot;text&quot;:@&quot;是啊，今天天气确实不错！&quot;,
-                       @&quot;user&quot;:@{
-                               @&quot;name&quot;:@&quot;scott&quot;,
-                               @&quot;icon&quot;:@&quot;lufy.png&quot;
-                               },
-                       @&quot;retweetedStatus&quot;:@{
-                               @&quot;text&quot;:@&quot;是啊，今天天气确实不错&quot;,
-                               @&quot;user&quot;:@{
-                                       @&quot;name&quot;:@&quot;scott_status&quot;,
-                                       @&quot;icon&quot;:@&quot;lufy_status.png&quot;
-                                       }
-                               }
-                       };
-</code></pre><p>对待这种字典的思路，应该想到递归，当碰到模型中的属性类型是一个模型类时，将字典中的<code>value</code>作为字典处理，然后再调用字典转模型的方法返回一个模型类，所以在包装类型时还要有个属性表示它是否是自定义的模型类，才能作为依据继续递归，判断的方法是看它是否来自于<code>Foundation框架</code>的类。<br>在<code>ScottPropertyType</code>中添加一个属性:</p>
-<pre><code>/**  是否来源于Foundation框架，比如NSString,NSArray等 */
-@property (nonatomic, readonly, getter=isFromFoundation) BOOL fromFoundation;
-</code></pre><p>在<code>- (void)getTypeCode:(NSString *)code</code>方法中添加这样一条:</p>
-<pre><code>else if (code.length &gt; 3 &amp;&amp; [code hasPrefix:@&quot;@\&quot;&quot;]){
-    // 去掉@&quot;和&quot;，截取中间的类型名称
-    code = [code substringWithRange:NSMakeRange(2, code.length - 3)];
-    _typeClass = NSClassFromString(code);
-    _numberType = (_typeClass == [NSNumber class] || [_typeClass isSubclassOfClass:[NSNumber class]]);
-
-    // 判断是否来自于foundation框架
-    _fromFoundation = [NSObject isClassFromFoundation:_typeClass];
-}
-</code></pre><p>在<code>NSObject+ScottProperty</code>分类中添加一个类方法：</p>
-<pre><code>// 用于判断当前类是否来自于foundation框架
-+ (BOOL)isClassFromFoundation:(Class)c;
-</code></pre><p>那么问题来了，如果判断是否来自于<code>Foundation框架</code>呢？ 下图展示了<code>Foundation框架(NSObject部分)</code>下的类结构:<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension10.png" alt="图10"></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSDictionary</span> *dict = @&#123;<span class="string">@"text"</span>:<span class="string">@"是啊，今天天气确实不错！"</span>,</div><div class="line">                          <span class="string">@"user"</span>:@&#123;</div><div class="line">                                  <span class="string">@"name"</span>:<span class="string">@"scott"</span>,</div><div class="line">                                  <span class="string">@"icon"</span>:<span class="string">@"lufy.png"</span></div><div class="line">                                  &#125;,</div><div class="line">                          <span class="string">@"retweetedStatus"</span>:@&#123;</div><div class="line">                                  <span class="string">@"text"</span>:<span class="string">@"是啊，今天天气确实不错"</span>,</div><div class="line">                                  <span class="string">@"user"</span>:@&#123;</div><div class="line">                                          <span class="string">@"name"</span>:<span class="string">@"scott_status"</span>,</div><div class="line">                                          <span class="string">@"icon"</span>:<span class="string">@"lufy_status.png"</span></div><div class="line">                                          &#125;</div><div class="line">                                  &#125;</div><div class="line">                          &#125;;</div></pre></td></tr></table></figure>
+<p>对待这种字典的思路，应该想到递归，当碰到模型中的属性类型是一个模型类时，将字典中的<code>value</code>作为字典处理，然后再调用字典转模型的方法返回一个模型类，所以在包装类型时还要有个属性表示它是否是自定义的模型类，才能作为依据继续递归，判断的方法是看它是否来自于<code>Foundation框架</code>的类。<br>在<code>ScottPropertyType</code>中添加一个属性:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**  是否来源于Foundation框架，比如NSString,NSArray等 */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">getter</span>=isFromFoundation) <span class="built_in">BOOL</span> fromFoundation;</div></pre></td></tr></table></figure>
+<p>在<code>- (void)getTypeCode:(NSString *)code</code>方法中添加这样一条:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">else</span> <span class="keyword">if</span> (code.length &gt; <span class="number">3</span> &amp;&amp; [code hasPrefix:<span class="string">@"@\""</span>])&#123;</div><div class="line">       <span class="comment">// 去掉@"和"，截取中间的类型名称</span></div><div class="line">       code = [code substringWithRange:<span class="built_in">NSMakeRange</span>(<span class="number">2</span>, code.length - <span class="number">3</span>)];</div><div class="line">       _typeClass = <span class="built_in">NSClassFromString</span>(code);</div><div class="line">       _numberType = (_typeClass == [<span class="built_in">NSNumber</span> <span class="keyword">class</span>] || [_typeClass isSubclassOfClass:[<span class="built_in">NSNumber</span> <span class="keyword">class</span>]]);</div><div class="line">       <span class="comment">// 判断是否来自于foundation框架</span></div><div class="line">       _fromFoundation = [<span class="built_in">NSObject</span> isClassFromFoundation:_typeClass];</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>在<code>NSObject+ScottProperty</code>分类中添加一个类方法：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 用于判断当前类是否来自于foundation框架</span></div><div class="line">+ (<span class="built_in">BOOL</span>)isClassFromFoundation:(Class)c;</div></pre></td></tr></table></figure>
+<p>那么问题来了，如果判断是否来自于<code>Foundation框架</code>呢？ 下图展示了<code>Foundation框架(NSObject部分)</code>下的类结构:<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension10.png" alt="图10"></p>
 <p>用一个<code>NSSet</code>(比用<code>NSArray</code>检索效率更高)，返回一些常用基本的<code>Foundation框架</code>下继承自<code>NSObject</code>的类。</p>
-<pre><code>static NSSet *foundationClasses_;
-
-+ (NSSet *)foundationClass {
-    if (foundationClasses_ == nil) {
-        foundationClasses_ = [NSSet setWithObjects:[NSURL class],
-                              [NSDate class],
-                              [NSValue class],
-                              [NSData class],
-                              [NSArray class],
-                              [NSDictionary class],
-                              [NSString class],
-                              [NSMutableString class], nil];
-    }
-    return foundationClasses_;
-}
-</code></pre><p>所以判断是否是<code>foundation框架</code>的类方法具体实现：</p>
-<pre><code>+ (BOOL)isClassFromFoundation:(Class)c {
-    // 因为foundationClasses_里面的类都是继承NSObject，因此NSObject不能放到上面的集合，需要额外做判断
-    if (c == [NSObject class]) return YES;
-
-    __block BOOL result = NO;
-    [[self foundationClass] enumerateObjectsUsingBlock:^(Class foundationClass, BOOL *stop) {
-        if ([c isSubclassOfClass:foundationClass]) {
-            result = YES;
-            *stop = YES;
-        }
-    }];
-
-    return result;
-}
-</code></pre><p>得到结果后，需要在<code>NSObject+ScottKeyValue</code>分类中的<code>setKeyValues:</code>方法中添加如下</p>
-<pre><code>// 如果不是来自foundation框架的类并且不是基本数据类型 ,则递归,如果是基本数据类型，typeClass为nil
-if (!type.isFromFoundation &amp;&amp; typeClass) {
-    value = [typeClass objectWithKeyValues:value];
-}
-</code></pre><p>到这里，复杂字典转模型就算是完成了，具体调用的过程看源码<strong>文章结尾会给地址</strong>。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="built_in">NSSet</span> *foundationClasses_;</div><div class="line">+ (<span class="built_in">NSSet</span> *)foundationClass &#123;</div><div class="line">    <span class="keyword">if</span> (foundationClasses_ == <span class="literal">nil</span>) &#123;</div><div class="line">        foundationClasses_ = [<span class="built_in">NSSet</span> setWithObjects:[<span class="built_in">NSURL</span> <span class="keyword">class</span>],</div><div class="line">                              [<span class="built_in">NSDate</span> <span class="keyword">class</span>],</div><div class="line">                              [<span class="built_in">NSValue</span> <span class="keyword">class</span>],</div><div class="line">                              [<span class="built_in">NSData</span> <span class="keyword">class</span>],</div><div class="line">                              [<span class="built_in">NSArray</span> <span class="keyword">class</span>],</div><div class="line">                              [<span class="built_in">NSDictionary</span> <span class="keyword">class</span>],</div><div class="line">                              [<span class="built_in">NSString</span> <span class="keyword">class</span>],</div><div class="line">                              [<span class="built_in">NSMutableString</span> <span class="keyword">class</span>], <span class="literal">nil</span>];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> foundationClasses_;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以判断是否是<code>foundation框架</code>的类方法具体实现：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">+ (<span class="built_in">BOOL</span>)isClassFromFoundation:(Class)c &#123;</div><div class="line">    <span class="comment">// 因为foundationClasses_里面的类都是继承NSObject，因此NSObject不能放到上面的集合，需要额外做判断</span></div><div class="line">    <span class="keyword">if</span> (c == [<span class="built_in">NSObject</span> <span class="keyword">class</span>]) <span class="keyword">return</span> <span class="literal">YES</span>;</div><div class="line">    __block <span class="built_in">BOOL</span> result = <span class="literal">NO</span>;</div><div class="line">    [[<span class="keyword">self</span> foundationClass] enumerateObjectsUsingBlock:^(Class foundationClass, <span class="built_in">BOOL</span> *stop) &#123;</div><div class="line">        <span class="keyword">if</span> ([c isSubclassOfClass:foundationClass]) &#123;</div><div class="line">            result = <span class="literal">YES</span>;</div><div class="line">            *stop = <span class="literal">YES</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;];</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>得到结果后，需要在<code>NSObject+ScottKeyValue</code>分类中的<code>setKeyValues:</code>方法中添加如下</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 如果不是来自foundation框架的类并且不是基本数据类型 ,则递归,如果是基本数据类型，typeClass为nil</span></div><div class="line"><span class="keyword">if</span> (!type.isFromFoundation &amp;&amp; typeClass) &#123;</div><div class="line">    value = [typeClass objectWithKeyValues:value];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>到这里，复杂字典转模型就算是完成了，具体调用的过程看源码<strong>文章结尾会给地址</strong>。</p>
 <h2 id="字典数组转模型"><a href="#字典数组转模型" class="headerlink" title="字典数组转模型"></a>字典数组转模型</h2><p>稍微复杂的一种情况是一个字典里面带有数组：</p>
-<pre><code>NSDictionary *dict = @{
-                       @&quot;statuses&quot; : @[
-                               @{
-                                   @&quot;text&quot; : @&quot;今天天气真不错！&quot;,
-
-                                   @&quot;user&quot; : @{
-                                           @&quot;name&quot; : @&quot;Rose&quot;,
-                                           @&quot;icon&quot; : @&quot;nami.png&quot;
-                                           }
-                                   },
-
-                               @{
-                                   @&quot;text&quot; : @&quot;明天去旅游了&quot;,
-
-                                   @&quot;user&quot; : @{
-                                           @&quot;name&quot; : @&quot;Jack&quot;,
-                                           @&quot;icon&quot; : @&quot;lufy.png&quot;
-                                           }
-                                   }
-
-                               ],
-
-                       @&quot;ads&quot; : @[
-                               @{
-                                   @&quot;image&quot; : @&quot;ad01.png&quot;,
-                                   @&quot;url&quot; : @&quot;http://www.baidu.com&quot;
-                                   },
-                               @{
-                                   @&quot;image&quot; : @&quot;ad02.png&quot;,
-                                   @&quot;url&quot; : @&quot;http://www.sina.com&quot;
-                                   }
-                               ],
-
-                       @&quot;totalNumber&quot; : @&quot;2014&quot;,
-                       @&quot;previousCursor&quot; : @&quot;13476589&quot;,
-                       @&quot;nextCursor&quot; : @&quot;13476599&quot;
-                       };
-</code></pre><p>上面定义了一个字典，创建一个<code>ScottStatusResult</code>模型，里面有两个数组，另外还有其他3个键：</p>
-<pre><code>#import &lt;Foundation/Foundation.h&gt;
-
-@interface ScottStatusResult : NSObject
-
-/** 存放着某一页微博数据（里面都是Status模型） */
-@property (nonatomic, strong) NSMutableArray *statuses;
-/** 存放着一堆的广告数据（里面都是Ad模型） */
-@property (nonatomic, strong) NSArray *ads;
-/** 总数 */
-@property (nonatomic, strong) NSNumber *totalNumber;
-/** 上一页的游标 */
-@property (nonatomic, assign) long long previousCursor;
-/** 下一页的游标 */
-@property (nonatomic, assign) long long nextCursor;
-
-@end
-</code></pre><p>对于一个数组来说，你必须要告诉方法里面装的是什么模型，才能将字典中值为数组的成员转成模型。<br>在<code>MJExtension</code>中，提供了两种方式进行处理。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSDictionary</span> *dict = @&#123;</div><div class="line">                          <span class="string">@"statuses"</span> : @[</div><div class="line">                                  @&#123;</div><div class="line">                                      <span class="string">@"text"</span> : <span class="string">@"今天天气真不错！"</span>,</div><div class="line">                                      <span class="string">@"user"</span> : @&#123;</div><div class="line">                                              <span class="string">@"name"</span> : <span class="string">@"Rose"</span>,</div><div class="line">                                              <span class="string">@"icon"</span> : <span class="string">@"nami.png"</span></div><div class="line">                                              &#125;</div><div class="line">                                      &#125;,</div><div class="line">                                  @&#123;</div><div class="line">                                      <span class="string">@"text"</span> : <span class="string">@"明天去旅游了"</span>,</div><div class="line">                                      <span class="string">@"user"</span> : @&#123;</div><div class="line">                                              <span class="string">@"name"</span> : <span class="string">@"Jack"</span>,</div><div class="line">                                              <span class="string">@"icon"</span> : <span class="string">@"lufy.png"</span></div><div class="line">                                              &#125;</div><div class="line">                                      &#125;</div><div class="line">                                  ],</div><div class="line">                          <span class="string">@"ads"</span> : @[</div><div class="line">                                  @&#123;</div><div class="line">                                      <span class="string">@"image"</span> : <span class="string">@"ad01.png"</span>,</div><div class="line">                                      <span class="string">@"url"</span> : <span class="string">@"http://www.baidu.com"</span></div><div class="line">                                      &#125;,</div><div class="line">                                  @&#123;</div><div class="line">                                      <span class="string">@"image"</span> : <span class="string">@"ad02.png"</span>,</div><div class="line">                                      <span class="string">@"url"</span> : <span class="string">@"http://www.sina.com"</span></div><div class="line">                                      &#125;</div><div class="line">                                  ],</div><div class="line">                          <span class="string">@"totalNumber"</span> : <span class="string">@"2014"</span>,</div><div class="line">                          <span class="string">@"previousCursor"</span> : <span class="string">@"13476589"</span>,</div><div class="line">                          <span class="string">@"nextCursor"</span> : <span class="string">@"13476599"</span></div><div class="line">                          &#125;;</div></pre></td></tr></table></figure>
+<p>上面定义了一个字典，创建一个<code>ScottStatusResult</code>模型，里面有两个数组，另外还有其他3个键：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ScottStatusResult</span> : <span class="title">NSObject</span></span></div><div class="line"><span class="comment">/** 存放着某一页微博数据（里面都是Status模型） */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSMutableArray</span> *statuses;</div><div class="line"><span class="comment">/** 存放着一堆的广告数据（里面都是Ad模型） */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSArray</span> *ads;</div><div class="line"><span class="comment">/** 总数 */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *totalNumber;</div><div class="line"><span class="comment">/** 上一页的游标 */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">long</span> <span class="keyword">long</span> previousCursor;</div><div class="line"><span class="comment">/** 下一页的游标 */</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">long</span> <span class="keyword">long</span> nextCursor;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p>对于一个数组来说，你必须要告诉方法里面装的是什么模型，才能将字典中值为数组的成员转成模型。<br>在<code>MJExtension</code>中，提供了两种方式进行处理。</p>
 <ul>
 <li><p>方式一：调用<code>NSObject</code>分类中的类方法：</p>
-<pre><code>[ScottStatusResult setupObjectClassInArray:^NSDictionary *{
- return @{ @&quot;statuses&quot; : @&quot;ScottStatus&quot;,
-  // 或者 @&quot;statuses&quot; : [ScottStatus class],
-           @&quot;ads&quot; : @&quot;ScottAd&quot;
-  // 或者 @&quot;ads&quot; : [ScottAd class]
-         };
-    }];
-</code></pre></li>
+  <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[ScottStatusResult setupObjectClassInArray:^<span class="built_in">NSDictionary</span> *&#123;</div><div class="line"> <span class="keyword">return</span> @&#123; <span class="string">@"statuses"</span> : <span class="string">@"ScottStatus"</span>,</div><div class="line">  <span class="comment">// 或者 @"statuses" : [ScottStatus class],</span></div><div class="line">           <span class="string">@"ads"</span> : <span class="string">@"ScottAd"</span></div><div class="line">  <span class="comment">// 或者 @"ads" : [ScottAd class]</span></div><div class="line">               &#125;;</div><div class="line">    &#125;];</div></pre></td></tr></table></figure>
+</li>
 <li><p>方式二：在模型的.m文件中实现方法供回调：</p>
-<pre><code>+ (NSDictionary *)objectClassInArray
-{
-    return @{
-             @&quot;statuses&quot; : @&quot;ScottStatus&quot;,
-              // 或者 @&quot;statuses&quot; : [ScottStatus class],
-             @&quot;ads&quot; : @&quot;ScottAd&quot;
-             // 或者 @&quot;ads&quot; : [ScottAd class]
-             };
-}
-</code></pre></li>
+  <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">+ (<span class="built_in">NSDictionary</span> *)objectClassInArray</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> @&#123;</div><div class="line">             <span class="string">@"statuses"</span> : <span class="string">@"ScottStatus"</span>,</div><div class="line">              <span class="comment">// 或者 @"statuses" : [ScottStatus class],</span></div><div class="line">             <span class="string">@"ads"</span> : <span class="string">@"ScottAd"</span></div><div class="line">             <span class="comment">// 或者 @"ads" : [ScottAd class]</span></div><div class="line">             &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
 </ul>
 <p>原理上都差不多，都是通过代码进行回调，这个主要实现方式二。<br>在<code>NSObject+ScottKeyValue</code>分类中的<code>ScottKeyValue</code>协议中添加一个方法</p>
-<pre><code>+ (NSDictionary *)objectClassInArray;
-</code></pre><p>在<code>NSObject+ScottKeyValue</code>分类中的<code>setKeyValues:</code>方法中添加一种类型判断</p>
-<pre><code>// 如果不是来自foundation框架的类并且不是基本数据类型 ,则递归,如果是基本数据类型，typeClass为nil
-   if (!type.isFromFoundation &amp;&amp; typeClass) {
-       value = [typeClass objectWithKeyValues:value];
-   }else if ([self.class respondsToSelector:@selector(objectClassInArray)]){ // 看该类是否实现了objectClassInArray方法
-       id objectClass;
-       objectClass = [self.class objectClassInArray][property.name];
-
-      // 如果是NSString类型
-      if ([objectClass isKindOfClass:[NSString class]]) {
-          objectClass = NSClassFromString(objectClass);
-      }
-
-      if (objectClass) {
-          // 返回一个装了模型的数组
-          value = [objectClass objectArrayWithKeyValuesArray:value];
-      }
-  }
-</code></pre><p>返回一个装了模型的数组方法实现：</p>
-<pre><code>/**
- *  根据字典/JSON返回模型数组
- *
- *  @param keyValuesArray 字典/JSON数组
- *
- *  @return 模型数组
- */
-+ (NSMutableArray *)objectArrayWithKeyValuesArray:(id)keyValuesArray
-{
-    if ([self isClassFromFoundation:self])
-        return keyValuesArray;
-
-    keyValuesArray = [keyValuesArray JSONObject];
-
-    NSMutableArray *modelArray = [NSMutableArray array];
-
-    // 遍历
-    for (NSDictionary *keyValues in keyValuesArray) {
-        id model;
-        model = [self objectWithKeyValues:keyValues];
-        if (model) {
-            [modelArray addObject:model];
-        }
-    }
-
-    return modelArray;
-}
-</code></pre><p>到这里，字典数组转模型就算是完成了，具体调用的过程看源码<strong>文章结尾会给地址</strong>。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">+ (<span class="built_in">NSDictionary</span> *)objectClassInArray;</div></pre></td></tr></table></figure>
+<p>在<code>NSObject+ScottKeyValue</code>分类中的<code>setKeyValues:</code>方法中添加一种类型判断</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 如果不是来自foundation框架的类并且不是基本数据类型 ,则递归,如果是基本数据类型，typeClass为nil</span></div><div class="line">      <span class="keyword">if</span> (!type.isFromFoundation &amp;&amp; typeClass) &#123;</div><div class="line">          value = [typeClass objectWithKeyValues:value];</div><div class="line">      &#125;<span class="keyword">else</span> <span class="keyword">if</span> ([<span class="keyword">self</span>.class respondsToSelector:<span class="keyword">@selector</span>(objectClassInArray)])&#123; <span class="comment">// 看该类是否实现了objectClassInArray方法</span></div><div class="line">          <span class="keyword">id</span> objectClass;</div><div class="line">          objectClass = [<span class="keyword">self</span>.class objectClassInArray][property.name];</div><div class="line">         <span class="comment">// 如果是NSString类型</span></div><div class="line">         <span class="keyword">if</span> ([objectClass isKindOfClass:[<span class="built_in">NSString</span> <span class="keyword">class</span>]]) &#123;</div><div class="line">             objectClass = <span class="built_in">NSClassFromString</span>(objectClass);</div><div class="line">         &#125;</div><div class="line">         <span class="keyword">if</span> (objectClass) &#123;</div><div class="line">             <span class="comment">// 返回一个装了模型的数组</span></div><div class="line">             value = [objectClass objectArrayWithKeyValuesArray:value];</div><div class="line">         &#125;</div><div class="line">     &#125;</div></pre></td></tr></table></figure>
+<p>返回一个装了模型的数组方法实现：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> *  根据字典/JSON返回模型数组</div><div class="line"> *</div><div class="line"> *  @param keyValuesArray 字典/JSON数组</div><div class="line"> *</div><div class="line"> *  @return 模型数组</div><div class="line"> */</div><div class="line">+ (<span class="built_in">NSMutableArray</span> *)objectArrayWithKeyValuesArray:(<span class="keyword">id</span>)keyValuesArray</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> ([<span class="keyword">self</span> isClassFromFoundation:<span class="keyword">self</span>])</div><div class="line">        <span class="keyword">return</span> keyValuesArray;</div><div class="line">    keyValuesArray = [keyValuesArray JSONObject];</div><div class="line">    <span class="built_in">NSMutableArray</span> *modelArray = [<span class="built_in">NSMutableArray</span> array];</div><div class="line">    <span class="comment">// 遍历</span></div><div class="line">    <span class="keyword">for</span> (<span class="built_in">NSDictionary</span> *keyValues <span class="keyword">in</span> keyValuesArray) &#123;</div><div class="line">        <span class="keyword">id</span> model;</div><div class="line">        model = [<span class="keyword">self</span> objectWithKeyValues:keyValues];</div><div class="line">        <span class="keyword">if</span> (model) &#123;</div><div class="line">            [modelArray addObject:model];</div><div class="line">        &#125;</div><div class="line">    &#125;    </div><div class="line">    <span class="keyword">return</span> modelArray;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>到这里，字典数组转模型就算是完成了，具体调用的过程看源码<strong>文章结尾会给地址</strong>。</p>
 <h2 id="key的替换"><a href="#key的替换" class="headerlink" title="key的替换"></a>key的替换</h2><p>在实际开发中，服务器通常返回一个字段名<code>id</code>,或者<code>description</code>的<code>JSON</code>数据,而这两个名字在<code>OC</code>中有特殊含义,在定义属性的时候并不能使用这类名称.这时属性名与字典<code>key</code>不再是直接对应的关系,需要加入一层转换。<br>这个在前面<strong>用该属性名作为键去字典中寻找对应的值</strong>讲到过，在次就不再重复讲解。</p>
 <h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><p>将5个字典转模型的例子同时运行，在<code>NSObject+ScottProperty</code>分类中的<code>+ (NSArray *)properties</code>方法中添加一句打印<code>NSLog(@&quot;%@调用了properties方法&quot;,[self class]);</code>。另外，之前的例子都是有内存泄露的，这里添加了<code>free(properties);</code>修复了这个问题。</p>
-<pre><code>+ (NSArray *)properties {
-    NSLog(@&quot;%@调用了properties方法&quot;,[self class]);
-    NSMutableArray *propertiesArr = [NSMutableArray array];
-
-    unsigned int outCount = 0;
-    objc_property_t *properties = class_copyPropertyList(self, &amp;outCount);
-
-    for (int i=0; i&lt;outCount; i++) {
-        objc_property_t property = properties[i];
-        ScottProperty *propertyObj = [ScottProperty propertyWithProperty:property];
-        [propertiesArr addObject:propertyObj];
-    }
-
-    free(properties);
-    return propertiesArr;
-}
-</code></pre><p>运行程序，可以看到控制台输出：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension11.png" alt="图11"><br>可以看到,很多的类都不止一次调用了获取属性的方法,对于一个类来说,要获取它的全部属性,只要获取一次就够了.获取到后将结果缓存起来,下次就不必进行不必要的计算。<br>下面进行优化：</p>
-<pre><code>// 设置一个全局字典用来将类的属性都缓存起来
-static NSMutableDictionary *cachedProperties_;
-
-+ (void)load
-{
-    cachedProperties_ = [NSMutableDictionary dictionary];
-}
-</code></pre><p>将方法改写为:</p>
-<pre><code>+ (NSArray *)properties {
-    NSMutableArray *propertiesArr = cachedProperties_[NSStringFromClass(self)];
-
-    if (!propertiesArr) {
-        NSLog(@&quot;%@调用了properties方法&quot;,[self class]);
-        propertiesArr = [NSMutableArray array];
-
-        unsigned int outCount = 0;
-        objc_property_t *properties = class_copyPropertyList(self, &amp;outCount);
-
-        for (int i=0; i&lt;outCount; i++) {
-            objc_property_t property = properties[i];
-            ScottProperty *propertyObj = [ScottProperty propertyWithProperty:property];
-            [propertiesArr addObject:propertyObj];
-            //        NSLog(@&quot;name:%@--type:%@&quot;,propertyObj.name,propertyObj.type.typeClass);
-
-            // 为了以后方便使用，将C字符串转化成OC对象
-            //        char *name = property_getName(property);
-            //        NSString *name = @(property_getName(property));
-
-            //        char *att = property_getAttributes(property);
-            //        NSString *att = @(property_getAttributes(property));
-
-            //        NSUInteger loc = 1;
-            //        NSUInteger len = [att rangeOfString:@&quot;,&quot;].location - loc;
-
-            //        NSString *type = [att substringWithRange:NSMakeRange(loc, len)];
-            //        NSLog(@&quot;%@&quot;,type);
-        }
-
-        free(properties);
-        cachedProperties_[NSStringFromClass(self)] = propertiesArr;
-    }
-
-    return propertiesArr;
-}
-</code></pre><p>此时，控制台输出：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension12.png" alt="图12"><br>可以看出每一个类只经过一次就可以获取所有属性。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">+ (<span class="built_in">NSArray</span> *)properties &#123;</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@调用了properties方法"</span>,[<span class="keyword">self</span> <span class="keyword">class</span>]);</div><div class="line">    <span class="built_in">NSMutableArray</span> *propertiesArr = [<span class="built_in">NSMutableArray</span> array];</div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> outCount = <span class="number">0</span>;</div><div class="line">    objc_property_t *properties = class_copyPropertyList(<span class="keyword">self</span>, &amp;outCount);</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;outCount; i++) &#123;</div><div class="line">        objc_property_t property = properties[i];</div><div class="line">        ScottProperty *propertyObj = [ScottProperty propertyWithProperty:property];</div><div class="line">        [propertiesArr addObject:propertyObj];</div><div class="line">    &#125;</div><div class="line">    free(properties);</div><div class="line">    <span class="keyword">return</span> propertiesArr;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行程序，可以看到控制台输出：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension11.png" alt="图11"><br>可以看到,很多的类都不止一次调用了获取属性的方法,对于一个类来说,要获取它的全部属性,只要获取一次就够了.获取到后将结果缓存起来,下次就不必进行不必要的计算。<br>下面进行优化：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 设置一个全局字典用来将类的属性都缓存起来</span></div><div class="line"><span class="keyword">static</span> <span class="built_in">NSMutableDictionary</span> *cachedProperties_;</div><div class="line">+ (<span class="keyword">void</span>)load</div><div class="line">&#123;</div><div class="line">    cachedProperties_ = [<span class="built_in">NSMutableDictionary</span> dictionary];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>将方法改写为:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">+ (<span class="built_in">NSArray</span> *)properties &#123;</div><div class="line">    <span class="built_in">NSMutableArray</span> *propertiesArr = cachedProperties_[<span class="built_in">NSStringFromClass</span>(<span class="keyword">self</span>)];</div><div class="line">    <span class="keyword">if</span> (!propertiesArr) &#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@调用了properties方法"</span>,[<span class="keyword">self</span> <span class="keyword">class</span>]);</div><div class="line">        propertiesArr = [<span class="built_in">NSMutableArray</span> array];</div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> outCount = <span class="number">0</span>;</div><div class="line">        objc_property_t *properties = class_copyPropertyList(<span class="keyword">self</span>, &amp;outCount);</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;outCount; i++) &#123;</div><div class="line">            objc_property_t property = properties[i];</div><div class="line">            ScottProperty *propertyObj = [ScottProperty propertyWithProperty:property];</div><div class="line">            [propertiesArr addObject:propertyObj];</div><div class="line">            <span class="comment">//        NSLog(@"name:%@--type:%@",propertyObj.name,propertyObj.type.typeClass);</span></div><div class="line">            <span class="comment">// 为了以后方便使用，将C字符串转化成OC对象</span></div><div class="line">            <span class="comment">//        char *name = property_getName(property);</span></div><div class="line">            <span class="comment">//        NSString *name = @(property_getName(property));</span></div><div class="line">            <span class="comment">//        char *att = property_getAttributes(property);</span></div><div class="line">            <span class="comment">//        NSString *att = @(property_getAttributes(property));</span></div><div class="line">            <span class="comment">//        NSUInteger loc = 1;</span></div><div class="line">            <span class="comment">//        NSUInteger len = [att rangeOfString:@","].location - loc;</span></div><div class="line">            <span class="comment">//        NSString *type = [att substringWithRange:NSMakeRange(loc, len)];</span></div><div class="line">            <span class="comment">//        NSLog(@"%@",type);</span></div><div class="line">        &#125;</div><div class="line">        free(properties);</div><div class="line">        cachedProperties_[<span class="built_in">NSStringFromClass</span>(<span class="keyword">self</span>)] = propertiesArr;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> propertiesArr;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>此时，控制台输出：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension12.png" alt="图12"><br>可以看出每一个类只经过一次就可以获取所有属性。</p>
 <hr>
 <p>除了缓存属性外，提取类型编码的过程也可以进一步缓存优化性能。<br>在下面的方法中加上一句打印：</p>
-<pre><code>- (void)getTypeCode:(NSString *)code {
-    NSLog(@&quot;%@&quot;,code);
-    ...
-}
-</code></pre><p>可以看到控制台输出：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension13.png" alt="图13"></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)getTypeCode:(<span class="built_in">NSString</span> *)code &#123;</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,code);</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到控制台输出：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension13.png" alt="图13"></p>
 <p>可以看到一些常用的类型例如<code>NSString</code>多次调用了该方法。提取类型时,只要知道类名(在这里也就是<code>typeCode</code>),一个<code>ScottPropertyType</code>就已经可以确定了。</p>
 <p>重写了<code>- initWithTypeString:</code>方法:</p>
-<pre><code>static NSMutableDictionary *cacheTypes_;
-+ (void)load {
-    cacheTypes_ = [NSMutableDictionary dictionary];
-}
-
-+ (instancetype)propertiesWithAttributeString:(NSString *)att {
-    return [[ScottPropertyType alloc] initWithTypeString:att];
-}
-
-- (instancetype)initWithTypeString:(NSString *)typeString {
-
-    if (self = [super init]) {
-        NSUInteger loc = 1;
-        NSUInteger len = [typeString rangeOfString:@&quot;,&quot;].location - loc;
-        NSString *typeCode = [typeString substringWithRange:NSMakeRange(loc, len)];
-
-        if (!cacheTypes_[typeCode]) {
-            [self getTypeCode:typeCode];
-            cacheTypes_[typeCode] = self;
-        }
-    }
-    return self;
-}
-</code></pre><p>输出结果：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension14.png" alt="图14"></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="built_in">NSMutableDictionary</span> *cacheTypes_;</div><div class="line">+ (<span class="keyword">void</span>)load &#123;</div><div class="line">    cacheTypes_ = [<span class="built_in">NSMutableDictionary</span> dictionary];</div><div class="line">&#125;</div><div class="line">+ (<span class="keyword">instancetype</span>)propertiesWithAttributeString:(<span class="built_in">NSString</span> *)att &#123;</div><div class="line">    <span class="keyword">return</span> [[ScottPropertyType alloc] initWithTypeString:att];</div><div class="line">&#125;</div><div class="line">- (<span class="keyword">instancetype</span>)initWithTypeString:(<span class="built_in">NSString</span> *)typeString &#123;   </div><div class="line">    <span class="keyword">if</span> (<span class="keyword">self</span> = [<span class="keyword">super</span> init]) &#123;</div><div class="line">        <span class="built_in">NSUInteger</span> loc = <span class="number">1</span>;</div><div class="line">        <span class="built_in">NSUInteger</span> len = [typeString rangeOfString:<span class="string">@","</span>].location - loc;</div><div class="line">        <span class="built_in">NSString</span> *typeCode = [typeString substringWithRange:<span class="built_in">NSMakeRange</span>(loc, len)];</div><div class="line">        <span class="keyword">if</span> (!cacheTypes_[typeCode]) &#123;</div><div class="line">            [<span class="keyword">self</span> getTypeCode:typeCode];</div><div class="line">            cacheTypes_[typeCode] = <span class="keyword">self</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出结果：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension14.png" alt="图14"></p>
 <h2 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h2><p>OK,到这里，我们的解读也算是完成了，由于是下班之后写的，所以花费了4天的时间，终于把此篇文章写完了，欢迎大家点评并讨论。<br>最后代码地址：—&gt;<a href="https://github.com/LZAscott/ScottExtension" target="_blank" rel="external">戳这里</a></p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>参考资料：<a href="http://www.jianshu.com/p/d2ecef03f19e" target="_blank" rel="external">跟着MJExtension实现简单的字典转模型</a></p>
 
