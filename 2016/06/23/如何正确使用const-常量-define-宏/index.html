@@ -90,7 +90,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/06/23/如何正确使用const-常量-define-宏/index.html">
 <meta property="og:site_name" content="Scott_Mr">
 <meta property="og:description" content="前言在开发中，也许我们会经常使用到宏定义，或者用const修饰一些数据类型，经常有开发者不知道怎么正确使用，导致项目中乱用宏定义与const修饰符。本篇主要介绍在开发中怎么正确使用const与define(宏定义)">
-<meta property="og:updated_time" content="2016-08-15T07:00:40.000Z">
+<meta property="og:updated_time" content="2016-08-22T03:36:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何正确使用const(常量),define(宏)">
 <meta name="twitter:description" content="前言在开发中，也许我们会经常使用到宏定义，或者用const修饰一些数据类型，经常有开发者不知道怎么正确使用，导致项目中乱用宏定义与const修饰符。本篇主要介绍在开发中怎么正确使用const与define(宏定义)">
@@ -332,20 +332,18 @@
 <p>当我们想定义全局共用的一些数据时，比如通知名字，动画时长等等，我们可以用<code>宏</code>、<code>常量</code>、<code>变量</code>：</p>
 <ul>
 <li><p><strong>宏：</strong></p>
-<pre><code>// 注意后面不需要带符号
-#define ScottDidLoginSuccess @&quot;登陆成功&quot;
-</code></pre></li>
+  <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 注意后面不需要带符号</span></div><div class="line"><span class="meta">#define ScottDidLoginSuccess @<span class="meta-string">"登陆成功"</span></span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
 <li><p><strong>变量：</strong></p>
-<pre><code>// 注意后面一定要带符号
-NSString *scottDidLoginSuccess = @&quot;登陆成功&quot;；
-</code></pre></li>
+  <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 注意后面一定要带符号</span></div><div class="line"><span class="built_in">NSString</span> *scottDidLoginSuccess = <span class="string">@"登陆成功"</span>；</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
 <li><p><strong>常量：</strong></p>
-<pre><code>// 四种写法
-static const NSString *scottDidLoginSuccess = @&quot;登陆成功&quot;；
-const NSString *scottDidLoginSuccess = @&quot;登陆成功&quot;;
-NSString const *scottDidLoginSuccess = @&quot;登陆成功&quot;;
-NSString *const scottDidLoginSuccess = @&quot;登陆成功&quot;;
-</code></pre></li>
+  <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 四种写法</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">NSString</span> *scottDidLoginSuccess = <span class="string">@"登陆成功"</span>；</div><div class="line"><span class="keyword">const</span> <span class="built_in">NSString</span> *scottDidLoginSuccess = <span class="string">@"登陆成功"</span>;</div><div class="line"><span class="built_in">NSString</span> <span class="keyword">const</span> *scottDidLoginSuccess = <span class="string">@"登陆成功"</span>;</div><div class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> scottDidLoginSuccess = <span class="string">@"登陆成功"</span>;</div></pre></td></tr></table></figure>
+</li>
 </ul>
 <p>那么问题来了，我们到底该如何选择呢？<br>让我来先将一下我对它们之间的理解吧：</p>
 <ul>
@@ -355,19 +353,16 @@ NSString *const scottDidLoginSuccess = @&quot;登陆成功&quot;;
 </ul>
 <h2 id="常量区分"><a href="#常量区分" class="headerlink" title="常量区分"></a>常量区分</h2><ul>
 <li><p><strong>全局常量：</strong>不管你定义在任何文件夹，外部都能访问</p>
-<pre><code>const NSString *scottDidLoginSuccess = @&quot;登陆成功&quot;;
-</code></pre></li>
-<li><p><strong>局部常量：</strong>用static修饰后，不能供外界访问</p>
-<pre><code>static const NSString *scottDidLoginSuccess = @&quot;登陆成功&quot;;
-</code></pre></li>
+  <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="built_in">NSString</span> *scottDidLoginSuccess = <span class="string">@"登陆成功"</span>;</div></pre></td></tr></table></figure>
+</li>
 </ul>
-<h2 id="const修饰位置不同，代表什么"><a href="#const修饰位置不同，代表什么" class="headerlink" title="const修饰位置不同，代表什么"></a>const修饰位置不同，代表什么</h2><pre><code>// 1.
-const NSString *scottDidLoginSuccess = @&quot;登陆成功&quot;;
-// 2.
-NSString const *scottDidLoginSuccess = @&quot;登陆成功&quot;;
-// 3.
-NSString * const scottDidLoginSuccess = @&quot;登陆成功&quot;;
-</code></pre><p>咋一看，WTF，这不都张一样嘛，其实不一样，下面解释一下各代表什么</p>
+<ul>
+<li><p><strong>局部常量：</strong>用static修饰后，不能供外界访问</p>
+  <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">NSString</span> *scottDidLoginSuccess = <span class="string">@"登陆成功"</span>;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="const修饰位置不同，代表什么"><a href="#const修饰位置不同，代表什么" class="headerlink" title="const修饰位置不同，代表什么"></a>const修饰位置不同，代表什么</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 1.</span></div><div class="line"><span class="keyword">const</span> <span class="built_in">NSString</span> *scottDidLoginSuccess = <span class="string">@"登陆成功"</span>;</div><div class="line"><span class="comment">// 2.</span></div><div class="line"><span class="built_in">NSString</span> <span class="keyword">const</span> *scottDidLoginSuccess = <span class="string">@"登陆成功"</span>;</div><div class="line"><span class="comment">// 3.</span></div><div class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> scottDidLoginSuccess = <span class="string">@"登陆成功"</span>;</div></pre></td></tr></table></figure>
+<p>咋一看，WTF，这不都张一样嘛，其实不一样，下面解释一下各代表什么</p>
 <ol>
 <li><code>*scottDidLoginSuccess</code>不能被修改，<code>scottDidLoginSuccess</code>能被修改</li>
 <li><code>*scottDidLoginSuccess</code>不能被修改，<code>scottDidLoginSuccess</code>能被修改，也就是和第一种情况是一样的</li>

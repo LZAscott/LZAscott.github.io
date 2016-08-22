@@ -96,7 +96,7 @@
 <meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%AC%E5%9C%BA012.png">
 <meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%AC%E5%9C%BA013.gif">
 <meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%AC%E5%9C%BA014.gif">
-<meta property="og:updated_time" content="2016-06-11T14:59:46.000Z">
+<meta property="og:updated_time" content="2016-08-22T04:22:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="自定义转场详解(一)">
 <meta name="twitter:description" content="前言
@@ -344,310 +344,67 @@
 <p>我们先做好点击<code>ViewController</code>上面的按钮，present出    <code>PresentViewController</code>，点击<code>PresentViewController</code>上面的按钮，dismiss掉<code>PresentViewController</code>的逻辑。这里有两个注意点：</p>
 <ol>
 <li><p>因为此处我使用了<code>segue</code>，所以在<code>ViewController</code>按钮点击的时候，我们只需要这样调用就行。</p>
-<pre><code>#pragma mark - 点我弹出
-- (IBAction)presentBtnClick:(UIButton *)sender {
-    [self performSegueWithIdentifier:@&quot;PresentSegue&quot; sender:nil];
-}
-</code></pre></li>
-<li><p>我们平时写dismiss的时候，一般都会是在第二个控制器中直接给self发送<code>dismissViewController</code>的相关方法。在现在的SDK中，如果当前的VC是被显示的话，这个消息会被直接转发到显示它的VC去。但是这并不是一个好的实现，违反了程序设计的哲学，也很容易掉到坑里。所以我们用标准的<code>delegate</code> 方式实现 <code>dismiss</code> 。</p>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#pragma mark - 点我弹出</span></div><div class="line">-(<span class="keyword">IBAction</span>)presentBtnClick:(<span class="built_in">UIButton</span> *)sender &#123;</div><div class="line">    [<span class="keyword">self</span> performSegueWithIdentifier:<span class="string">@"PresentSegue"</span> sender:<span class="literal">nil</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 </ol>
+<ol>
+<li>我们平时写dismiss的时候，一般都会是在第二个控制器中直接给self发送<code>dismissViewController</code>的相关方法。在现在的SDK中，如果当前的VC是被显示的话，这个消息会被直接转发到显示它的VC去。但是这并不是一个好的实现，违反了程序设计的哲学，也很容易掉到坑里。所以我们用标准的<code>delegate</code> 方式实现 <code>dismiss</code> 。</li>
+</ol>
 <p>首先我们在<code>PresentViewController</code>控制器中申明一个代理方法。</p>
-<pre><code>#import &lt;UIKit/UIKit.h&gt;
-
-@class PresentViewController;
-@protocol PresentViewControllerDelegate &lt;NSObject&gt;
-
-- (void)dismissViewController:(PresentViewController *)viewController;
-
-@end
-
-@interface PresentViewController : UIViewController
-
-@property (nonatomic, weak) id&lt;PresentViewControllerDelegate&gt; delegate;
-
-@end
-</code></pre><p>在button的点击事件中，让代理去完成关闭当前控制器的工作。</p>
-<pre><code>#pragma mark - 点击关闭
-- (IBAction)closeBtnClick:(UIButton *)sender {
-    if (self.delegate &amp;&amp; [self.delegate respondsToSelector:@selector(dismissViewController:)]) {
-        [self.delegate dismissViewController:self];
-    }
-}
-</code></pre><p>与此同时，在<code>ViewController</code>中需要设置<code>PresentViewController</code>的代理,并且实现代理方法：</p>
-<pre><code>- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@&quot;PresentSegue&quot;]) {
-        PresentViewController *presetVC = segue.destinationViewController;
-        presetVC.delegate = self;
-    }
-}
-
-#pragma mark - PresentViewControllerDelegate
-- (void)dismissViewController:(PresentViewController *)viewController {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-</code></pre><p>OK，到这里，我们一个基本的转场就完成了(这也是系统自带的一个效果)。like this:<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%AC%E5%9C%BA013.gif" alt="图3"></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;UIKit/UIKit.h&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">@class</span> <span class="title">PresentViewController</span>;</span></div><div class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">PresentViewControllerDelegate</span> &lt;<span class="title">NSObject</span>&gt;</span></div><div class="line">- (<span class="keyword">void</span>)dismissViewController:(PresentViewController *)viewController;</div><div class="line"><span class="keyword">@end</span></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">PresentViewController</span> : <span class="title">UIViewController</span></span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) <span class="keyword">id</span>&lt;PresentViewControllerDelegate&gt; delegate;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p>在button的点击事件中，让代理去完成关闭当前控制器的工作。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#pragma mark - 点击关闭</span></div><div class="line">- (<span class="keyword">IBAction</span>)closeBtnClick:(<span class="built_in">UIButton</span> *)sender &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.delegate &amp;&amp; [<span class="keyword">self</span>.delegate respondsToSelector:<span class="keyword">@selector</span>(dismissViewController:)]) &#123;</div><div class="line">        [<span class="keyword">self</span>.delegate dismissViewController:<span class="keyword">self</span>];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>与此同时，在<code>ViewController</code>中需要设置<code>PresentViewController</code>的代理,并且实现代理方法：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)prepareForSegue:(<span class="built_in">UIStoryboardSegue</span> *)segue sender:(<span class="keyword">id</span>)sender &#123;</div><div class="line">    <span class="keyword">if</span> ([segue.identifier isEqualToString:<span class="string">@"PresentSegue"</span>]) &#123;</div><div class="line">        PresentViewController *presetVC = segue.destinationViewController;</div><div class="line">        presetVC.delegate = <span class="keyword">self</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="meta">#pragma mark - PresentViewControllerDelegate</span></div><div class="line">- (<span class="keyword">void</span>)dismissViewController:(PresentViewController *)viewController &#123;</div><div class="line">    [<span class="keyword">self</span> dismissViewControllerAnimated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>OK，到这里，我们一个基本的转场就完成了(这也是系统自带的一个效果)。like this:<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%AC%E5%9C%BA013.gif" alt="图3"></p>
 <h4 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h4><p>接下来，要接触我们今天要讲的主要内容了，我们用iOS7中一个新的类<code>UIViewControllerTransitioning</code>来实现自定义转场。</p>
 <hr>
 <h6 id="UIViewControllerAnimatedTransitioning"><a href="#UIViewControllerAnimatedTransitioning" class="headerlink" title="UIViewControllerAnimatedTransitioning"></a>UIViewControllerAnimatedTransitioning</h6><p>首先我们需要一个实现了协议名为<code>UIViewControllerAnimatedTransitioning</code>的对象。创建一个类叫做<code>PresentAnimation</code>继承于<code>NSObject</code>并且实现了<code>UIViewControllerAnimatedTransitioning</code>协议。(<strong>注意：需要导入UIKit框架</strong>)</p>
-<pre><code>@interface PresentAnimation : NSObject&lt;UIViewControllerAnimatedTransitioning&gt;
-</code></pre><p>这个协议负责转场的具体内容。开发者在做自定义切换效果时大部门代码会是用来实现这个协议的，这个协议只有两个方法必须要实现的：</p>
-<pre><code>// 返回动画的时间
-- (NSTimeInterval)transitionDuration:(nullable id &lt;UIViewControllerContextTransitioning&gt;)transitionContext;
-
-// 在进行切换的时候将调用该方法，我们对于切换时的UIView的设置和动画都在这个方法中完成。
-- (void)animateTransition:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext;
-</code></pre><p>实现这两个方法</p>
-<pre><code>- (NSTimeInterval)transitionDuration:(nullable id &lt;UIViewControllerContextTransitioning&gt;)transitionContext {
-    return 0.8f;
-}
-
-
-- (void)animateTransition:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext {
-    // 1.我们需要得到参与切换的两个ViewController的信息，使用context的方法拿到它们的参照；
-    UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-
-    // 2.对于要呈现的VC，我们希望它从屏幕下方出现，因此将初始位置设置到屏幕下边缘；
-    CGRect finaRect = [transitionContext finalFrameForViewController:toVC];
-    toVC.view.frame = CGRectOffset(finaRect, 0, [UIScreen mainScreen].bounds.size.height);
-
-    // 3.将view添加到containerView中；
-    [[transitionContext containerView] addSubview:toVC.view];
-
-    // 4.开始动画。这里的动画时间长度和切换时间长度一致。usingSpringWithDamping的UIView动画API是iOS7新加入的，描述了一个模拟弹簧动作的动画曲线；
-    [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0.0 usingSpringWithDamping:0.6 initialSpringVelocity:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
-        toVC.view.frame = finaRect;
-    } completion:^(BOOL finished) {
-        // 5.在动画结束后我们必须向context报告VC切换完成，是否成功。系统在接收到这个消息后，将对VC状态进行维护。
-        [transitionContext completeTransition:YES];
-    }];
-}
-</code></pre><p><strong>注意点</strong></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">PresentAnimation</span> : <span class="title">NSObject</span>&lt;<span class="title">UIViewControllerAnimatedTransitioning</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>这个协议负责转场的具体内容。开发者在做自定义切换效果时大部门代码会是用来实现这个协议的，这个协议只有两个方法必须要实现的：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 返回动画的时间</span></div><div class="line">- (<span class="built_in">NSTimeInterval</span>)transitionDuration:(<span class="keyword">nullable</span> <span class="keyword">id</span> &lt;<span class="built_in">UIViewControllerContextTransitioning</span>&gt;)transitionContext;</div><div class="line"><span class="comment">// 在进行切换的时候将调用该方法，我们对于切换时的UIView的设置和动画都在这个方法中完成。</span></div><div class="line">- (<span class="keyword">void</span>)animateTransition:(<span class="keyword">id</span> &lt;<span class="built_in">UIViewControllerContextTransitioning</span>&gt;)transitionContext;</div></pre></td></tr></table></figure>
+<p>实现这两个方法</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">NSTimeInterval</span>)transitionDuration:(<span class="keyword">nullable</span> <span class="keyword">id</span> &lt;<span class="built_in">UIViewControllerContextTransitioning</span>&gt;)transitionContext &#123;</div><div class="line">    <span class="keyword">return</span> <span class="number">0.8</span>f;</div><div class="line">&#125;</div><div class="line">- (<span class="keyword">void</span>)animateTransition:(<span class="keyword">id</span> &lt;<span class="built_in">UIViewControllerContextTransitioning</span>&gt;)transitionContext &#123;</div><div class="line">    <span class="comment">// 1.我们需要得到参与切换的两个ViewController的信息，使用context的方法拿到它们的参照；</span></div><div class="line">    <span class="built_in">UIViewController</span> *toVC = [transitionContext viewControllerForKey:<span class="built_in">UITransitionContextToViewControllerKey</span>];   </div><div class="line">    <span class="comment">// 2.对于要呈现的VC，我们希望它从屏幕下方出现，因此将初始位置设置到屏幕下边缘；</span></div><div class="line">    <span class="built_in">CGRect</span> finaRect = [transitionContext finalFrameForViewController:toVC];</div><div class="line">    toVC.view.frame = <span class="built_in">CGRectOffset</span>(finaRect, <span class="number">0</span>, [<span class="built_in">UIScreen</span> mainScreen].bounds.size.height);</div><div class="line">    <span class="comment">// 3.将view添加到containerView中；</span></div><div class="line">    [[transitionContext containerView] addSubview:toVC.view];</div><div class="line">    <span class="comment">// 4.开始动画。这里的动画时间长度和切换时间长度一致。usingSpringWithDamping的UIView动画API是iOS7新加入的，描述了一个模拟弹簧动作的动画曲线；</span></div><div class="line">    [<span class="built_in">UIView</span> animateWithDuration:[<span class="keyword">self</span> transitionDuration:transitionContext] delay:<span class="number">0.0</span> usingSpringWithDamping:<span class="number">0.6</span> initialSpringVelocity:<span class="number">0.0</span> options:<span class="built_in">UIViewAnimationOptionCurveLinear</span> animations:^&#123;</div><div class="line">        toVC.view.frame = finaRect;</div><div class="line">    &#125; completion:^(<span class="built_in">BOOL</span> finished) &#123;</div><div class="line">        <span class="comment">// 5.在动画结束后我们必须向context报告VC切换完成，是否成功。系统在接收到这个消息后，将对VC状态进行维护。</span></div><div class="line">        [transitionContext completeTransition:<span class="literal">YES</span>];</div><div class="line">    &#125;];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>注意点</strong></p>
 <blockquote>
 <p><code>UITransitionContextToViewControllerKey</code>与<code>UITransitionContextFromViewControllerKey</code><br>比如从A present 出B，此时A是<code>FromViewController</code>,B是<code>ToViewController</code><br>如果从B dismiss 到A，此时A是<code>ToViewController</code>,B是<code>FromViewController</code>        </p>
 </blockquote>
 <h6 id="UIViewControllerTransitioningDelegate"><a href="#UIViewControllerTransitioningDelegate" class="headerlink" title="UIViewControllerTransitioningDelegate"></a>UIViewControllerTransitioningDelegate</h6><p>这个接口的作用比较单一，在需要VC切换的时候系统会向实现了这个接口的对象询问是否需要使用自定义转场效果。<br>所以，一个比较好的地方是直接在主控制器<code>ViewController</code>中实现这个协议。</p>
 <p>在<code>ViewController</code>中完成如下代码:</p>
-<pre><code>@interface ViewController ()&lt;PresentViewControllerDelegate,UIViewControllerTransitioningDelegate&gt;
-
-@property (nonatomic, strong) PresentAnimation *presentAnimation;
-
-@end
-
-@implementation ViewController
-
-#pragma mark - 懒加载
-- (PresentAnimation *)presentAnimation {
-    if (!_presentAnimation) {
-        _presentAnimation = [[PresentAnimation alloc] init];
-    }
-    return _presentAnimation;
-}
-
-#pragma mark - UIViewControllerTransitioningDelegate
-- (id &lt;UIViewControllerAnimatedTransitioning&gt;)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-    return self.presentAnimation;
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@&quot;PresentSegue&quot;]) {
-        PresentViewController *presetVC = segue.destinationViewController;
-        presetVC.delegate = self;
-        presetVC.transitioningDelegate = self;
-    }
-}
-</code></pre><p>现在看下我们的效果：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%AC%E5%9C%BA014.gif" alt="图4"><br>相对于上面系统自带的效果来说，我们在present出第二个控制器的时候，带有弹簧效果。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()&lt;<span class="title">PresentViewControllerDelegate</span>,<span class="title">UIViewControllerTransitioningDelegate</span>&gt;</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) PresentAnimation *presentAnimation;</div><div class="line"><span class="keyword">@end</span></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></div><div class="line"><span class="meta">#pragma mark - 懒加载</span></div><div class="line">- (PresentAnimation *)presentAnimation &#123;</div><div class="line">    <span class="keyword">if</span> (!_presentAnimation) &#123;</div><div class="line">        _presentAnimation = [[PresentAnimation alloc] init];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> _presentAnimation;</div><div class="line">&#125;</div><div class="line"><span class="meta">#pragma mark - UIViewControllerTransitioningDelegate</span></div><div class="line">- (<span class="keyword">id</span> &lt;<span class="built_in">UIViewControllerAnimatedTransitioning</span>&gt;)animationControllerForPresentedController:(<span class="built_in">UIViewController</span> *)presented presentingController:(<span class="built_in">UIViewController</span> *)presenting sourceController:(<span class="built_in">UIViewController</span> *)source &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>.presentAnimation;</div><div class="line">&#125;</div><div class="line">- (<span class="keyword">void</span>)prepareForSegue:(<span class="built_in">UIStoryboardSegue</span> *)segue sender:(<span class="keyword">id</span>)sender &#123;</div><div class="line">    <span class="keyword">if</span> ([segue.identifier isEqualToString:<span class="string">@"PresentSegue"</span>]) &#123;</div><div class="line">        PresentViewController *presetVC = segue.destinationViewController;</div><div class="line">        presetVC.delegate = <span class="keyword">self</span>;</div><div class="line">        presetVC.transitioningDelegate = <span class="keyword">self</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在看下我们的效果：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%AC%E5%9C%BA014.gif" alt="图4"><br>相对于上面系统自带的效果来说，我们在present出第二个控制器的时候，带有弹簧效果。</p>
 <h4 id="手势驱动百分比切换"><a href="#手势驱动百分比切换" class="headerlink" title="手势驱动百分比切换"></a>手势驱动百分比切换</h4><p>现在我们增加一个功能，就是用手势滑动来dismiss，通俗的说，就是让present出来的那个控制器使用手势dismiss。</p>
 <ol>
 <li><p>创建一个类，继承自<code>UIPercentDrivenInteractiveTransition</code></p>
-<pre><code>#import &lt;UIKit/UIKit.h&gt;
-
-@interface PanInteractiveTransition : UIPercentDrivenInteractiveTransition
-
-- (void)panToDismiss:(UIViewController *)viewController;
-
-@end
-</code></pre></li>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;UIKit/UIKit.h&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">PanInteractiveTransition</span> : <span class="title">UIPercentDrivenInteractiveTransition</span></span></div><div class="line">-(<span class="keyword">void</span>)panToDismiss:(<span class="built_in">UIViewController</span> *)viewController;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+</li>
 </ol>
 <pre><code>- 我们写一个方法提供给外部类调用。让外部类可以看到传入手势dismiss的VC的入口。
 </code></pre><ol>
 <li><p>既然传入了这个需要手势dismiss的VC,我们就需要保存一下，方便当前类在其他地方使用，所以我们新建一个属性来保存这个传入的VC。</p>
-<pre><code>#import &quot;PanInteractiveTransition.h&quot;
-
-@interface PanInteractiveTransition ()
-
-@property (nonatomic, strong) UIViewController *presentVC;
-
-@end
-
-@implementation PanInteractiveTransition
-
-- (void)panToDismiss:(UIViewController *)viewController {
-    self.presentVC = viewController;
-
-    UIPanGestureRecognizer *panGestR = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureAction:)];
-    [self.presentVC.view addGestureRecognizer:panGestR];
-}
-
-#pragma mark - panGestureAction
-- (void)panGestureAction:(UIPanGestureRecognizer *)pan {
-    CGPoint transition = [pan translationInView:self.presentVC.view];
-    NSLog(@&quot;%.2f&quot;,transition.y);
-    switch (pan.state) {
-        case UIGestureRecognizerStateBegan:{
-        [self.presentVC dismissViewControllerAnimated:YES completion:nil];
-    }
-        break;
-        case UIGestureRecognizerStateChanged:{  //
-            CGFloat percent = MIN(1.0, transition.y/300);
-            [self updateInteractiveTransition:percent];
-        }
-            break;
-        case UIGestureRecognizerStateCancelled:
-        case UIGestureRecognizerStateEnded:{
-            if (pan.state == UIGestureRecognizerStateCancelled) {   // 手势取消
-                [self cancelInteractiveTransition];
-            }else{
-                [self finishInteractiveTransition];
-            }
-        }
-            break;
-        default:
-            break;
-    }
-}
-</code></pre></li>
-</ol>
-<ol>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">"PanInteractiveTransition.h"</span></span></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">PanInteractiveTransition</span> ()</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">UIViewController</span> *presentVC;</div><div class="line"><span class="keyword">@end</span></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">PanInteractiveTransition</span></span></div><div class="line">-(<span class="keyword">void</span>)panToDismiss:(<span class="built_in">UIViewController</span> *)viewController &#123;</div><div class="line">    <span class="keyword">self</span>.presentVC = viewController;</div><div class="line">    <span class="built_in">UIPanGestureRecognizer</span> *panGestR = [[<span class="built_in">UIPanGestureRecognizer</span> alloc] initWithTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(panGestureAction:)];</div><div class="line">    [<span class="keyword">self</span>.presentVC.view addGestureRecognizer:panGestR];</div><div class="line">&#125;</div><div class="line"><span class="meta">#pragma mark - panGestureAction</span></div><div class="line">-(<span class="keyword">void</span>)panGestureAction:(<span class="built_in">UIPanGestureRecognizer</span> *)pan &#123;</div><div class="line">    <span class="built_in">CGPoint</span> transition = [pan translationInView:<span class="keyword">self</span>.presentVC.view];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%.2f"</span>,transition.y);</div><div class="line">    <span class="keyword">switch</span> (pan.state) &#123;</div><div class="line">	    <span class="keyword">case</span> <span class="built_in">UIGestureRecognizerStateBegan</span>:&#123;</div><div class="line">           [<span class="keyword">self</span>.presentVC dismissViewControllerAnimated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</div><div class="line">       &#125;</div><div class="line">           <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> <span class="built_in">UIGestureRecognizerStateChanged</span>:&#123;  <span class="comment">//</span></div><div class="line">            <span class="built_in">CGFloat</span> percent = MIN(<span class="number">1.0</span>, transition.y/<span class="number">300</span>);</div><div class="line">            [<span class="keyword">self</span> updateInteractiveTransition:percent];</div><div class="line">        &#125;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> <span class="built_in">UIGestureRecognizerStateCancelled</span>:</div><div class="line">        <span class="keyword">case</span> <span class="built_in">UIGestureRecognizerStateEnded</span>:&#123;</div><div class="line">            <span class="keyword">if</span> (pan.state == <span class="built_in">UIGestureRecognizerStateCancelled</span>) &#123;   <span class="comment">// 手势取消</span></div><div class="line">                [<span class="keyword">self</span> cancelInteractiveTransition];</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">                [<span class="keyword">self</span> finishInteractiveTransition];</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">default</span>:</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
 <li><p>和创建<code>PresentAnimation</code>一样，我们创建一个一个<code>DismissAnimation</code>类</p>
-<pre><code>@interface DismissAnimation : NSObject&lt;UIViewControllerAnimatedTransitioning&gt;
-
-@end
-
-@implementation DismissAnimation
-
-- (NSTimeInterval)transitionDuration:(nullable id &lt;UIViewControllerContextTransitioning&gt;)transitionContext {
-    return 0.4f;
-}
-
-- (void)animateTransition:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext {
-    UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-
-    CGRect initRect = [transitionContext initialFrameForViewController:fromVC];
-    CGRect finalRect = CGRectOffset(initRect, 0, [UIScreen mainScreen].bounds.size.height);
-
-    UIView *contrainerView = [transitionContext containerView];
-    [contrainerView addSubview:toVC.view];
-    [contrainerView sendSubviewToBack:toVC.view];
-
-    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
-        fromVC.view.frame = finalRect;
-    } completion:^(BOOL finished) {
-        [transitionContext completeTransition:YES];
-    }];
-}
-
-@end
-</code></pre></li>
-</ol>
-<ol>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">DismissAnimation</span> : <span class="title">NSObject</span>&lt;<span class="title">UIViewControllerAnimatedTransitioning</span>&gt;</span></div><div class="line"><span class="keyword">@end</span></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">DismissAnimation</span></span></div><div class="line">-(<span class="built_in">NSTimeInterval</span>)transitionDuration:(<span class="keyword">nullable</span> <span class="keyword">id</span> &lt;<span class="built_in">UIViewControllerContextTransitioning</span>&gt;)transitionContext &#123;</div><div class="line">    <span class="keyword">return</span> <span class="number">0.4</span>f;</div><div class="line">&#125;</div><div class="line">-(<span class="keyword">void</span>)animateTransition:(<span class="keyword">id</span> &lt;<span class="built_in">UIViewControllerContextTransitioning</span>&gt;)transitionContext &#123;</div><div class="line">    <span class="built_in">UIViewController</span> *fromVC = [transitionContext viewControllerForKey:<span class="built_in">UITransitionContextFromViewControllerKey</span>];</div><div class="line">    <span class="built_in">UIViewController</span> *toVC = [transitionContext viewControllerForKey:<span class="built_in">UITransitionContextToViewControllerKey</span>];</div><div class="line">    <span class="built_in">CGRect</span> initRect = [transitionContext initialFrameForViewController:fromVC];</div><div class="line">    <span class="built_in">CGRect</span> finalRect = <span class="built_in">CGRectOffset</span>(initRect, <span class="number">0</span>, [<span class="built_in">UIScreen</span> mainScreen].bounds.size.height);</div><div class="line">    <span class="built_in">UIView</span> *contrainerView = [transitionContext containerView];</div><div class="line">    [contrainerView addSubview:toVC.view];</div><div class="line">    [contrainerView sendSubviewToBack:toVC.view];</div><div class="line">    [<span class="built_in">UIView</span> animateWithDuration:[<span class="keyword">self</span> transitionDuration:transitionContext] animations:^&#123;</div><div class="line">        fromVC.view.frame = finalRect;</div><div class="line">    &#125; completion:^(<span class="built_in">BOOL</span> finished) &#123;</div><div class="line">        [transitionContext completeTransition:<span class="literal">YES</span>];</div><div class="line">    &#125;];</div><div class="line">&#125;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+</li>
 <li><p>最后，我们在主控制器中添加一个手势驱动的对象，一个dismiss转场的对象，然后懒加载。</p>
-<pre><code>- (PanInteractiveTransition *)paninterTransition {
-    if (!_paninterTransition) {
-        _paninterTransition = [[PanInteractiveTransition alloc] init];
-    }
-    return _paninterTransition;
-}
-
-- (DismissAnimation *)dismissAnimation {
-    if (!_dismissAnimation) {
-        _dismissAnimation = [[DismissAnimation alloc] init];
-    }
-    return _dismissAnimation;
-}
-
-#pragma mark - UIViewControllerTransitioningDelegate
-- (id &lt;UIViewControllerAnimatedTransitioning&gt;)animationControllerForDismissedController:(UIViewController *)dismissed {
-    return self.dismissAnimation;
-}
-
-- (id &lt;UIViewControllerInteractiveTransitioning&gt;)interactionControllerForDismissal:(id &lt;UIViewControllerAnimatedTransitioning&gt;)animator {
-    return self.paninterTransition;
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@&quot;PresentSegue&quot;]) {
-        // ...
-        [self.paninterTransition panToDismiss:presetVC];
-    }
-}
-</code></pre></li>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">-(PanInteractiveTransition *)paninterTransition &#123;</div><div class="line">    <span class="keyword">if</span> (!_paninterTransition) &#123;</div><div class="line">        _paninterTransition = [[PanInteractiveTransition alloc] init];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> _paninterTransition;</div><div class="line">&#125;</div><div class="line">-(DismissAnimation *)dismissAnimation &#123;</div><div class="line">    <span class="keyword">if</span> (!_dismissAnimation) &#123;</div><div class="line">        _dismissAnimation = [[DismissAnimation alloc] init];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> _dismissAnimation;</div><div class="line">&#125;</div><div class="line"><span class="meta">#pragma mark - UIViewControllerTransitioningDelegate</span></div><div class="line">-(<span class="keyword">id</span> &lt;<span class="built_in">UIViewControllerAnimatedTransitioning</span>&gt;)animationControllerForDismissedController:(<span class="built_in">UIViewController</span> *)dismissed &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>.dismissAnimation;</div><div class="line">&#125;</div><div class="line">-(<span class="keyword">id</span> &lt;<span class="built_in">UIViewControllerInteractiveTransitioning</span>&gt;)interactionControllerForDismissal:(<span class="keyword">id</span> &lt;<span class="built_in">UIViewControllerAnimatedTransitioning</span>&gt;)animator &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>.paninterTransition;</div><div class="line">&#125;</div><div class="line">-(<span class="keyword">void</span>)prepareForSegue:(<span class="built_in">UIStoryboardSegue</span> *)segue sender:(<span class="keyword">id</span>)sender &#123;</div><div class="line">    <span class="keyword">if</span> ([segue.identifier isEqualToString:<span class="string">@"PresentSegue"</span>]) &#123;</div><div class="line">        <span class="comment">// ...</span></div><div class="line">        [<span class="keyword">self</span>.paninterTransition panToDismiss:presetVC];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
 </ol>
 <h4 id="完善"><a href="#完善" class="headerlink" title="完善"></a>完善</h4><p>此时，我们运行程序，会发现以上代码尽管可以手势驱动了，但是点击按钮dismiss的功能无法使用了。这是因为<strong>如果只是返回self.paninterTransition，那么点击按钮dismiss的动画就会失效；如果只是返回nil,那么手势滑动的效果将会失效</strong>。综上所述，我们就得分情况考虑。<br>接下来我们就来完善一下。</p>
 <ol>
 <li><p>给<code>PanInteractiveTransition</code>添加一个属性，表示是否处于切换过程中(用于判断使用的是点击按钮dismiss还是手势驱动来dismiss的)</p>
-<pre><code>// 是否处于切换过程中
-@property (nonatomic, assign, getter=isInteracting) BOOL interacting;
-</code></pre></li>
-</ol>
-<ol>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 是否处于切换过程中</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>, <span class="keyword">getter</span>=isInteracting) <span class="built_in">BOOL</span> interacting;</div></pre></td></tr></table></figure>
+</li>
 <li><p>给<code>PanInteractiveTransition</code>添加一个属性，表示是否需要dismiss(用于当手势滑动到超过指定高度之后，就会dismiss，如果没有超过，就会还原)</p>
-<pre><code>@property (nonatomic, assign, getter=isShouldComplete) BOOL shouldComplete;
-</code></pre></li>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>, <span class="keyword">getter</span>=isShouldComplete) <span class="built_in">BOOL</span> shouldComplete;</div></pre></td></tr></table></figure>
+</li>
 <li><p>修改<code>PanInteractiveTransition</code>中的<code>panGestureAction:</code>方法：</p>
-<pre><code>- (void)panGestureAction:(UIPanGestureRecognizer *)pan {
-    CGPoint transition = [pan translationInView:pan.view];
-
-    switch (pan.state) {
-        case UIGestureRecognizerStateBegan:{
-            self.interacting = YES;
-            [self.presentVC dismissViewControllerAnimated:YES completion:nil];
-        }
-            break;
-        case UIGestureRecognizerStateChanged:{  //
-            CGFloat percent = fmin(fmax(transition.y/300.0, 0.0), 1.0);
-            self.shouldComplete = (percent &gt; 0.5);
-            [self updateInteractiveTransition:percent];
-        }
-            break;
-        case UIGestureRecognizerStateCancelled:
-        case UIGestureRecognizerStateEnded:{
-            self.interacting = NO;
-            // 如果下移的距离小于300或者取消都当做取消
-            if (!self.isShouldComplete || pan.state == UIGestureRecognizerStateCancelled) {   // 手势取消
-                [self cancelInteractiveTransition];
-            }else{
-                [self finishInteractiveTransition];
-            }
-        }
-            break;
-        default:
-            break;
-    }
-}
-</code></pre></li>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">-(<span class="keyword">void</span>)panGestureAction:(<span class="built_in">UIPanGestureRecognizer</span> *)pan &#123;</div><div class="line">    <span class="built_in">CGPoint</span> transition = [pan translationInView:pan.view];</div><div class="line">    <span class="keyword">switch</span> (pan.state) &#123;</div><div class="line">        <span class="keyword">case</span> <span class="built_in">UIGestureRecognizerStateBegan</span>:&#123;</div><div class="line">            <span class="keyword">self</span>.interacting = <span class="literal">YES</span>;</div><div class="line">            [<span class="keyword">self</span>.presentVC dismissViewControllerAnimated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</div><div class="line">        &#125;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> <span class="built_in">UIGestureRecognizerStateChanged</span>:&#123;  <span class="comment">//</span></div><div class="line">            <span class="built_in">CGFloat</span> percent = fmin(fmax(transition.y/<span class="number">300.0</span>, <span class="number">0.0</span>), <span class="number">1.0</span>);</div><div class="line">            <span class="keyword">self</span>.shouldComplete = (percent &gt; <span class="number">0.5</span>);</div><div class="line">            [<span class="keyword">self</span> updateInteractiveTransition:percent];</div><div class="line">        &#125;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> <span class="built_in">UIGestureRecognizerStateCancelled</span>:</div><div class="line">        <span class="keyword">case</span> <span class="built_in">UIGestureRecognizerStateEnded</span>:&#123;</div><div class="line">            <span class="keyword">self</span>.interacting = <span class="literal">NO</span>;</div><div class="line">            <span class="comment">// 如果下移的距离小于300或者取消都当做取消</span></div><div class="line">            <span class="keyword">if</span> (!<span class="keyword">self</span>.isShouldComplete || pan.state == <span class="built_in">UIGestureRecognizerStateCancelled</span>) &#123;   <span class="comment">// 手势取消</span></div><div class="line">                [<span class="keyword">self</span> cancelInteractiveTransition];</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">                [<span class="keyword">self</span> finishInteractiveTransition];</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">default</span>:</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
 <li><p>另外还有一点，就是需要修改<code>DismissAnimation</code>中的一处代码:</p>
-<pre><code>- (void)animateTransition:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext {
-    UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-
-    CGRect initRect = [transitionContext initialFrameForViewController:fromVC];
-    CGRect finalRect = CGRectOffset(initRect, 0, [UIScreen mainScreen].bounds.size.height);
-
-    UIView *contrainerView = [transitionContext containerView];
-    [contrainerView addSubview:toVC.view];
-    [contrainerView sendSubviewToBack:toVC.view];
-
-    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
-        fromVC.view.frame = finalRect;
-    } completion:^(BOOL finished) {
-
-    // 此处做了修改，由之前的[transitionContext completeTransition:YES];
-      [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
-    }];
-}
-</code></pre></li>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">-(<span class="keyword">void</span>)animateTransition:(<span class="keyword">id</span> &lt;<span class="built_in">UIViewControllerContextTransitioning</span>&gt;)transitionContext &#123;</div><div class="line">    <span class="built_in">UIViewController</span> *fromVC = [transitionContext viewControllerForKey:<span class="built_in">UITransitionContextFromViewControllerKey</span>];</div><div class="line">    <span class="built_in">UIViewController</span> *toVC = [transitionContext viewControllerForKey:<span class="built_in">UITransitionContextToViewControllerKey</span>];  </div><div class="line">    <span class="built_in">CGRect</span> initRect = [transitionContext initialFrameForViewController:fromVC];</div><div class="line">    <span class="built_in">CGRect</span> finalRect = <span class="built_in">CGRectOffset</span>(initRect, <span class="number">0</span>, [<span class="built_in">UIScreen</span> mainScreen].bounds.size.height);</div><div class="line">    <span class="built_in">UIView</span> *contrainerView = [transitionContext containerView];</div><div class="line">    [contrainerView addSubview:toVC.view];</div><div class="line">    [contrainerView sendSubviewToBack:toVC.view];</div><div class="line">    [<span class="built_in">UIView</span> animateWithDuration:[<span class="keyword">self</span> transitionDuration:transitionContext] animations:^&#123;</div><div class="line">        fromVC.view.frame = finalRect;</div><div class="line">    &#125; completion:^(<span class="built_in">BOOL</span> finished) &#123;</div><div class="line">    <span class="comment">// 此处做了修改，由之前的[transitionContext completeTransition:YES];</span></div><div class="line">      [transitionContext completeTransition:![transitionContext transitionWasCancelled]];</div><div class="line">    &#125;];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
 </ol>
 <p>ok,到此为止，我们的一个自定义转场动画就算了完成了。</p>
 

@@ -92,7 +92,7 @@
 <meta property="og:description" content="前言经常使用一些app的分享功能，比如点击QQ分享，就从app打开(跳转到)QQ，然后分享完之后又回到我们的app，那么这是怎样实现的呢？">
 <meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/app1.png">
 <meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/app2.png">
-<meta property="og:updated_time" content="2016-06-07T13:40:45.000Z">
+<meta property="og:updated_time" content="2016-08-22T03:32:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="两个App之间调起通信">
 <meta name="twitter:description" content="前言经常使用一些app的分享功能，比如点击QQ分享，就从app打开(跳转到)QQ，然后分享完之后又回到我们的app，那么这是怎样实现的呢？">
@@ -335,41 +335,10 @@
 <p>本篇文章将使用<code>Test1</code>作为第一个app的<code>URL Schemes</code>,<code>Test2</code>作为第二个app的<code>URL Schemes</code>。</p>
 <h3 id="Test1工程配置"><a href="#Test1工程配置" class="headerlink" title="Test1工程配置"></a>Test1工程配置</h3><p>由于iOS9.0之后跳转<code>URL Schemes</code>需要将添加<code>白名单</code><br><img src="http://7xv28v.com1.z0.glb.clouddn.com/app1.png" alt="图1"><br>对于<code>URL Schemes</code>中的Test1是本应用留给其他应用调用的。</p>
 <h3 id="Test2工程配置"><a href="#Test2工程配置" class="headerlink" title="Test2工程配置"></a>Test2工程配置</h3><p><img src="http://7xv28v.com1.z0.glb.clouddn.com/app2.png" alt="图2"><br>对于<code>URL Schemes</code>中的Test2是本应用留给其他应用调用的。</p>
-<h3 id="Test1工程中测试代码"><a href="#Test1工程中测试代码" class="headerlink" title="Test1工程中测试代码"></a>Test1工程中测试代码</h3><pre><code>- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
-    // Test2是在Test2这个项目的info.plist中配置的URL Schemes
-    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@&quot;Test2://&quot;]]) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@&quot;Test2://success=1&amp;&amp;name=test2&quot;]];
-    }
-
-    return YES;
-}
-
-
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-
-    NSString *str = [[url host] stringByRemovingPercentEncoding];
-    NSLog(@&quot;%@---%@&quot;,str, url.absoluteString);
-
-    return YES;
-
-}
-</code></pre><p>我们首先需要判断手机是否安装了应用Test2，通过Test2工程公开的<code>URL Schemes</code>来判断，即<code>Test2://</code>。需要传参数时，是通过URL参数来传的。如：<code>Test2://success=1&amp;&amp;name=test2</code>就是一个URL。</p>
-<h3 id="Test2工程中测试代码"><a href="#Test2工程中测试代码" class="headerlink" title="Test2工程中测试代码"></a>Test2工程中测试代码</h3><pre><code>- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    NSString *str = [[url host] stringByRemovingPercentEncoding];
-    NSLog(@&quot;%@---%@&quot;,str, url.absoluteString);
-
-    [self performSelector:@selector(goBackToApp1) withObject:nil afterDelay:2];
-
-    return YES;
-}
-
-- (void)goBackToApp1 {
-    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@&quot;Test1://&quot;]]) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@&quot;Test1://loginSuccess=1&quot;]];
-    }
-}
-</code></pre><p>我们在<code>- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url</code>处理来自Test1应用的调用，获取到相应的参数了。</p>
+<h3 id="Test1工程中测试代码"><a href="#Test1工程中测试代码" class="headerlink" title="Test1工程中测试代码"></a>Test1工程中测试代码</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">BOOL</span>)application:(<span class="built_in">UIApplication</span> *)application didFinishLaunchingWithOptions:(<span class="built_in">NSDictionary</span> *)launchOptions &#123;</div><div class="line">    <span class="comment">// Test2是在Test2这个项目的info.plist中配置的URL Schemes</span></div><div class="line">    <span class="keyword">if</span> ([[<span class="built_in">UIApplication</span> sharedApplication] canOpenURL:[<span class="built_in">NSURL</span> URLWithString:<span class="string">@"Test2://"</span>]]) &#123;</div><div class="line">        [[<span class="built_in">UIApplication</span> sharedApplication] openURL:[<span class="built_in">NSURL</span> URLWithString:<span class="string">@"Test2://success=1&amp;&amp;name=test2"</span>]];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">YES</span>;</div><div class="line">&#125;</div><div class="line">- (<span class="built_in">BOOL</span>)application:(<span class="built_in">UIApplication</span> *)application handleOpenURL:(<span class="built_in">NSURL</span> *)url &#123;</div><div class="line">    <span class="built_in">NSString</span> *str = [[url host] stringByRemovingPercentEncoding];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@---%@"</span>,str, url.absoluteString); </div><div class="line">    <span class="keyword">return</span> <span class="literal">YES</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们首先需要判断手机是否安装了应用Test2，通过Test2工程公开的<code>URL Schemes</code>来判断，即<code>Test2://</code>。需要传参数时，是通过URL参数来传的。如：<code>Test2://success=1&amp;&amp;name=test2</code>就是一个URL。</p>
+<h3 id="Test2工程中测试代码"><a href="#Test2工程中测试代码" class="headerlink" title="Test2工程中测试代码"></a>Test2工程中测试代码</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">BOOL</span>)application:(<span class="built_in">UIApplication</span> *)application handleOpenURL:(<span class="built_in">NSURL</span> *)url &#123;</div><div class="line">    <span class="built_in">NSString</span> *str = [[url host] stringByRemovingPercentEncoding];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@---%@"</span>,str, url.absoluteString); </div><div class="line">    [<span class="keyword">self</span> performSelector:<span class="keyword">@selector</span>(goBackToApp1) withObject:<span class="literal">nil</span> afterDelay:<span class="number">2</span>];</div><div class="line">    <span class="keyword">return</span> <span class="literal">YES</span>;</div><div class="line">&#125;</div><div class="line">- (<span class="keyword">void</span>)goBackToApp1 &#123;</div><div class="line">    <span class="keyword">if</span> ([[<span class="built_in">UIApplication</span> sharedApplication] canOpenURL:[<span class="built_in">NSURL</span> URLWithString:<span class="string">@"Test1://"</span>]]) &#123;</div><div class="line">        [[<span class="built_in">UIApplication</span> sharedApplication] openURL:[<span class="built_in">NSURL</span> URLWithString:<span class="string">@"Test1://loginSuccess=1"</span>]];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们在<code>- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url</code>处理来自Test1应用的调用，获取到相应的参数了。</p>
 <p>当我们处理数据完成，需要反馈给Test1时，就需要调用通过<code>Test1://loginSuccess=1</code>调用回到Test1并将状态带回去。</p>
 <h3 id="Test1打印日志"><a href="#Test1打印日志" class="headerlink" title="Test1打印日志"></a>Test1打印日志</h3><pre><code>2016-06-05 23:23:09.807 test1[1277:219009] loginSuccess=1---Test1://loginSuccess=1
 </code></pre><p>说明参数能从Test2正确地传递过来。</p>
