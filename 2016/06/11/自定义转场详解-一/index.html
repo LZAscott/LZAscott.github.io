@@ -1,0 +1,1042 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="转场动画," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="http://ww3.sinaimg.cn/small/c665b82ajw8eqh9gafb8yj20ku0ku0ti.jpg?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言
+本文是我学习了onevcat的这篇转场入门做的一点笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义转场详解(一)">
+<meta property="og:url" content="http://yoursite.com/2016/06/11/自定义转场详解-一/index.html">
+<meta property="og:site_name" content="Scott_Mr">
+<meta property="og:description" content="前言
+本文是我学习了onevcat的这篇转场入门做的一点笔记。">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%AC%E5%9C%BA011.gif">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%AC%E5%9C%BA012.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%AC%E5%9C%BA013.gif">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%AC%E5%9C%BA014.gif">
+<meta property="og:updated_time" content="2016-06-11T14:59:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义转场详解(一)">
+<meta name="twitter:description" content="前言
+本文是我学习了onevcat的这篇转场入门做的一点笔记。">
+<meta name="twitter:image" content="http://7xv28v.com1.z0.glb.clouddn.com/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%AC%E5%9C%BA011.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/11/自定义转场详解-一/"/>
+
+  <title> 自定义转场详解(一) | Scott_Mr </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Scott_Mr</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">越努力，越幸运！</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                自定义转场详解(一)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-11T20:08:15+08:00" content="2016-06-11">
+              2016-06-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/11/自定义转场详解-一/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/11/自定义转场详解-一/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">阅读量：
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>本文是我学习了onevcat的<a href="https://onevcat.com/2013/10/vc-transition-in-ios7/" target="_blank" rel="external">这篇</a>转场入门做的一点笔记。</p>
+</blockquote>
+<a id="more"></a>
+<p>今天我们来实现一个简单的自定义转场，我们先来看看这篇文章将要实现的一个效果图吧：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%AC%E5%9C%BA011.gif" alt="图1"></p>
+<h2 id="过程详解"><a href="#过程详解" class="headerlink" title="过程详解"></a>过程详解</h2><h4 id="热身准备"><a href="#热身准备" class="headerlink" title="热身准备"></a>热身准备</h4><p>我们先创建一个工程，首先用storyboard快速的创建两个控制器，一个作为主控制器，叫<code>ViewController</code>，另外一个作为present出来的控制器，叫<code>PresentViewController</code>，并且用autoLayout快速搭建好界面。就像这样：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%AC%E5%9C%BA012.png" alt="图2"></p>
+<p>我们先做好点击<code>ViewController</code>上面的按钮，present出    <code>PresentViewController</code>，点击<code>PresentViewController</code>上面的按钮，dismiss掉<code>PresentViewController</code>的逻辑。这里有两个注意点：</p>
+<ol>
+<li><p>因为此处我使用了<code>segue</code>，所以在<code>ViewController</code>按钮点击的时候，我们只需要这样调用就行。</p>
+<pre><code>#pragma mark - 点我弹出
+- (IBAction)presentBtnClick:(UIButton *)sender {
+    [self performSegueWithIdentifier:@&quot;PresentSegue&quot; sender:nil];
+}
+</code></pre></li>
+<li><p>我们平时写dismiss的时候，一般都会是在第二个控制器中直接给self发送<code>dismissViewController</code>的相关方法。在现在的SDK中，如果当前的VC是被显示的话，这个消息会被直接转发到显示它的VC去。但是这并不是一个好的实现，违反了程序设计的哲学，也很容易掉到坑里。所以我们用标准的<code>delegate</code> 方式实现 <code>dismiss</code> 。</p>
+</li>
+</ol>
+<p>首先我们在<code>PresentViewController</code>控制器中申明一个代理方法。</p>
+<pre><code>#import &lt;UIKit/UIKit.h&gt;
+
+@class PresentViewController;
+@protocol PresentViewControllerDelegate &lt;NSObject&gt;
+
+- (void)dismissViewController:(PresentViewController *)viewController;
+
+@end
+
+@interface PresentViewController : UIViewController
+
+@property (nonatomic, weak) id&lt;PresentViewControllerDelegate&gt; delegate;
+
+@end
+</code></pre><p>在button的点击事件中，让代理去完成关闭当前控制器的工作。</p>
+<pre><code>#pragma mark - 点击关闭
+- (IBAction)closeBtnClick:(UIButton *)sender {
+    if (self.delegate &amp;&amp; [self.delegate respondsToSelector:@selector(dismissViewController:)]) {
+        [self.delegate dismissViewController:self];
+    }
+}
+</code></pre><p>与此同时，在<code>ViewController</code>中需要设置<code>PresentViewController</code>的代理,并且实现代理方法：</p>
+<pre><code>- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@&quot;PresentSegue&quot;]) {
+        PresentViewController *presetVC = segue.destinationViewController;
+        presetVC.delegate = self;
+    }
+}
+
+#pragma mark - PresentViewControllerDelegate
+- (void)dismissViewController:(PresentViewController *)viewController {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+</code></pre><p>OK，到这里，我们一个基本的转场就完成了(这也是系统自带的一个效果)。like this:<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%AC%E5%9C%BA013.gif" alt="图3"></p>
+<h4 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h4><p>接下来，要接触我们今天要讲的主要内容了，我们用iOS7中一个新的类<code>UIViewControllerTransitioning</code>来实现自定义转场。</p>
+<hr>
+<h6 id="UIViewControllerAnimatedTransitioning"><a href="#UIViewControllerAnimatedTransitioning" class="headerlink" title="UIViewControllerAnimatedTransitioning"></a>UIViewControllerAnimatedTransitioning</h6><p>首先我们需要一个实现了协议名为<code>UIViewControllerAnimatedTransitioning</code>的对象。创建一个类叫做<code>PresentAnimation</code>继承于<code>NSObject</code>并且实现了<code>UIViewControllerAnimatedTransitioning</code>协议。(<strong>注意：需要导入UIKit框架</strong>)</p>
+<pre><code>@interface PresentAnimation : NSObject&lt;UIViewControllerAnimatedTransitioning&gt;
+</code></pre><p>这个协议负责转场的具体内容。开发者在做自定义切换效果时大部门代码会是用来实现这个协议的，这个协议只有两个方法必须要实现的：</p>
+<pre><code>// 返回动画的时间
+- (NSTimeInterval)transitionDuration:(nullable id &lt;UIViewControllerContextTransitioning&gt;)transitionContext;
+
+// 在进行切换的时候将调用该方法，我们对于切换时的UIView的设置和动画都在这个方法中完成。
+- (void)animateTransition:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext;
+</code></pre><p>实现这两个方法</p>
+<pre><code>- (NSTimeInterval)transitionDuration:(nullable id &lt;UIViewControllerContextTransitioning&gt;)transitionContext {
+    return 0.8f;
+}
+
+
+- (void)animateTransition:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext {
+    // 1.我们需要得到参与切换的两个ViewController的信息，使用context的方法拿到它们的参照；
+    UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+
+    // 2.对于要呈现的VC，我们希望它从屏幕下方出现，因此将初始位置设置到屏幕下边缘；
+    CGRect finaRect = [transitionContext finalFrameForViewController:toVC];
+    toVC.view.frame = CGRectOffset(finaRect, 0, [UIScreen mainScreen].bounds.size.height);
+
+    // 3.将view添加到containerView中；
+    [[transitionContext containerView] addSubview:toVC.view];
+
+    // 4.开始动画。这里的动画时间长度和切换时间长度一致。usingSpringWithDamping的UIView动画API是iOS7新加入的，描述了一个模拟弹簧动作的动画曲线；
+    [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0.0 usingSpringWithDamping:0.6 initialSpringVelocity:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
+        toVC.view.frame = finaRect;
+    } completion:^(BOOL finished) {
+        // 5.在动画结束后我们必须向context报告VC切换完成，是否成功。系统在接收到这个消息后，将对VC状态进行维护。
+        [transitionContext completeTransition:YES];
+    }];
+}
+</code></pre><p><strong>注意点</strong></p>
+<blockquote>
+<p><code>UITransitionContextToViewControllerKey</code>与<code>UITransitionContextFromViewControllerKey</code><br>比如从A present 出B，此时A是<code>FromViewController</code>,B是<code>ToViewController</code><br>如果从B dismiss 到A，此时A是<code>ToViewController</code>,B是<code>FromViewController</code>        </p>
+</blockquote>
+<h6 id="UIViewControllerTransitioningDelegate"><a href="#UIViewControllerTransitioningDelegate" class="headerlink" title="UIViewControllerTransitioningDelegate"></a>UIViewControllerTransitioningDelegate</h6><p>这个接口的作用比较单一，在需要VC切换的时候系统会向实现了这个接口的对象询问是否需要使用自定义转场效果。<br>所以，一个比较好的地方是直接在主控制器<code>ViewController</code>中实现这个协议。</p>
+<p>在<code>ViewController</code>中完成如下代码:</p>
+<pre><code>@interface ViewController ()&lt;PresentViewControllerDelegate,UIViewControllerTransitioningDelegate&gt;
+
+@property (nonatomic, strong) PresentAnimation *presentAnimation;
+
+@end
+
+@implementation ViewController
+
+#pragma mark - 懒加载
+- (PresentAnimation *)presentAnimation {
+    if (!_presentAnimation) {
+        _presentAnimation = [[PresentAnimation alloc] init];
+    }
+    return _presentAnimation;
+}
+
+#pragma mark - UIViewControllerTransitioningDelegate
+- (id &lt;UIViewControllerAnimatedTransitioning&gt;)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+    return self.presentAnimation;
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@&quot;PresentSegue&quot;]) {
+        PresentViewController *presetVC = segue.destinationViewController;
+        presetVC.delegate = self;
+        presetVC.transitioningDelegate = self;
+    }
+}
+</code></pre><p>现在看下我们的效果：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%AC%E5%9C%BA014.gif" alt="图4"><br>相对于上面系统自带的效果来说，我们在present出第二个控制器的时候，带有弹簧效果。</p>
+<h4 id="手势驱动百分比切换"><a href="#手势驱动百分比切换" class="headerlink" title="手势驱动百分比切换"></a>手势驱动百分比切换</h4><p>现在我们增加一个功能，就是用手势滑动来dismiss，通俗的说，就是让present出来的那个控制器使用手势dismiss。</p>
+<ol>
+<li><p>创建一个类，继承自<code>UIPercentDrivenInteractiveTransition</code></p>
+<pre><code>#import &lt;UIKit/UIKit.h&gt;
+
+@interface PanInteractiveTransition : UIPercentDrivenInteractiveTransition
+
+- (void)panToDismiss:(UIViewController *)viewController;
+
+@end
+</code></pre></li>
+</ol>
+<pre><code>- 我们写一个方法提供给外部类调用。让外部类可以看到传入手势dismiss的VC的入口。
+</code></pre><ol>
+<li><p>既然传入了这个需要手势dismiss的VC,我们就需要保存一下，方便当前类在其他地方使用，所以我们新建一个属性来保存这个传入的VC。</p>
+<pre><code>#import &quot;PanInteractiveTransition.h&quot;
+
+@interface PanInteractiveTransition ()
+
+@property (nonatomic, strong) UIViewController *presentVC;
+
+@end
+
+@implementation PanInteractiveTransition
+
+- (void)panToDismiss:(UIViewController *)viewController {
+    self.presentVC = viewController;
+
+    UIPanGestureRecognizer *panGestR = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureAction:)];
+    [self.presentVC.view addGestureRecognizer:panGestR];
+}
+
+#pragma mark - panGestureAction
+- (void)panGestureAction:(UIPanGestureRecognizer *)pan {
+    CGPoint transition = [pan translationInView:self.presentVC.view];
+    NSLog(@&quot;%.2f&quot;,transition.y);
+    switch (pan.state) {
+        case UIGestureRecognizerStateBegan:{
+        [self.presentVC dismissViewControllerAnimated:YES completion:nil];
+    }
+        break;
+        case UIGestureRecognizerStateChanged:{  //
+            CGFloat percent = MIN(1.0, transition.y/300);
+            [self updateInteractiveTransition:percent];
+        }
+            break;
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateEnded:{
+            if (pan.state == UIGestureRecognizerStateCancelled) {   // 手势取消
+                [self cancelInteractiveTransition];
+            }else{
+                [self finishInteractiveTransition];
+            }
+        }
+            break;
+        default:
+            break;
+    }
+}
+</code></pre></li>
+</ol>
+<ol>
+<li><p>和创建<code>PresentAnimation</code>一样，我们创建一个一个<code>DismissAnimation</code>类</p>
+<pre><code>@interface DismissAnimation : NSObject&lt;UIViewControllerAnimatedTransitioning&gt;
+
+@end
+
+@implementation DismissAnimation
+
+- (NSTimeInterval)transitionDuration:(nullable id &lt;UIViewControllerContextTransitioning&gt;)transitionContext {
+    return 0.4f;
+}
+
+- (void)animateTransition:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext {
+    UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+
+    CGRect initRect = [transitionContext initialFrameForViewController:fromVC];
+    CGRect finalRect = CGRectOffset(initRect, 0, [UIScreen mainScreen].bounds.size.height);
+
+    UIView *contrainerView = [transitionContext containerView];
+    [contrainerView addSubview:toVC.view];
+    [contrainerView sendSubviewToBack:toVC.view];
+
+    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
+        fromVC.view.frame = finalRect;
+    } completion:^(BOOL finished) {
+        [transitionContext completeTransition:YES];
+    }];
+}
+
+@end
+</code></pre></li>
+</ol>
+<ol>
+<li><p>最后，我们在主控制器中添加一个手势驱动的对象，一个dismiss转场的对象，然后懒加载。</p>
+<pre><code>- (PanInteractiveTransition *)paninterTransition {
+    if (!_paninterTransition) {
+        _paninterTransition = [[PanInteractiveTransition alloc] init];
+    }
+    return _paninterTransition;
+}
+
+- (DismissAnimation *)dismissAnimation {
+    if (!_dismissAnimation) {
+        _dismissAnimation = [[DismissAnimation alloc] init];
+    }
+    return _dismissAnimation;
+}
+
+#pragma mark - UIViewControllerTransitioningDelegate
+- (id &lt;UIViewControllerAnimatedTransitioning&gt;)animationControllerForDismissedController:(UIViewController *)dismissed {
+    return self.dismissAnimation;
+}
+
+- (id &lt;UIViewControllerInteractiveTransitioning&gt;)interactionControllerForDismissal:(id &lt;UIViewControllerAnimatedTransitioning&gt;)animator {
+    return self.paninterTransition;
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@&quot;PresentSegue&quot;]) {
+        // ...
+        [self.paninterTransition panToDismiss:presetVC];
+    }
+}
+</code></pre></li>
+</ol>
+<h4 id="完善"><a href="#完善" class="headerlink" title="完善"></a>完善</h4><p>此时，我们运行程序，会发现以上代码尽管可以手势驱动了，但是点击按钮dismiss的功能无法使用了。这是因为<strong>如果只是返回self.paninterTransition，那么点击按钮dismiss的动画就会失效；如果只是返回nil,那么手势滑动的效果将会失效</strong>。综上所述，我们就得分情况考虑。<br>接下来我们就来完善一下。</p>
+<ol>
+<li><p>给<code>PanInteractiveTransition</code>添加一个属性，表示是否处于切换过程中(用于判断使用的是点击按钮dismiss还是手势驱动来dismiss的)</p>
+<pre><code>// 是否处于切换过程中
+@property (nonatomic, assign, getter=isInteracting) BOOL interacting;
+</code></pre></li>
+</ol>
+<ol>
+<li><p>给<code>PanInteractiveTransition</code>添加一个属性，表示是否需要dismiss(用于当手势滑动到超过指定高度之后，就会dismiss，如果没有超过，就会还原)</p>
+<pre><code>@property (nonatomic, assign, getter=isShouldComplete) BOOL shouldComplete;
+</code></pre></li>
+<li><p>修改<code>PanInteractiveTransition</code>中的<code>panGestureAction:</code>方法：</p>
+<pre><code>- (void)panGestureAction:(UIPanGestureRecognizer *)pan {
+    CGPoint transition = [pan translationInView:pan.view];
+
+    switch (pan.state) {
+        case UIGestureRecognizerStateBegan:{
+            self.interacting = YES;
+            [self.presentVC dismissViewControllerAnimated:YES completion:nil];
+        }
+            break;
+        case UIGestureRecognizerStateChanged:{  //
+            CGFloat percent = fmin(fmax(transition.y/300.0, 0.0), 1.0);
+            self.shouldComplete = (percent &gt; 0.5);
+            [self updateInteractiveTransition:percent];
+        }
+            break;
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateEnded:{
+            self.interacting = NO;
+            // 如果下移的距离小于300或者取消都当做取消
+            if (!self.isShouldComplete || pan.state == UIGestureRecognizerStateCancelled) {   // 手势取消
+                [self cancelInteractiveTransition];
+            }else{
+                [self finishInteractiveTransition];
+            }
+        }
+            break;
+        default:
+            break;
+    }
+}
+</code></pre></li>
+<li><p>另外还有一点，就是需要修改<code>DismissAnimation</code>中的一处代码:</p>
+<pre><code>- (void)animateTransition:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext {
+    UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+
+    CGRect initRect = [transitionContext initialFrameForViewController:fromVC];
+    CGRect finalRect = CGRectOffset(initRect, 0, [UIScreen mainScreen].bounds.size.height);
+
+    UIView *contrainerView = [transitionContext containerView];
+    [contrainerView addSubview:toVC.view];
+    [contrainerView sendSubviewToBack:toVC.view];
+
+    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
+        fromVC.view.frame = finalRect;
+    } completion:^(BOOL finished) {
+
+    // 此处做了修改，由之前的[transitionContext completeTransition:YES];
+      [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+    }];
+}
+</code></pre></li>
+</ol>
+<p>ok,到此为止，我们的一个自定义转场动画就算了完成了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得我的文章对您有用，请赏点茶水钱。您的支持将鼓励我继续创作!</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xv28v.com1.z0.glb.clouddn.com/IMG_1070.JPG" alt="Scott_Mr Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/转场动画/" rel="tag">#转场动画</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/08/Xcode常用快捷键/" rel="next" title="Xcode常用快捷键">
+                <i class="fa fa-chevron-left"></i> Xcode常用快捷键
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/14/初识RunTime/" rel="prev" title="初识Runtime">
+                初识Runtime <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/06/11/自定义转场详解-一/"
+     data-title="自定义转场详解(一)"
+     data-content=""
+     data-url="http://yoursite.com/2016/06/11/自定义转场详解-一/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/11/自定义转场详解-一/"
+           data-title="自定义转场详解(一)" data-url="http://yoursite.com/2016/06/11/自定义转场详解-一/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://ww3.sinaimg.cn/small/c665b82ajw8eqh9gafb8yj20ku0ku0ti.jpg"
+               alt="Scott_Mr" />
+          <p class="site-author-name" itemprop="name">Scott_Mr</p>
+          <p class="site-description motion-element" itemprop="description">耕耘着自己的一亩三分地</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LZAscott" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/3328555050/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="新浪微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  新浪微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#过程详解"><span class="nav-number">2.</span> <span class="nav-text">过程详解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#热身准备"><span class="nav-number">2.0.1.</span> <span class="nav-text">热身准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#主要内容"><span class="nav-number">2.0.2.</span> <span class="nav-text">主要内容</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#UIViewControllerAnimatedTransitioning"><span class="nav-number">2.0.2.0.1.</span> <span class="nav-text">UIViewControllerAnimatedTransitioning</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#UIViewControllerTransitioningDelegate"><span class="nav-number">2.0.2.0.2.</span> <span class="nav-text">UIViewControllerTransitioningDelegate</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#手势驱动百分比切换"><span class="nav-number">2.0.3.</span> <span class="nav-text">手势驱动百分比切换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#完善"><span class="nav-number">2.0.4.</span> <span class="nav-text">完善</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Scott_Mr</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"scott123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

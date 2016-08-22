@@ -1,0 +1,1427 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Runtime," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="http://ww3.sinaimg.cn/small/c665b82ajw8eqh9gafb8yj20ku0ku0ti.jpg?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言我们都知道，开发中会有这么一个过程，就是将服务器返回的数据转换成我们自己定义的模型对象。当然服务器返回的数据结构有xml类型的，也有json类型的。本文只讨论json格式的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用Runtime实现简单的字典转模型">
+<meta property="og:url" content="http://yoursite.com/2016/06/19/利用RunTime实现简单的字典转模型/index.html">
+<meta property="og:site_name" content="Scott_Mr">
+<meta property="og:description" content="前言我们都知道，开发中会有这么一个过程，就是将服务器返回的数据转换成我们自己定义的模型对象。当然服务器返回的数据结构有xml类型的，也有json类型的。本文只讨论json格式的。">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension1.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension2.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension3.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension4.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension5.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension6.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension7.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension8.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension9.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension10.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension11.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension12.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension13.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension14.png">
+<meta property="og:updated_time" content="2016-08-15T08:29:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="利用Runtime实现简单的字典转模型">
+<meta name="twitter:description" content="前言我们都知道，开发中会有这么一个过程，就是将服务器返回的数据转换成我们自己定义的模型对象。当然服务器返回的数据结构有xml类型的，也有json类型的。本文只讨论json格式的。">
+<meta name="twitter:image" content="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/19/利用RunTime实现简单的字典转模型/"/>
+
+  <title> 利用Runtime实现简单的字典转模型 | Scott_Mr </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Scott_Mr</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">越努力，越幸运！</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                利用Runtime实现简单的字典转模型
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-19T11:00:15+08:00" content="2016-06-19">
+              2016-06-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Runtime/" itemprop="url" rel="index">
+                    <span itemprop="name">Runtime</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/19/利用RunTime实现简单的字典转模型/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/19/利用RunTime实现简单的字典转模型/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">阅读量：
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们都知道，开发中会有这么一个过程，就是将服务器返回的数据转换成我们自己定义的模型对象。当然服务器返回的数据结构有<code>xml</code>类型的，也有<code>json</code>类型的。本文只讨论<code>json</code>格式的。<br><a id="more"></a></p>
+<p><strong>大家在项目中一般是怎么样将服务器返回的<code>json</code>转化成自己定义的模型类呢？</strong></p>
+<p>我在项目中一般都是使用的<a href="https://github.com/CoderMJLee/MJExtension" target="_blank" rel="external">MJExtension</a>。<br>本文讲解的也基本就是解读<code>MJExtension</code>中的部分源码。<br>好了，废话不多说，直接上代码，let’s go</p>
+<h2 id="简单字典转模型"><a href="#简单字典转模型" class="headerlink" title="简单字典转模型"></a>简单字典转模型</h2><p>首先，从最简单的字典开始，例如我们需要将如下的字典转化成自定义的模型。</p>
+<pre><code>NSDictionary *dict = @{@&quot;name&quot;:@&quot;Scott&quot;,
+                       @&quot;icon&quot; : @&quot;lufy.png&quot;,
+                       @&quot;age&quot; : @&quot;20&quot;,
+                       @&quot;height&quot; : @1.75,
+                       @&quot;money&quot; : @&quot;100.9&quot;,
+                       @&quot;sex&quot; : @(SexMale),
+                       @&quot;gay&quot; : @&quot;ture&quot;,
+                       };
+</code></pre><p>我们定义一个<code>ScottUser</code>类，并且定义好属性名如下：</p>
+<pre><code>#import &lt;Foundation/Foundation.h&gt;
+
+typedef NS_ENUM(NSInteger, Sex) {
+    SexMale,    // 男
+    SexFemale   // 女
+};
+
+@interface ScottUser : NSObject
+
+/**  姓名 */
+@property (nonatomic, copy) NSString *name;
+/**  头像 */
+@property (nonatomic, copy) NSString *icon;
+/**  年龄 */
+@property (nonatomic, assign) unsigned int age;
+/**  身高 */
+@property (nonatomic, strong) NSNumber *height;
+/**  财富 */
+@property (nonatomic, copy) NSString *money;
+/**  性别 */
+@property (nonatomic, assign) Sex sex;
+/**  是否同性 */
+@property (nonatomic, assign, getter=isGay) BOOL gay;
+
+@end
+</code></pre><p>到此为止，我们下一步的目标就是拿到字典里面的值(<code>value</code>)对<code>ScottUser</code>模型属性进行赋值，模型的属性名对应着字典里面的<code>key</code>。</p>
+<p>最直接的方法就是：</p>
+<pre><code>ScottUser *user = [[ScottUser alloc] init];
+user.name = dict[@&quot;name&quot;];
+user.icon = dict[@&quot;icon&quot;];
+...
+</code></pre><p>但是，对于每一次的数据转模型，你都要这样去写大量的重复代码，毫无意义。<br>当然我们利用<code>setValuesForKeysWithDictionary:(NSDictionary *)dict</code>进行<code>kvc</code>赋值。</p>
+<p><strong>KVC赋值</strong></p>
+<ul>
+<li><strong>优点：</strong>不需要去手动一个一个属性赋值。</li>
+<li><strong>缺点：</strong>当自定义的属性和字典中的key不一样的时候，会报错。</li>
+<li><strong>解决办法：</strong>重写<code>- (void)setValue:(id)value forUndefinedKey:(NSString *)key</code>方法。</li>
+</ul>
+<p>我们可以通过写一个框架自动帮我们实现字典转模型，大致思路就是：</p>
+<ol>
+<li>遍历模型中的<code>属性</code>，然后拿到<code>属性名</code>作为<code>键值</code>去字典中寻找<code>值</code>;</li>
+<li>找到<code>值</code>后，根据模型的<code>属性类型</code>将<code>值</code>转化成正确的<code>类型</code>;</li>
+<li>给<code>属性名</code>赋值。</li>
+</ol>
+<hr>
+<h3 id="遍历模型中的属性，拿到属性名作为键值去字典中寻找值"><a href="#遍历模型中的属性，拿到属性名作为键值去字典中寻找值" class="headerlink" title="遍历模型中的属性，拿到属性名作为键值去字典中寻找值"></a>遍历模型中的<code>属性</code>，拿到<code>属性名</code>作为<code>键值</code>去字典中寻找<code>值</code></h3><p>方法伪代码：</p>
+<pre><code>[模型类 遍历属性的方法];
+</code></pre><p>为了方便使用，创建一个叫<code>NSObject+ScottProperty</code>的分类，写一个获取所有属性的方法。</p>
+<pre><code>#import &lt;Foundation/Foundation.h&gt;
+
+@interface NSObject (ScottProperty)
+
++ (NSArray *)properties;
+
+@end
+</code></pre><p>假设我们在看不到一个类的<code>.h</code>和<code>.m</code>文件的前提下，有什么办法可以获取它所有的实例变量呢？</p>
+<p>答案是通过<code>Runtime</code>。</p>
+<pre><code>#import &quot;NSObject+ScottProperty.h&quot;
+#import &lt;objc/runtime.h&gt;
+
+@implementation NSObject (ScottProperty)
+
++ (NSArray *)properties {
+
+    NSMutableArray *propertiesArr = [NSMutableArray array];
+
+    unsigned int outCount = 0;
+    objc_property_t *properties = class_copyPropertyList(self, &amp;outCount);
+    for (int i=0; i&lt;outCount; i++) {
+        objc_property_t property = properties[i];
+        [propertiesArr addObject:propertyObj];
+        char *name = property_getName(property);
+        char *att = property_getAttributes(property);
+        NSLog(@&quot;name:%s-----att:%s&quot;,name,att);
+    }
+
+    return propertiesArr;
+}
+</code></pre><p>在外部调用<code>+ (NSArray *)properties</code>方法能够打印出一个类的所有属性，如：</p>
+<pre><code>NSArray *arr = [ScottUser properties];
+</code></pre><p>运行程序，能够看到控制台的输出：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension1.png" alt="图1"></p>
+<p>从输出中可以看到通过<code>property_getName()</code>获取每一个<code>objc_property_t</code>的<code>name</code>表示成员属性的名字，通过<code>property_getAttributes()</code>获取每一个<code>objc_property_t</code>的<code>attributes</code>表示成员属性中的一些特性(如是什么类，原子性还是非原子性，是strong还是weak还是copy,生成的成员变量名等信息…)</p>
+<p>从苹果的<a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtPropertyIntrospection.html" target="_blank" rel="external">官方文档(Objective-C Runtime Programming Guide)</a>可以得知，<code>attributes</code>是一个类型编码字符串，这个字符串以<code>T</code>作为开始，接上<code>@encode</code>类型编码和一个逗号，以<code>V</code>接上实例变量名作为结尾，在他们之间是一些其他信息，以逗号分隔，具体内容可以查看官方文档中详细的表格。</p>
+<p>在实际赋值过程中，我们并不关心该属性的内存管理、生成的成员变量名、或者其他什么信息，在<code>attributes</code>中，只需要知道它所属的<code>类</code>或者知道什么<code>基本数据类型</code>,即<code>T</code>至<code>第一个逗号之前</code>中间的内容，如果是<code>类</code>的话还需要将<code>@</code>和<code>&quot;&quot;</code>去掉。</p>
+<p>实际上，<code>Runtime</code>已经给我们提供获取属性名和属性特性的函数了，也就是通过<code>property_getName()</code>和<code>property_getAttributes()</code>。</p>
+<p>这时候我们就可以获取到属性名和属性对应的属性特性了。</p>
+<h3 id="找到值后，根据属性类型将值转化成正确的类型"><a href="#找到值后，根据属性类型将值转化成正确的类型" class="headerlink" title="找到值后，根据属性类型将值转化成正确的类型"></a>找到<code>值</code>后，根据<code>属性类型</code>将<code>值</code>转化成正确的<code>类型</code></h3><p>现在已经完成了第一步，并且拿到了<code>属性名</code>,但是数据类型还需要我们进一步截取，截取方法如下：</p>
+<pre><code>for (int i=0; i&lt;outCount; i++) {
+    objc_property_t property = properties[i];
+
+    // 为了以后方便使用，将C字符串转化成OC对象
+//    char *name = property_getName(property);
+    NSString *name = @(property_getName(property));
+
+//    char *att = property_getAttributes(property);
+    NSString *att = @(property_getAttributes(property));
+
+    NSUInteger loc = 1;
+    NSUInteger len = [att rangeOfString:@&quot;,&quot;].location - loc;
+
+    NSString *type = [att substringWithRange:NSMakeRange(loc, len)];
+    NSLog(@&quot;%@&quot;,type);
+}
+</code></pre><p>控制台结果显示，我们能够截取到其中的类型了：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension2.png" alt="图2"></p>
+<p>回归到我们拿到这些<code>属性类型</code>的初衷，是为了用字典中的<code>值的类型</code>与模型中<code>属性的类型</code>进行对比，想要对比，需要拿到<code>属性的类型</code>,因此需要将这些编码转换成一个<strong>表示类的类</strong>，创建一个类用来包装类型。</p>
+<pre><code>#import &lt;Foundation/Foundation.h&gt;
+
+@interface ScottPropertyType : NSObject
+
+/**  是否为id类型 */
+@property (nonatomic, readonly, getter=isIdType) BOOL idType;
+/**  是否为基本数据类型(int、float等) */
+@property (nonatomic, readonly, getter=isNumberType) BOOL numberType;
+/**  是否为bool类型 */
+@property (nonatomic, readonly, getter=isBoolType) BOOL boolType;
+/**  对象类型(如果是基本数据类型，此值为nil) */
+@property (nonatomic, readonly) Class typeClass;
+
+@end
+</code></pre><p>OC对象可以通过<code>Class</code>来表示类型，而基本数据类型只能用布尔来标识。</p>
+<p>把这些名字和类型遍历出来，肯定是为了以后有用，所以需要把它们存起来，由于它们是一个”整体”,所以还是设计一个类将他们包装起来比较好，创建一个包装成员属性的类–<code>ScottProperty</code>。</p>
+<pre><code>#import &lt;Foundation/Foundation.h&gt;
+
+@class ScottPropertyType;
+@interface ScottProperty : NSObject
+
+/**  属性名 */
+@property (nonatomic, readonly) NSString *name;
+
+/**  成员属性的类型 */
+@property (nonatomic, readonly) ScottPropertyType *type;
+
+@end
+</code></pre><p>这时，代码就可以进行重构了，将属于不同类的功能封装到对应的类上，让<code>ScottProperty</code>提供一个类方法用于返回一个将<code>objc_property_t</code>进行包装的类。</p>
+<pre><code>for (int i=0; i&lt;outCount; i++) {
+       objc_property_t property = properties[i];
+       ScottProperty *propertyObj = [ScottProperty propertyWithProperty:property];
+       [propertiesArr addObject:propertyObj];
+   }
+</code></pre><p><code>propertyWithProperty:</code>方法实现如下：</p>
+<pre><code>@implementation ScottProperty
+
++ (instancetype)propertyWithProperty:(objc_property_t)property {
+    return [[ScottProperty alloc] initWithProperty:property];
+}
+
+- (instancetype)initWithProperty:(objc_property_t)property {
+    if (self = [super init]) {
+        _name = @(property_getName(property));
+        _type = [ScottPropertyType propertiesWithAttributeString:@(property_getAttributes(property))];
+    }
+    return self;
+}
+
+@end
+</code></pre><p><code>ScottPropertyType</code>也提供类方法用于包装类型：</p>
+<pre><code>#import &quot;ScottPropertyType.h&quot;
+
+@implementation ScottPropertyType
+
++ (instancetype)propertiesWithAttributeString:(NSString *)att {
+    return [[ScottPropertyType alloc] initWithTypeString:att];
+}
+
+- (instancetype)initWithTypeString:(NSString *)typeString {
+
+    if (self = [super init]) {
+        NSUInteger loc = 1;
+        NSUInteger len = [typeString rangeOfString:@&quot;,&quot;].location - loc;
+        NSString *typeCode = [typeString substringWithRange:NSMakeRange(loc, len)];
+        NSLog(@&quot;%@&quot;,typeCode);
+    }
+    return self;
+}
+
+@end
+</code></pre><p>重构完成之后，结构显得更加清晰，更加有利于接下来的工作，下面继续完成<code>typeCode</code>的提取。<br>运行重构之后的代码，可以看到和重构之前是一样的：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension3.png" alt="图3"></p>
+<p>上面提到的这些类型，是类型编码，在苹果文档中告诉我们编码对应的类型：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension4.png" alt="图4"><br>根据这个对应关系的图表，我们将常用的几个编码定义成常量字符串或者宏表示它所对应的类型，利于编码和阅读：<br>在<code>ScottPropertyType</code>类定义以下属性类型：</p>
+<pre><code>/**
+ *  成员变量类型（属性类型）
+ */
+NSString *const ScottPropertyTypeInt = @&quot;i&quot;;
+NSString *const ScottPropertyTypeShort = @&quot;s&quot;;
+NSString *const ScottPropertyTypeFloat = @&quot;f&quot;;
+NSString *const ScottPropertyTypeDouble = @&quot;d&quot;;
+NSString *const ScottPropertyTypeLong = @&quot;q&quot;;
+NSString *const ScottPropertyTypeChar = @&quot;c&quot;;
+NSString *const ScottPropertyTypeBOOL1 = @&quot;c&quot;;
+NSString *const ScottPropertyTypeBOOL2 = @&quot;b&quot;;
+NSString *const ScottPropertyTypePointer = @&quot;*&quot;;
+
+NSString *const ScottPropertyTypeIvar = @&quot;^{objc_ivar=}&quot;;
+NSString *const ScottPropertyTypeMethod = @&quot;^{objc_method=}&quot;;
+NSString *const ScottPropertyTypeBlock = @&quot;@?&quot;;
+NSString *const ScottPropertyTypeClass = @&quot;#&quot;;
+NSString *const ScottPropertyTypeSEL = @&quot;:&quot;;
+NSString *const ScottPropertyTypeId = @&quot;@&quot;;
+</code></pre><p>并写一个方法用于提取每个属性的类型：</p>
+<pre><code>- (instancetype)initWithTypeString:(NSString *)typeString {
+
+    if (self = [super init]) {
+        NSUInteger loc = 1;
+        NSUInteger len = [typeString rangeOfString:@&quot;,&quot;].location - loc;
+        NSString *typeCode = [typeString substringWithRange:NSMakeRange(loc, len)];
+
+        [self getTypeCode:typeCode];
+    }
+    return self;
+}
+
+- (void)getTypeCode:(NSString *)code {
+    if ([code isEqualToString:ScottPropertyTypeId]) {
+        _idType = YES;
+    }else if (code.length &gt; 3 &amp;&amp; [code hasPrefix:@&quot;@\&quot;&quot;]){
+        // 去掉@&quot;和&quot;，截取中间的类型名称
+        code = [code substringWithRange:NSMakeRange(2, code.length - 3)];
+        _typeClass = NSClassFromString(code);
+        _numberType = (_typeClass == [NSNumber class] || [_typeClass isSubclassOfClass:[NSNumber class]]);
+    }
+
+    // 是否为数字类型
+    NSString *lowerCode = code.lowercaseString;
+    NSArray *numberTypes = @[ScottPropertyTypeInt,
+                             ScottPropertyTypeShort,
+                             ScottPropertyTypeFloat,
+                             ScottPropertyTypeDouble,
+                             ScottPropertyTypeLong,
+                             ScottPropertyTypeChar,
+                             ScottPropertyTypeBOOL1,
+                             ScottPropertyTypeBOOL2];
+    if ([numberTypes containsObject:lowerCode]) {
+        _numberType = YES;
+        if ([lowerCode isEqualToString:ScottPropertyTypeBOOL1] || [lowerCode isEqualToString:ScottPropertyTypeBOOL2]) {
+            _boolType = YES;
+        }
+    }
+}
+</code></pre><p>到这里，我们一个<code>ScottProperty</code>的骨架大致就搭好了。</p>
+<p>在<code>NSObject+ScottProperty</code>分类中遍历属性的时候，打印属性名和属性类型看看：</p>
+<pre><code>for (int i=0; i&lt;outCount; i++) {
+        objc_property_t property = properties[i];
+        ScottProperty *propertyObj = [ScottProperty propertyWithProperty:property];
+        [propertiesArr addObject:propertyObj];
+        NSLog(@&quot;name:%@--type:%@&quot;,propertyObj.name,propertyObj.type.typeClass);
+    }
+</code></pre><p><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension5.png" alt="图5"><br>从图中可以看出，属于基本类型的属性打印出来的类型是<code>null</code>，其他的都能正确打印出对应类型。</p>
+<p>当我们想要使用字典转模型功能的时候，提供一个类方法方便转换，该方法放在<code>NSObject+ScottKeyValue</code>分类中，该分类负责字典转模型的方法实现。</p>
+<pre><code>+ (instancetype)objectWithKeyValues:(id)keyValues {
+    if (!keyValues) return nil;
+
+    return [[[self alloc] init] setKeyValues:keyValues];
+}
+
+- (instancetype)setKeyValues:(id)keyValues {
+    NSArray *propertiesArray = [self.class properties];
+    for (ScottProperty *property in propertiesArray) {
+        ScottPropertyType *type = property.type;
+        Class typeClass = type.typeClass;
+        if (type.isBoolType) {
+            NSLog(@&quot;Bool&quot;);
+        }else if (type.isIdType){
+            NSLog(@&quot;ID&quot;);
+        }else if (type.isNumberType){
+            NSLog(@&quot;Number&quot;);
+        }else{
+            NSLog(@&quot;%@&quot;,typeClass);
+        }
+    }
+
+    return self;
+}
+</code></pre><p>我们想要字典转模型的时候，直接如下使用：</p>
+<pre><code>NSDictionary *dict = @{@&quot;name&quot;:@&quot;Scott&quot;,
+                       @&quot;icon&quot; : @&quot;lufy.png&quot;,
+                       @&quot;age&quot; : @&quot;20&quot;,
+                       @&quot;height&quot; : @1.75,
+                       @&quot;money&quot; : @&quot;100.9&quot;,
+                       @&quot;sex&quot; : @(SexMale),
+                       @&quot;gay&quot; : @&quot;ture&quot;,
+                       };
+
+
+ScottUser *userModel = [ScottUser objectWithKeyValues:dict];
+</code></pre><p>ok,运行程序，可以看到控制台输出<code>ScottUser</code>类中各属性对应的类型：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension6.png" alt="图6"></p>
+<p>我们进行下一步：<strong>用该属性名作为键去字典中寻找对应的值</strong></p>
+<p>伪代码：</p>
+<pre><code>[字典 valueForKey:属性名];
+</code></pre><p>此处的属性名会有点问题，例如我们定义属性名的时候不能是关键字，而如果字典中的<code>key</code>是涉及到关键字的，那么我们需要转换，但是也并非所有的都有这种情况，因此我们可以想到使用代理。我们在<code>NSObject+ScottKeyValue</code>分类中写一个<code>ScottKeyValue</code>协议，并且让它遵守该协议:</p>
+<pre><code>@protocol ScottKeyValue &lt;NSObject&gt;
+
+@optional
++ (NSDictionary *)replacedKeyFromPropertyName;
+@end
+</code></pre><p>然后我们提供一个类方法，用于处理将属性名与字典中的<code>key</code>达到一致。</p>
+<pre><code>+ (NSString *)propertyKey:(NSString *)propertyName {
+    NSString *key;
+    if ([self respondsToSelector:@selector(replacedKeyFromPropertyName)]) {
+        key = [self replacedKeyFromPropertyName][propertyName];
+    }
+    return key ? key : propertyName;
+}
+</code></pre><p>调用：</p>
+<pre><code>// 属性名作为键去寻找对应的值
+id value = [keyValues valueForKey:[self.class propertyKey:property.name]];
+if (!value) continue;
+NSLog(@&quot;%@&quot;,value);
+</code></pre><p>运行，我们可以看到已经能够拿到值了：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension7.png" alt="图7"></p>
+<p>接下来，我们拿到值后将值的类型转换为属性对应的数据类型。</p>
+<p>首先需要处理数字类型，如果模型的属性是数字类型，即<code>type.isNumberType == YES</code>,如果字典中的值是字符串类型，需要将其转成NSNumber类型，如果本来就是基本数据类型，则不用进行任何转换。</p>
+<pre><code>if (type.isNumberType == YES) {
+   // 字符串--&gt;数字
+   if ([value isKindOfClass:[NSString class]]) {
+       value = [[[NSNumberFormatter alloc] init] numberFromString:value];
+   }
+}
+</code></pre><p>其中有一种情况，是需要进行特殊处理的，当模型的属性是<code>char</code>类型或者<code>bool</code>类型时，获取到的编码都是<code>c</code>,并且<code>bool</code>还有可能是<code>B</code>编码，它们都对应<code>_boolType</code>，因为数字类型包含布尔类型，所以<code>bool</code>类型要在数字类型的条件下进行额外判断。</p>
+<pre><code>if (type.isNumberType == YES) {
+    NSString *oldValue = value;
+    // 字符串--&gt;数字
+    if ([value isKindOfClass:[NSString class]]) {
+        value = [[[NSNumberFormatter alloc] init] numberFromString:value];
+        if (type.isBoolType) {
+            NSString *lower = [oldValue lowercaseString];
+            if ([lower isEqualToString:@&quot;yes&quot;] || [lower isEqualToString:@&quot;ture&quot;]) {
+                value = @YES;
+            }else if ([lower isEqualToString:@&quot;no&quot;] || [lower isEqualToString:@&quot;false&quot;]){
+                value = @NO;
+            }
+        }
+    }
+} else { //  然后处理其他类型转化成字符串类型的情况：
+      if (typeClass == [NSString class]) {
+          if ([value isKindOfClass:[NSNumber class]]) {
+              if (type.isNumberType)
+                  // NSNumber -&gt; NSString
+                  value = [value description];
+          }else if ([value isKindOfClass:[NSURL class]]){
+              // NSURL -&gt; NSString
+              value = [value absoluteString];
+          }
+      }
+  }
+  // 最后赋值      
+  [self setValue:value forKey:property.name];
+</code></pre><p>最后我们调用并打印</p>
+<pre><code>ScottUser *userModel = [ScottUser objectWithKeyValues:dict];
+    NSLog(@&quot;name:%@,icon:%@,age:%d,height:%@,money:%@,sex:%ld,gay:%d&quot;,userModel.name,userModel.icon,userModel.age,userModel.height,userModel.money,(long)userModel.sex,userModel.gay);
+</code></pre><p><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension8.png" alt="图8"></p>
+<p>到这里最简单的字典转模型大致完成了，当然还有很多的细节没有完善，后面再做处理。</p>
+<h2 id="JSON字符串转模型"><a href="#JSON字符串转模型" class="headerlink" title="JSON字符串转模型"></a>JSON字符串转模型</h2><p>定义一个<code>json</code>字符串转成模型：</p>
+<pre><code>#pragma mark - JSON字符串转模型
+void keyValues2object1(){
+    // 1.定义一个json字符串
+    NSString *jsonString = @&quot;{\&quot;name\&quot;:\&quot;scott\&quot;,\&quot;icon\&quot;:\&quot;lufy.png\&quot;,\&quot;age\&quot;:20}&quot;;
+
+    // 2.将json字符串转为LZUser模型
+    ScottUser *user = [ScottUser objectWithKeyValues:jsonString];
+
+    // 3.打印模型属性
+    NSLog(@&quot;name=%@, icon=%@, age=%d&quot;,user.name,user.icon,user.age);
+}
+</code></pre><p>运行程序，这时程序会华丽丽的崩溃，因为程序原来只对字典类型作了处理：</p>
+<pre><code>// 我们可以定位到程序崩溃在这里
+id value = [keyValues valueForKey:[self.class propertyKey:property.name]];
+</code></pre><p>所以在这之前需要将<code>JSON</code>转成<code>Foundation</code>框架中的对象，苹果提供了强大的<code>NSJSONSerialization</code>，利用它，在刚开始传入字典/<code>JSON</code>字符串的时候将其进行转换。</p>
+<pre><code>- (instancetype)setKeyValues:(id)keyValues {
+
+    keyValues = [keyValues JSONObject]; 
+
+    NSArray *propertiesArray = [self.class properties];
+    ......
+}
+</code></pre><p>该方法的实现如下，如果当前是字符串，则转换成<code>NSData</code>再进行序列化。</p>
+<pre><code>- (id)JSONObject {
+    id foundationObj;
+    if ([self isKindOfClass:[NSString class]]) {
+        NSString *str = (NSString *)self;
+        foundationObj = [NSJSONSerialization  JSONObjectWithData:[str dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
+    }else if ([self isKindOfClass:[NSData class]]){
+        foundationObj = [NSJSONSerialization JSONObjectWithData:(NSData *)self options:kNilOptions error:nil];
+    }
+
+    // 如果foundationObj有值，则返回foundationObj，否则返回self
+    return foundationObj ? : self;
+}
+</code></pre><p>此时，运行程序，OK，能够看到控制台能正确输入结果：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension9.png" alt="图9"></p>
+<h2 id="复杂字典转模型"><a href="#复杂字典转模型" class="headerlink" title="复杂字典转模型"></a>复杂字典转模型</h2><p>定义一个模型中包含模型的复杂字典：</p>
+<pre><code>NSDictionary *dict = @{@&quot;text&quot;:@&quot;是啊，今天天气确实不错！&quot;,
+                       @&quot;user&quot;:@{
+                               @&quot;name&quot;:@&quot;scott&quot;,
+                               @&quot;icon&quot;:@&quot;lufy.png&quot;
+                               },
+                       @&quot;retweetedStatus&quot;:@{
+                               @&quot;text&quot;:@&quot;是啊，今天天气确实不错&quot;,
+                               @&quot;user&quot;:@{
+                                       @&quot;name&quot;:@&quot;scott_status&quot;,
+                                       @&quot;icon&quot;:@&quot;lufy_status.png&quot;
+                                       }
+                               }
+                       };
+</code></pre><p>对待这种字典的思路，应该想到递归，当碰到模型中的属性类型是一个模型类时，将字典中的<code>value</code>作为字典处理，然后再调用字典转模型的方法返回一个模型类，所以在包装类型时还要有个属性表示它是否是自定义的模型类，才能作为依据继续递归，判断的方法是看它是否来自于<code>Foundation框架</code>的类。<br>在<code>ScottPropertyType</code>中添加一个属性:</p>
+<pre><code>/**  是否来源于Foundation框架，比如NSString,NSArray等 */
+@property (nonatomic, readonly, getter=isFromFoundation) BOOL fromFoundation;
+</code></pre><p>在<code>- (void)getTypeCode:(NSString *)code</code>方法中添加这样一条:</p>
+<pre><code>else if (code.length &gt; 3 &amp;&amp; [code hasPrefix:@&quot;@\&quot;&quot;]){
+    // 去掉@&quot;和&quot;，截取中间的类型名称
+    code = [code substringWithRange:NSMakeRange(2, code.length - 3)];
+    _typeClass = NSClassFromString(code);
+    _numberType = (_typeClass == [NSNumber class] || [_typeClass isSubclassOfClass:[NSNumber class]]);
+
+    // 判断是否来自于foundation框架
+    _fromFoundation = [NSObject isClassFromFoundation:_typeClass];
+}
+</code></pre><p>在<code>NSObject+ScottProperty</code>分类中添加一个类方法：</p>
+<pre><code>// 用于判断当前类是否来自于foundation框架
++ (BOOL)isClassFromFoundation:(Class)c;
+</code></pre><p>那么问题来了，如果判断是否来自于<code>Foundation框架</code>呢？ 下图展示了<code>Foundation框架(NSObject部分)</code>下的类结构:<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension10.png" alt="图10"></p>
+<p>用一个<code>NSSet</code>(比用<code>NSArray</code>检索效率更高)，返回一些常用基本的<code>Foundation框架</code>下继承自<code>NSObject</code>的类。</p>
+<pre><code>static NSSet *foundationClasses_;
+
++ (NSSet *)foundationClass {
+    if (foundationClasses_ == nil) {
+        foundationClasses_ = [NSSet setWithObjects:[NSURL class],
+                              [NSDate class],
+                              [NSValue class],
+                              [NSData class],
+                              [NSArray class],
+                              [NSDictionary class],
+                              [NSString class],
+                              [NSMutableString class], nil];
+    }
+    return foundationClasses_;
+}
+</code></pre><p>所以判断是否是<code>foundation框架</code>的类方法具体实现：</p>
+<pre><code>+ (BOOL)isClassFromFoundation:(Class)c {
+    // 因为foundationClasses_里面的类都是继承NSObject，因此NSObject不能放到上面的集合，需要额外做判断
+    if (c == [NSObject class]) return YES;
+
+    __block BOOL result = NO;
+    [[self foundationClass] enumerateObjectsUsingBlock:^(Class foundationClass, BOOL *stop) {
+        if ([c isSubclassOfClass:foundationClass]) {
+            result = YES;
+            *stop = YES;
+        }
+    }];
+
+    return result;
+}
+</code></pre><p>得到结果后，需要在<code>NSObject+ScottKeyValue</code>分类中的<code>setKeyValues:</code>方法中添加如下</p>
+<pre><code>// 如果不是来自foundation框架的类并且不是基本数据类型 ,则递归,如果是基本数据类型，typeClass为nil
+if (!type.isFromFoundation &amp;&amp; typeClass) {
+    value = [typeClass objectWithKeyValues:value];
+}
+</code></pre><p>到这里，复杂字典转模型就算是完成了，具体调用的过程看源码<strong>文章结尾会给地址</strong>。</p>
+<h2 id="字典数组转模型"><a href="#字典数组转模型" class="headerlink" title="字典数组转模型"></a>字典数组转模型</h2><p>稍微复杂的一种情况是一个字典里面带有数组：</p>
+<pre><code>NSDictionary *dict = @{
+                       @&quot;statuses&quot; : @[
+                               @{
+                                   @&quot;text&quot; : @&quot;今天天气真不错！&quot;,
+
+                                   @&quot;user&quot; : @{
+                                           @&quot;name&quot; : @&quot;Rose&quot;,
+                                           @&quot;icon&quot; : @&quot;nami.png&quot;
+                                           }
+                                   },
+
+                               @{
+                                   @&quot;text&quot; : @&quot;明天去旅游了&quot;,
+
+                                   @&quot;user&quot; : @{
+                                           @&quot;name&quot; : @&quot;Jack&quot;,
+                                           @&quot;icon&quot; : @&quot;lufy.png&quot;
+                                           }
+                                   }
+
+                               ],
+
+                       @&quot;ads&quot; : @[
+                               @{
+                                   @&quot;image&quot; : @&quot;ad01.png&quot;,
+                                   @&quot;url&quot; : @&quot;http://www.baidu.com&quot;
+                                   },
+                               @{
+                                   @&quot;image&quot; : @&quot;ad02.png&quot;,
+                                   @&quot;url&quot; : @&quot;http://www.sina.com&quot;
+                                   }
+                               ],
+
+                       @&quot;totalNumber&quot; : @&quot;2014&quot;,
+                       @&quot;previousCursor&quot; : @&quot;13476589&quot;,
+                       @&quot;nextCursor&quot; : @&quot;13476599&quot;
+                       };
+</code></pre><p>上面定义了一个字典，创建一个<code>ScottStatusResult</code>模型，里面有两个数组，另外还有其他3个键：</p>
+<pre><code>#import &lt;Foundation/Foundation.h&gt;
+
+@interface ScottStatusResult : NSObject
+
+/** 存放着某一页微博数据（里面都是Status模型） */
+@property (nonatomic, strong) NSMutableArray *statuses;
+/** 存放着一堆的广告数据（里面都是Ad模型） */
+@property (nonatomic, strong) NSArray *ads;
+/** 总数 */
+@property (nonatomic, strong) NSNumber *totalNumber;
+/** 上一页的游标 */
+@property (nonatomic, assign) long long previousCursor;
+/** 下一页的游标 */
+@property (nonatomic, assign) long long nextCursor;
+
+@end
+</code></pre><p>对于一个数组来说，你必须要告诉方法里面装的是什么模型，才能将字典中值为数组的成员转成模型。<br>在<code>MJExtension</code>中，提供了两种方式进行处理。</p>
+<ul>
+<li><p>方式一：调用<code>NSObject</code>分类中的类方法：</p>
+<pre><code>[ScottStatusResult setupObjectClassInArray:^NSDictionary *{
+ return @{ @&quot;statuses&quot; : @&quot;ScottStatus&quot;,
+  // 或者 @&quot;statuses&quot; : [ScottStatus class],
+           @&quot;ads&quot; : @&quot;ScottAd&quot;
+  // 或者 @&quot;ads&quot; : [ScottAd class]
+         };
+    }];
+</code></pre></li>
+<li><p>方式二：在模型的.m文件中实现方法供回调：</p>
+<pre><code>+ (NSDictionary *)objectClassInArray
+{
+    return @{
+             @&quot;statuses&quot; : @&quot;ScottStatus&quot;,
+              // 或者 @&quot;statuses&quot; : [ScottStatus class],
+             @&quot;ads&quot; : @&quot;ScottAd&quot;
+             // 或者 @&quot;ads&quot; : [ScottAd class]
+             };
+}
+</code></pre></li>
+</ul>
+<p>原理上都差不多，都是通过代码进行回调，这个主要实现方式二。<br>在<code>NSObject+ScottKeyValue</code>分类中的<code>ScottKeyValue</code>协议中添加一个方法</p>
+<pre><code>+ (NSDictionary *)objectClassInArray;
+</code></pre><p>在<code>NSObject+ScottKeyValue</code>分类中的<code>setKeyValues:</code>方法中添加一种类型判断</p>
+<pre><code>// 如果不是来自foundation框架的类并且不是基本数据类型 ,则递归,如果是基本数据类型，typeClass为nil
+   if (!type.isFromFoundation &amp;&amp; typeClass) {
+       value = [typeClass objectWithKeyValues:value];
+   }else if ([self.class respondsToSelector:@selector(objectClassInArray)]){ // 看该类是否实现了objectClassInArray方法
+       id objectClass;
+       objectClass = [self.class objectClassInArray][property.name];
+
+      // 如果是NSString类型
+      if ([objectClass isKindOfClass:[NSString class]]) {
+          objectClass = NSClassFromString(objectClass);
+      }
+
+      if (objectClass) {
+          // 返回一个装了模型的数组
+          value = [objectClass objectArrayWithKeyValuesArray:value];
+      }
+  }
+</code></pre><p>返回一个装了模型的数组方法实现：</p>
+<pre><code>/**
+ *  根据字典/JSON返回模型数组
+ *
+ *  @param keyValuesArray 字典/JSON数组
+ *
+ *  @return 模型数组
+ */
++ (NSMutableArray *)objectArrayWithKeyValuesArray:(id)keyValuesArray
+{
+    if ([self isClassFromFoundation:self])
+        return keyValuesArray;
+
+    keyValuesArray = [keyValuesArray JSONObject];
+
+    NSMutableArray *modelArray = [NSMutableArray array];
+
+    // 遍历
+    for (NSDictionary *keyValues in keyValuesArray) {
+        id model;
+        model = [self objectWithKeyValues:keyValues];
+        if (model) {
+            [modelArray addObject:model];
+        }
+    }
+
+    return modelArray;
+}
+</code></pre><p>到这里，字典数组转模型就算是完成了，具体调用的过程看源码<strong>文章结尾会给地址</strong>。</p>
+<h2 id="key的替换"><a href="#key的替换" class="headerlink" title="key的替换"></a>key的替换</h2><p>在实际开发中，服务器通常返回一个字段名<code>id</code>,或者<code>description</code>的<code>JSON</code>数据,而这两个名字在<code>OC</code>中有特殊含义,在定义属性的时候并不能使用这类名称.这时属性名与字典<code>key</code>不再是直接对应的关系,需要加入一层转换。<br>这个在前面<strong>用该属性名作为键去字典中寻找对应的值</strong>讲到过，在次就不再重复讲解。</p>
+<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><p>将5个字典转模型的例子同时运行，在<code>NSObject+ScottProperty</code>分类中的<code>+ (NSArray *)properties</code>方法中添加一句打印<code>NSLog(@&quot;%@调用了properties方法&quot;,[self class]);</code>。另外，之前的例子都是有内存泄露的，这里添加了<code>free(properties);</code>修复了这个问题。</p>
+<pre><code>+ (NSArray *)properties {
+    NSLog(@&quot;%@调用了properties方法&quot;,[self class]);
+    NSMutableArray *propertiesArr = [NSMutableArray array];
+
+    unsigned int outCount = 0;
+    objc_property_t *properties = class_copyPropertyList(self, &amp;outCount);
+
+    for (int i=0; i&lt;outCount; i++) {
+        objc_property_t property = properties[i];
+        ScottProperty *propertyObj = [ScottProperty propertyWithProperty:property];
+        [propertiesArr addObject:propertyObj];
+    }
+
+    free(properties);
+    return propertiesArr;
+}
+</code></pre><p>运行程序，可以看到控制台输出：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension11.png" alt="图11"><br>可以看到,很多的类都不止一次调用了获取属性的方法,对于一个类来说,要获取它的全部属性,只要获取一次就够了.获取到后将结果缓存起来,下次就不必进行不必要的计算。<br>下面进行优化：</p>
+<pre><code>// 设置一个全局字典用来将类的属性都缓存起来
+static NSMutableDictionary *cachedProperties_;
+
++ (void)load
+{
+    cachedProperties_ = [NSMutableDictionary dictionary];
+}
+</code></pre><p>将方法改写为:</p>
+<pre><code>+ (NSArray *)properties {
+    NSMutableArray *propertiesArr = cachedProperties_[NSStringFromClass(self)];
+
+    if (!propertiesArr) {
+        NSLog(@&quot;%@调用了properties方法&quot;,[self class]);
+        propertiesArr = [NSMutableArray array];
+
+        unsigned int outCount = 0;
+        objc_property_t *properties = class_copyPropertyList(self, &amp;outCount);
+
+        for (int i=0; i&lt;outCount; i++) {
+            objc_property_t property = properties[i];
+            ScottProperty *propertyObj = [ScottProperty propertyWithProperty:property];
+            [propertiesArr addObject:propertyObj];
+            //        NSLog(@&quot;name:%@--type:%@&quot;,propertyObj.name,propertyObj.type.typeClass);
+
+            // 为了以后方便使用，将C字符串转化成OC对象
+            //        char *name = property_getName(property);
+            //        NSString *name = @(property_getName(property));
+
+            //        char *att = property_getAttributes(property);
+            //        NSString *att = @(property_getAttributes(property));
+
+            //        NSUInteger loc = 1;
+            //        NSUInteger len = [att rangeOfString:@&quot;,&quot;].location - loc;
+
+            //        NSString *type = [att substringWithRange:NSMakeRange(loc, len)];
+            //        NSLog(@&quot;%@&quot;,type);
+        }
+
+        free(properties);
+        cachedProperties_[NSStringFromClass(self)] = propertiesArr;
+    }
+
+    return propertiesArr;
+}
+</code></pre><p>此时，控制台输出：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension12.png" alt="图12"><br>可以看出每一个类只经过一次就可以获取所有属性。</p>
+<hr>
+<p>除了缓存属性外，提取类型编码的过程也可以进一步缓存优化性能。<br>在下面的方法中加上一句打印：</p>
+<pre><code>- (void)getTypeCode:(NSString *)code {
+    NSLog(@&quot;%@&quot;,code);
+    ...
+}
+</code></pre><p>可以看到控制台输出：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension13.png" alt="图13"></p>
+<p>可以看到一些常用的类型例如<code>NSString</code>多次调用了该方法。提取类型时,只要知道类名(在这里也就是<code>typeCode</code>),一个<code>ScottPropertyType</code>就已经可以确定了。</p>
+<p>重写了<code>- initWithTypeString:</code>方法:</p>
+<pre><code>static NSMutableDictionary *cacheTypes_;
++ (void)load {
+    cacheTypes_ = [NSMutableDictionary dictionary];
+}
+
++ (instancetype)propertiesWithAttributeString:(NSString *)att {
+    return [[ScottPropertyType alloc] initWithTypeString:att];
+}
+
+- (instancetype)initWithTypeString:(NSString *)typeString {
+
+    if (self = [super init]) {
+        NSUInteger loc = 1;
+        NSUInteger len = [typeString rangeOfString:@&quot;,&quot;].location - loc;
+        NSString *typeCode = [typeString substringWithRange:NSMakeRange(loc, len)];
+
+        if (!cacheTypes_[typeCode]) {
+            [self getTypeCode:typeCode];
+            cacheTypes_[typeCode] = self;
+        }
+    }
+    return self;
+}
+</code></pre><p>输出结果：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/ScottExtension14.png" alt="图14"></p>
+<h2 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h2><p>OK,到这里，我们的解读也算是完成了，由于是下班之后写的，所以花费了4天的时间，终于把此篇文章写完了，欢迎大家点评并讨论。<br>最后代码地址：—&gt;<a href="https://github.com/LZAscott/ScottExtension" target="_blank" rel="external">戳这里</a></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>参考资料：<a href="http://www.jianshu.com/p/d2ecef03f19e" target="_blank" rel="external">跟着MJExtension实现简单的字典转模型</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得我的文章对您有用，请赏点茶水钱。您的支持将鼓励我继续创作!</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xv28v.com1.z0.glb.clouddn.com/IMG_1070.JPG" alt="Scott_Mr Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Runtime/" rel="tag">#Runtime</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/15/iOS9新特性/" rel="next" title="iOS9新特性">
+                <i class="fa fa-chevron-left"></i> iOS9新特性
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/23/如何正确使用const-常量-define-宏/" rel="prev" title="如何正确使用const(常量),define(宏)">
+                如何正确使用const(常量),define(宏) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/06/19/利用RunTime实现简单的字典转模型/"
+     data-title="利用Runtime实现简单的字典转模型"
+     data-content=""
+     data-url="http://yoursite.com/2016/06/19/利用RunTime实现简单的字典转模型/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/19/利用RunTime实现简单的字典转模型/"
+           data-title="利用Runtime实现简单的字典转模型" data-url="http://yoursite.com/2016/06/19/利用RunTime实现简单的字典转模型/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://ww3.sinaimg.cn/small/c665b82ajw8eqh9gafb8yj20ku0ku0ti.jpg"
+               alt="Scott_Mr" />
+          <p class="site-author-name" itemprop="name">Scott_Mr</p>
+          <p class="site-description motion-element" itemprop="description">耕耘着自己的一亩三分地</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LZAscott" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/3328555050/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="新浪微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  新浪微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单字典转模型"><span class="nav-number">2.</span> <span class="nav-text">简单字典转模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#遍历模型中的属性，拿到属性名作为键值去字典中寻找值"><span class="nav-number">2.1.</span> <span class="nav-text">遍历模型中的属性，拿到属性名作为键值去字典中寻找值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#找到值后，根据属性类型将值转化成正确的类型"><span class="nav-number">2.2.</span> <span class="nav-text">找到值后，根据属性类型将值转化成正确的类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSON字符串转模型"><span class="nav-number">3.</span> <span class="nav-text">JSON字符串转模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂字典转模型"><span class="nav-number">4.</span> <span class="nav-text">复杂字典转模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字典数组转模型"><span class="nav-number">5.</span> <span class="nav-text">字典数组转模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#key的替换"><span class="nav-number">6.</span> <span class="nav-text">key的替换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能优化"><span class="nav-number">7.</span> <span class="nav-text">性能优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结束语"><span class="nav-number">8.</span> <span class="nav-text">结束语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">9.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Scott_Mr</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"scott123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

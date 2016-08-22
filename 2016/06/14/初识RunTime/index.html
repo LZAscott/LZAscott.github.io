@@ -1,0 +1,816 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Runtime," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="http://ww3.sinaimg.cn/small/c665b82ajw8eqh9gafb8yj20ku0ku0ti.jpg?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言之前在看一些第三方源码的时候，时不时的能碰到一些关于运行时相关的代码。于是乎，就阅读了一些关于运行时的文章，感觉写的都不错，写此篇文章为了记录一下，同时也重新学习一遍。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初识Runtime">
+<meta property="og:url" content="http://yoursite.com/2016/06/14/初识RunTime/index.html">
+<meta property="og:site_name" content="Scott_Mr">
+<meta property="og:description" content="前言之前在看一些第三方源码的时候，时不时的能碰到一些关于运行时相关的代码。于是乎，就阅读了一些关于运行时的文章，感觉写的都不错，写此篇文章为了记录一下，同时也重新学习一遍。">
+<meta property="og:updated_time" content="2016-08-21T22:39:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="初识Runtime">
+<meta name="twitter:description" content="前言之前在看一些第三方源码的时候，时不时的能碰到一些关于运行时相关的代码。于是乎，就阅读了一些关于运行时的文章，感觉写的都不错，写此篇文章为了记录一下，同时也重新学习一遍。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/14/初识RunTime/"/>
+
+  <title> 初识Runtime | Scott_Mr </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Scott_Mr</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">越努力，越幸运！</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                初识Runtime
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-14T22:26:43+08:00" content="2016-06-14">
+              2016-06-14
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Runtime/" itemprop="url" rel="index">
+                    <span itemprop="name">Runtime</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/14/初识RunTime/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/14/初识RunTime/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">阅读量：
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前在看一些第三方源码的时候，时不时的能碰到一些关于运行时相关的代码。于是乎，就阅读了一些关于运行时的文章，感觉写的都不错，写此篇文章为了记录一下，同时也重新学习一遍。<br><a id="more"></a></p>
+<h2 id="Runtime简介"><a href="#Runtime简介" class="headerlink" title="Runtime简介"></a>Runtime简介</h2><ul>
+<li>Runtime简称运行时，OC就是运行时机制。</li>
+<li>C语言中函数的调用在编译的时候就会决定调用哪个函数。</li>
+<li>对于OC来说，属于动态调用过程，在编译的时候并不能决定调用哪个函数，只有真正运行的时候才会根据函数的名称找到对应的函数来调用。</li>
+<li>事实证明：<ol>
+<li>在编译阶段，OC可以调用任何函数，即使这个函数并未实现，只要申明就不会报错。</li>
+<li>在编译阶段，C语言调用未实现的函数就会报错。</li>
+</ol>
+</li>
+</ul>
+<h2 id="Runtime的作用"><a href="#Runtime的作用" class="headerlink" title="Runtime的作用"></a>Runtime的作用</h2><h3 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h3><ul>
+<li>方法调用的本质就是向对象发送消息。</li>
+<li><code>objc_msgSend</code>,只有对象才能发送消息，因此以<code>objc</code>开头。<strong>注意：在oc中，不论是实例对象还是Class，都是id类型的对象</strong></li>
+<li><p>让我们来看看方法调用转化成运行时的代码，看看调用方法的真面目吧。</p>
+<ol>
+<li>新建一个命令行工程</li>
+<li><p>然后在main方法里面写上</p>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</div><div class="line">   <span class="keyword">@autoreleasepool</span> &#123;</div><div class="line">       <span class="built_in">NSObject</span> *obj = [[<span class="built_in">NSObject</span> alloc] init];</div><div class="line">   &#125;</div><div class="line">   <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>用终端跳转到工程所在的根目录，然后命令行运行<code>clang -rewrite-objc main.m</code></p>
+</li>
+<li><p>然后ls查看一下当前目录可以看到有一个<code>main.cpp</code>文件，我们用<code>open main.cpp</code>打开该文件，可以看到一大串代码，我们可以直接翻到底部，可以看到这样的代码：</p>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</div><div class="line">    <span class="comment">/* @autoreleasepool */</span> &#123; __AtAutoreleasePool __autoreleasepool; </div><div class="line">        <span class="built_in">NSObject</span> *obj = ((<span class="built_in">NSObject</span> *(*)(<span class="keyword">id</span>, SEL))(<span class="keyword">void</span> *)objc_msgSend)((<span class="keyword">id</span>)((<span class="built_in">NSObject</span> *(*)(<span class="keyword">id</span>, SEL))(<span class="keyword">void</span> *)objc_msgSend)((<span class="keyword">id</span>)objc_getClass(<span class="string">"NSObject"</span>), sel_registerName(<span class="string">"alloc"</span>)), sel_registerName(<span class="string">"init"</span>));</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>删除掉一些强制转换，将上面的代码简化后：</p>
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</div><div class="line">    <span class="comment">/* @autoreleasepool */</span> &#123; __AtAutoreleasePool __autoreleasepool; </div><div class="line">        <span class="built_in">NSObject</span> *obj = objc_msgSend(objc_getClass(<span class="string">"NSObject"</span>), sel_registerName(<span class="string">"alloc"</span>)), sel_registerName(<span class="string">"init"</span>));</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>总结：到这里，我们可以看到调用方法的本质就是发送消息了，并且可以看到我们写的<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSObject</span> *obj = [[<span class="built_in">NSObject</span> alloc] init];</div></pre></td></tr></table></figure></p>
+<p>上面这条语句发送了两次消息，第一次发送了<code>alloc</code>消息，第二次发送了<code>init</code>消息。</p>
+</blockquote>
+<h3 id="给分类添加属性"><a href="#给分类添加属性" class="headerlink" title="给分类添加属性"></a>给分类添加属性</h3><p>相信大家都知道分类是不可以添加属性的，不过我们可以通过运行时，给分类动态的添加属性。</p>
+<p><strong>原理：</strong>给一个分类声明属性，其本质就是给这个类添加关联，并不是直接把这个值的内存空间添加到类存空间。</p>
+<h4 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h4><ul>
+<li><p>我们给<code>NSObject</code>添加一个分类，然后声明一个<code>name</code>属性。</p>
+  <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSObject</span> (<span class="title">Extension</span>)</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *name;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>我们创建一个<code>NSObject</code>对象，然后给<code>name</code>属性赋值，并且打印<code>name</code>的值。<br> 我们可以看到编译成功，但是运行的时候就会华丽丽的崩溃，这就是所谓的不能给分类添加属性的原因了。不过我们可以通过运行时实现。</li>
+<li><p>接下来我们在.m文件重写<code>name</code>属性的<code>setter</code>以及<code>getter</code>方法。</p>
+  <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">"NSObject+Extension.h"</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">&lt;objc/runtime.h&gt;</span></span></div><div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">char</span> *key = <span class="string">"name"</span>;</div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">NSObject</span> (<span class="title">Extension</span>)</span></div><div class="line">-(<span class="built_in">NSString</span> *)name &#123;</div><div class="line">    <span class="comment">// 根据关联的key，获取关联的值</span></div><div class="line">    <span class="keyword">return</span> objc_getAssociatedObject(<span class="keyword">self</span>, key);</div><div class="line">&#125;</div><div class="line">-(<span class="keyword">void</span>)setName:(<span class="built_in">NSString</span> *)name &#123;</div><div class="line">    <span class="comment">// 第一个参数：给哪个对象添加关联</span></div><div class="line">    <span class="comment">// 第二个参数：关联的key，通过这个key获取</span></div><div class="line">    <span class="comment">// 第三个参数：关联的value</span></div><div class="line">    <span class="comment">// 第四个参数:关联的策略</span></div><div class="line">    objc_setAssociatedObject(<span class="keyword">self</span>, key, name, OBJC_ASSOCIATION_COPY_NONATOMIC);</div><div class="line">&#125;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>运行程序，编译成功，运行也成功。</li>
+</ul>
+<h3 id="动态添加方法"><a href="#动态添加方法" class="headerlink" title="动态添加方法"></a>动态添加方法</h3><ul>
+<li><strong>开发使用场景:</strong> 如果一个类方法非常多，加载该类到内存的时候比较耗费资源，需要给每个方法生成映射表，可以使用运行时给该类动态添加方法来解决。(<strong>ps:我感觉这个在开发中不常用</strong>)</li>
+</ul>
+<h4 id="实践-1"><a href="#实践-1" class="headerlink" title="实践"></a>实践</h4><ul>
+<li><p>创建一个继承<code>NSObject</code>的<code>Student</code>类，声明一个<code>study</code>方法。</p>
+  <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">Student</span> : <span class="title">NSObject</span></span></div><div class="line">-(<span class="keyword">void</span>)study;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>创建一个<code>Student</code>对象，调用<code>study</code>方法。</p>
+  <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Student *s = [[Student alloc] init];</div><div class="line">  [s performSelector:<span class="keyword">@selector</span>(study)];</div></pre></td></tr></table></figure>
+<p>  此时会出现一个经典的报错：</p>
+  <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-[Student study]: unrecognized selector sent to instance <span class="number">0x7fd719cbb2f0</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<pre><code>&gt; **错误原因:调用一个未实现的实例方法**
+</code></pre><ul>
+<li><p>我们在<code>Student</code>类.m文件动态添加study方法的实现。</p>
+  <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">"Student.h"</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">&lt;objc/runtime.h&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">Student</span></span></div><div class="line"><span class="comment">// void(*)()</span></div><div class="line"><span class="comment">// 默认方法都有两个隐式参数，</span></div><div class="line"><span class="keyword">void</span> studyStudent(<span class="keyword">id</span> <span class="keyword">self</span>, SEL sel)&#123;</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@--%@"</span>,<span class="keyword">self</span>,<span class="built_in">NSStringFromSelector</span>(sel));</div><div class="line">&#125;</div><div class="line"><span class="comment">// 当一个对象调用未实现的方法，会调用该方法处理，并且会把对应的方法列表传进来，我们可以在这个方法里判断，未实现的方法是不是我们想要动态添加的方法。</span></div><div class="line">+(<span class="built_in">BOOL</span>)resolveInstanceMethod:(SEL)sel &#123;    </div><div class="line">    <span class="keyword">if</span> (sel == <span class="keyword">@selector</span>(study)) &#123;</div><div class="line">        <span class="comment">// 第一个参数：给哪个类添加方法</span></div><div class="line">        <span class="comment">// 第二个参数：添加方法的方法编号</span></div><div class="line">        <span class="comment">// 第三个参数：添加方法的函数实现（函数地址）</span></div><div class="line">        <span class="comment">// 第四个参数：函数的类型，(返回值+参数类型) v:void @:对象-&gt;self :表示SEL-&gt;_cmd</span></div><div class="line">        class_addMethod(<span class="keyword">self</span>, <span class="keyword">@selector</span>(study), studyStudent, <span class="string">"v@:"</span>);</div><div class="line">        <span class="comment">// 注意：此处需要马上结束此方法(否则，如果存在继承关系的话，会调用到父类去)</span></div><div class="line">        <span class="keyword">return</span> <span class="literal">YES</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> [<span class="keyword">super</span> resolveInstanceMethod:sel];</div><div class="line">&#125;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="交换方法实现"><a href="#交换方法实现" class="headerlink" title="交换方法实现"></a>交换方法实现</h3><ul>
+<li>交换方法实现，也就是所谓的<code>Method Swizzling</code>。</li>
+<li><strong>场景一：</strong>如果你整个项目都做完了，然后产品经理告诉你想统计每一个页面停留的时长。</li>
+<li><strong>场景二：</strong>系统自带的方法功能不够，给系统自带的方法扩展一些功能，并且保持原有功能。</li>
+</ul>
+<h4 id="实践-2"><a href="#实践-2" class="headerlink" title="实践"></a>实践</h4><p><strong>场景一：</strong>统计整个项目每一个页面停留时长。(<strong>解决方法也不是唯一的</strong>)</p>
+<ul>
+<li><p>方式一：找到所有的控制器，然后写上：</p>
+  <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">-(<span class="keyword">void</span>)viewWillAppear:(<span class="built_in">BOOL</span>)animated &#123;</div><div class="line">   [<span class="keyword">super</span> viewWillAppear:animated];</div><div class="line">   [MobClick beginLogPageView:<span class="built_in">NSStringFromClass</span>([<span class="keyword">self</span> <span class="keyword">class</span>])];</div><div class="line">&#125;</div><div class="line">-(<span class="keyword">void</span>)viewWillDisappear:(<span class="built_in">BOOL</span>)animated &#123;</div><div class="line">   [<span class="keyword">super</span> viewWillDisappear:animated];</div><div class="line">   [MobClick endLogPageView:<span class="built_in">NSStringFromClass</span>([<span class="keyword">self</span> <span class="keyword">class</span>])];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<pre><code>然后我们一个项目可能有几十个甚至上百个页面需要统计，我们总不可能每个页面都这样写吧。于是乎，就有了**方式二**。
+</code></pre><ul>
+<li><p>方式二：所有的界面都继承于一个基类，然后在基类中写上</p>
+  <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">-(<span class="keyword">void</span>)viewWillAppear:(<span class="built_in">BOOL</span>)animated &#123;</div><div class="line">   [<span class="keyword">super</span> viewWillAppear:animated];</div><div class="line">   [MobClick beginLogPageView:<span class="built_in">NSStringFromClass</span>([<span class="keyword">self</span> <span class="keyword">class</span>])];</div><div class="line">&#125;</div><div class="line">-(<span class="keyword">void</span>)viewWillDisappear:(<span class="built_in">BOOL</span>)animated &#123;</div><div class="line">   [<span class="keyword">super</span> viewWillDisappear:animated];</div><div class="line">   [MobClick endLogPageView:<span class="built_in">NSStringFromClass</span>([<span class="keyword">self</span> <span class="keyword">class</span>])];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<pre><code>可是一开始写项目的时候，并没有使用到继承，所以又papapa地就整个项目的控制器都继承于一个基类，重复地将每一个控制器的继承都该成了我们创建的基类。但是，这样解决真的好么，有可能我们有些界面是继承自`UITableViewController`的，`UICollectionViewController`，等等。那么你就可能会对这些控制器再单独的写上面的代码了。
+
+好不容易将整个项目改过来了，然后某天，公司来了一位新人，你告诉他所有的类都要继承自你写的那个基类，新手总是会不经意地犯错误(**也有可能是人家还没有习惯**)，有些类忘记继承了，后期排查起来费力费时。那么有没有更好地解决方式呢？**方式三**就可以处理这种问题。
+</code></pre><ul>
+<li><p>方式三：使用<code>Method Swizzling</code>实现，给<code>UIViewController</code>写一个分类。</p>
+  <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">"UIViewController+Help.h"</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">&lt;objc/runtime.h&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">UIViewController</span> (<span class="title">Help</span>)</span></div><div class="line">+(<span class="keyword">void</span>)load &#123;</div><div class="line">    <span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceToken;</div><div class="line">    <span class="built_in">dispatch_once</span>(&amp;onceToken, ^&#123;</div><div class="line">        Class <span class="keyword">class</span> = [<span class="keyword">self</span> <span class="keyword">class</span>];</div><div class="line">        methodSwizzling(<span class="keyword">class</span>, <span class="keyword">@selector</span>(viewWillAppear:), <span class="keyword">@selector</span>(scott_viewWillAppear:));</div><div class="line">        methodSwizzling(<span class="keyword">class</span>, <span class="keyword">@selector</span>(viewWillDisappear:), <span class="keyword">@selector</span>(scott_viewWillDisappear:));</div><div class="line">    &#125;);</div><div class="line">&#125;</div><div class="line"><span class="keyword">void</span> methodSwizzling(Class <span class="keyword">class</span>, SEL originSelector, SEL swizzSelector)&#123;</div><div class="line">    Method originMethod = class_getInstanceMethod(<span class="keyword">class</span>, originSelector);</div><div class="line">    Method swizzMethod = class_getInstanceMethod(<span class="keyword">class</span>, swizzSelector);</div><div class="line">    <span class="built_in">BOOL</span> isAddMethod = class_addMethod(<span class="keyword">class</span>, originSelector, method_getImplementation(swizzMethod), method_getTypeEncoding(swizzMethod));</div><div class="line">    <span class="keyword">if</span> (isAddMethod) &#123;</div><div class="line">        class_replaceMethod(<span class="keyword">class</span>, swizzSelector, method_getImplementation(originMethod), method_getTypeEncoding(originMethod));</div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">        method_exchangeImplementations(originMethod, swizzMethod);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">-(<span class="keyword">void</span>)scott_viewWillAppear:(<span class="built_in">BOOL</span>)animated &#123;</div><div class="line">    [<span class="keyword">self</span> scott_viewWillAppear:animated];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"调用自定义viewWillAppear"</span>);</div><div class="line">&#125;</div><div class="line">-(<span class="keyword">void</span>)scott_viewWillDisappear:(<span class="built_in">BOOL</span>)animated &#123;</div><div class="line">    [<span class="keyword">self</span> scott_viewWillDisappear:animated];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"调用自定义viewWillDissappear"</span>);</div><div class="line">&#125;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="字典转模型"><a href="#字典转模型" class="headerlink" title="字典转模型"></a>字典转模型</h3><p>这个单独开一篇给大家讲讲吧。</p>
+<h2 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h2><p>希望通过本文能让大家学习到一些关于Runtime的知识，如果有什么疑问，欢迎大家一起讨论。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得我的文章对您有用，请赏点茶水钱。您的支持将鼓励我继续创作!</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xv28v.com1.z0.glb.clouddn.com/IMG_1070.JPG" alt="Scott_Mr Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Runtime/" rel="tag">#Runtime</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/11/自定义转场详解-一/" rel="next" title="自定义转场详解(一)">
+                <i class="fa fa-chevron-left"></i> 自定义转场详解(一)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/15/iOS9新特性/" rel="prev" title="iOS9新特性">
+                iOS9新特性 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/06/14/初识RunTime/"
+     data-title="初识Runtime"
+     data-content=""
+     data-url="http://yoursite.com/2016/06/14/初识RunTime/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/14/初识RunTime/"
+           data-title="初识Runtime" data-url="http://yoursite.com/2016/06/14/初识RunTime/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://ww3.sinaimg.cn/small/c665b82ajw8eqh9gafb8yj20ku0ku0ti.jpg"
+               alt="Scott_Mr" />
+          <p class="site-author-name" itemprop="name">Scott_Mr</p>
+          <p class="site-description motion-element" itemprop="description">耕耘着自己的一亩三分地</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LZAscott" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/3328555050/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="新浪微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  新浪微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Runtime简介"><span class="nav-number">2.</span> <span class="nav-text">Runtime简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Runtime的作用"><span class="nav-number">3.</span> <span class="nav-text">Runtime的作用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#发送消息"><span class="nav-number">3.1.</span> <span class="nav-text">发送消息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#给分类添加属性"><span class="nav-number">3.2.</span> <span class="nav-text">给分类添加属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实践"><span class="nav-number">3.2.1.</span> <span class="nav-text">实践</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态添加方法"><span class="nav-number">3.3.</span> <span class="nav-text">动态添加方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实践-1"><span class="nav-number">3.3.1.</span> <span class="nav-text">实践</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#交换方法实现"><span class="nav-number">3.4.</span> <span class="nav-text">交换方法实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实践-2"><span class="nav-number">3.4.1.</span> <span class="nav-text">实践</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字典转模型"><span class="nav-number">3.5.</span> <span class="nav-text">字典转模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结束语"><span class="nav-number">4.</span> <span class="nav-text">结束语</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Scott_Mr</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"scott123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,882 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="http://ww3.sinaimg.cn/small/c665b82ajw8eqh9gafb8yj20ku0ku0ti.jpg?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言最近这两天，微博、朋友圈里面被WWDC的内容刷屏，讲的都是关于watch OS、tv OS、mac OS以及iOS上面的一些更新，当然目前的我比较关心的是iOS方面的改变。也是奇怪，别人都出iOS10的系统了，我还在这写iOS9的新特性,好吧，写此篇文章是为了总结一下，以便于以后查看。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS9新特性">
+<meta property="og:url" content="http://yoursite.com/2016/06/15/iOS9新特性/index.html">
+<meta property="og:site_name" content="Scott_Mr">
+<meta property="og:description" content="前言最近这两天，微博、朋友圈里面被WWDC的内容刷屏，讲的都是关于watch OS、tv OS、mac OS以及iOS上面的一些更新，当然目前的我比较关心的是iOS方面的改变。也是奇怪，别人都出iOS10的系统了，我还在这写iOS9的新特性,好吧，写此篇文章是为了总结一下，以便于以后查看。">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/iOS91.png">
+<meta property="og:updated_time" content="2016-06-16T14:18:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS9新特性">
+<meta name="twitter:description" content="前言最近这两天，微博、朋友圈里面被WWDC的内容刷屏，讲的都是关于watch OS、tv OS、mac OS以及iOS上面的一些更新，当然目前的我比较关心的是iOS方面的改变。也是奇怪，别人都出iOS10的系统了，我还在这写iOS9的新特性,好吧，写此篇文章是为了总结一下，以便于以后查看。">
+<meta name="twitter:image" content="http://7xv28v.com1.z0.glb.clouddn.com/iOS91.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/15/iOS9新特性/"/>
+
+  <title> iOS9新特性 | Scott_Mr </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Scott_Mr</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">越努力，越幸运！</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS9新特性
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-15T21:46:49+08:00" content="2016-06-15">
+              2016-06-15
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/15/iOS9新特性/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/15/iOS9新特性/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">阅读量：
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近这两天，微博、朋友圈里面被WWDC的内容刷屏，讲的都是关于<code>watch OS</code>、<code>tv OS</code>、<code>mac OS</code>以及<code>iOS</code>上面的一些更新，当然目前的我比较关心的是<code>iOS</code>方面的改变。也是奇怪，别人都出iOS10的系统了，我还在这写iOS9的新特性,好吧，写此篇文章是为了总结一下，以便于以后查看。<br><a id="more"></a></p>
+<h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><ul>
+<li>摘要：为了增强数据访问安全，iOS9默认会把所有的<code>http</code>请求都改为<code>https</code>请求，iOS9.x-SDK编译时，默认会让所有从<code>NSURLConnection</code>、<code>CFURL</code>、<code>NSURLSession</code>发出的<code>http</code>请求统一采用<code>TLS1.2协议</code>。服务器因此需要更新，以解析相关数据。如果不更新，可以通过在info.plist中声明，倒退回不安全的网络请求。而这一做法，官方文档称为<code>ATS</code>,全称为<code>App Transport Security</code>,是iOS9的一个新特性。</li>
+<li>一个符合<code>ATS</code>的<code>https</code>，应该符合如下条件：<ol>
+<li><code>Transport Layer Security</code>协议版本要求TLS1.2以上；</li>
+<li>服务的<code>Ciphers</code>配置要求支持<code>Forward Secrecy</code>等；</li>
+<li>证书签名算法符合ATS要求等。</li>
+</ol>
+</li>
+<li><p>如果我们服务器不更新，我们访问的还是<code>http</code>链接，我们该怎么办呢？</p>
+<p>我们在工程的info.plist文件中添加如下图所示的代码即可：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/iOS91.png" alt="图1"></p>
+</li>
+</ul>
+<h2 id="Bitcode"><a href="#Bitcode" class="headerlink" title="Bitcode"></a>Bitcode</h2><ul>
+<li>未来,Watch应用必须包含bitcode,iOS不强制，Mac OS不支持。但是最坑的一点是：Xcode7及以上版本会默认开启bitcode。</li>
+<li><p>什么是bitcode?</p>
+<p>  官方文档的定义是这样的：</p>
+<blockquote>
+<p>Bitcode is an intermediate representation of a compiled program. Apps you upload to iTunes Connect that contain bitcode will be compiled and linked on the App Store. Including bitcode will allow Apple to re-optimize your app binary in the future without the need to submit a new version of your app to the store.</p>
+</blockquote>
+<p>  翻译过来就是:</p>
+<blockquote>
+<p>bitcode 是被编译程序的一种中间形式的代码。包含 bitcode 配置的程序将会在 App Store 上被编译和链接。 bitcode 允许苹果在后期重新优化我们程序的二进制文件，而不需要我们重新提交一个新的版本到 App Store 上。</p>
+</blockquote>
+<p>  在Xcode简介中是这样描述的:</p>
+<blockquote>
+<p>Bitcode. When you archive for submission to the App Store, Xcode will compile your app into an intermediate representation. The App Store will then compile the bitcode down into the 64 or 32 bit executables as necessary.</p>
+</blockquote>
+<p>  翻译过来就是:</p>
+<blockquote>
+<p>当我们提交程序到 App Store上时， Xcode 会将程序编译为一个中间表现形式( bitcode )。然后 App store 会再将这个 bitcode 编译为可执行的64位或32位程序。</p>
+</blockquote>
+</li>
+<li><p><strong>如果你的应用准备启用Bitcode编译机制，就需要注意以下的几点：</strong></p>
+<ol>
+<li>Xcode 7默认开启 Bitcode ，如果应用开启 Bitcode，那么其集成的其他第三方库也需要是 Bitcode 编译的包才能真正进行 Bitcode 编译;</li>
+<li>开启 Bitcode 编译后，编译产生的 .app 体积会变大(中间代码，不是用户下载的包)，且 .dSYM 文件不能用来崩溃日志的符号化(用户下载的包是 Apple 服务重新编译产生的，有产生新的符号文件);</li>
+<li>通过 Archive 方式上传 AppStore 的包，可以在Xcode的Organizer工具中下载对应安装包的新的符号文件。</li>
+</ol>
+</li>
+</ul>
+<h2 id="URL-Scheme引入白名单"><a href="#URL-Scheme引入白名单" class="headerlink" title="URL Scheme引入白名单"></a>URL Scheme引入白名单</h2><ul>
+<li><p>iOS9中，如果使用<code>canOpenURL:</code>方法，该方法涉及到的<code>URL Scheme</code>必须在info.plist中将它们列为白名单，否则不能使用。key叫做<code>LSApplicationQueriesSchemes</code>,键值内容是:</p>
+<pre><code>&lt;key&gt;LSApplicationQueriesSchemes&lt;/key&gt;
+&lt;array&gt;
+ &lt;string&gt;urlscheme&lt;/string&gt;
+ &lt;string&gt;urlscheme2&lt;/string&gt;
+ &lt;string&gt;urlscheme3&lt;/string&gt;
+ &lt;string&gt;urlscheme4&lt;/string&gt;
+&lt;/array&gt; 
+</code></pre></li>
+<li><p>常见URL Scheme白名单。</p>
+<pre><code>&lt;key&gt;LSApplicationQueriesSchemes&lt;/key&gt;
+&lt;array&gt;
+    &lt;!-- 微信 URL Scheme 白名单--&gt;
+    &lt;string&gt;wechat&lt;/string&gt;
+    &lt;string&gt;weixin&lt;/string&gt;
+
+    &lt;!-- 新浪微博 URL Scheme 白名单--&gt;
+    &lt;string&gt;sinaweibohd&lt;/string&gt;
+    &lt;string&gt;sinaweibo&lt;/string&gt;
+    &lt;string&gt;sinaweibosso&lt;/string&gt;
+    &lt;string&gt;weibosdk&lt;/string&gt;
+    &lt;string&gt;weibosdk2.5&lt;/string&gt;
+
+    &lt;!-- QQ、Qzone URL Scheme 白名单--&gt;
+    &lt;string&gt;mqqapi&lt;/string&gt;
+    &lt;string&gt;mqq&lt;/string&gt;
+    &lt;string&gt;mqqOpensdkSSoLogin&lt;/string&gt;
+    &lt;string&gt;mqqconnect&lt;/string&gt;
+    &lt;string&gt;mqqopensdkdataline&lt;/string&gt;
+    &lt;string&gt;mqqopensdkgrouptribeshare&lt;/string&gt;
+    &lt;string&gt;mqqopensdkfriend&lt;/string&gt;
+    &lt;string&gt;mqqopensdkapi&lt;/string&gt;
+    &lt;string&gt;mqqopensdkapiV2&lt;/string&gt;
+    &lt;string&gt;mqqopensdkapiV3&lt;/string&gt;
+    &lt;string&gt;mqzoneopensdk&lt;/string&gt;
+    &lt;string&gt;wtloginmqq&lt;/string&gt;
+    &lt;string&gt;wtloginmqq2&lt;/string&gt;
+    &lt;string&gt;mqqwpa&lt;/string&gt;
+    &lt;string&gt;mqzone&lt;/string&gt;
+    &lt;string&gt;mqzonev2&lt;/string&gt;
+    &lt;string&gt;mqzoneshare&lt;/string&gt;
+    &lt;string&gt;wtloginqzone&lt;/string&gt;
+    &lt;string&gt;mqzonewx&lt;/string&gt;
+    &lt;string&gt;mqzoneopensdkapiV2&lt;/string&gt;
+    &lt;string&gt;mqzoneopensdkapi19&lt;/string&gt;
+    &lt;string&gt;mqzoneopensdkapi&lt;/string&gt;
+    &lt;string&gt;mqzoneopensdk&lt;/string&gt;
+
+    &lt;!-- 支付宝  URL Scheme 白名单--&gt;
+    &lt;string&gt;alipay&lt;/string&gt;
+    &lt;string&gt;alipayshare&lt;/string&gt;
+
+&lt;/array&gt;
+</code></pre></li>
+<li><p><strong>注意：白名单上限是50个</strong></p>
+</li>
+</ul>
+<h2 id="属性值nil"><a href="#属性值nil" class="headerlink" title="属性值nil"></a>属性值nil</h2><p>不知道大家有没有注意到，自从Xcode7开始，官方文档的类里面一些属性就多了一些类似<code>nonnull</code>、<code>nullable</code>、<code>null_resettable</code>这样的字眼。</p>
+<ul>
+<li><p><strong>nonnull：</strong>表示该属性的<code>setter</code>和<code>getter</code>方法都不能为<code>nil</code></p>
+<pre><code>@property (nonatomic, strong, nonnull) NSArray *names;
+</code></pre><p>  也可以这样写:</p>
+<pre><code>@property (nonatomic, strong) NSArray * __nonnull names;
+</code></pre><p>  代表着<code>names</code>数组的<code>getter</code>方法和<code>setter</code>方法都不能为<code>nil</code>。</p>
+</li>
+<li><p><strong>nullable：</strong>表示该属性的<code>setter</code>和<code>getter</code>方法都能为<code>nil</code>。(<strong>注意：默认都是<code>nullable</code></strong>)</p>
+<pre><code>@property (nonatomic, strong, nullable) NSArray *names;
+</code></pre><p>  也可以这样写:</p>
+<pre><code>@property (nonatomic, strong) NSArray * __nullable names;
+</code></pre><p>  代表着<code>names</code>数组的<code>getter</code>和<code>setter</code>方法都能为<code>nil</code>。</p>
+</li>
+<li><p><strong>null_resettable：</strong><code>setter</code>方法可以为<code>nil</code>,<code>getter</code>方法不能为<code>nil</code>。(<strong>控制器的view就是使用这个修饰 </strong>)</p>
+<pre><code>@property (nonatomic, strong, null_resettable) NSArray *array;
+</code></pre><p>  <strong>注意：以下写法是错误的：</strong></p>
+<blockquote>
+<p><del>@property (nonatomic, strong) NSArray * __null_resettable array;</del></p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>总结：</p>
+<ul>
+<li>只能修饰对象类型，不能修饰基本类型;</li>
+<li>既可以修饰属性，又可以修饰方法的参数和返回值;</li>
+<li><code>NS_ASSUME_NONNULL_BEGIN</code>和<code>NS_ASSUME_NONNULL_END</code>之间的属性都是添加了<code>nonnull</code>修饰的。</li>
+</ul>
+</blockquote>
+<h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><p>举个🌰吧：我们定义一个可变数组，然后可以随便往数组里面添加<code>NSString</code>,<code>NSNumber</code>,<code>NSObject</code>对象。这样的话当我们取数组元素的时候返回的是<code>id</code>类型，这时候如果我们想要取长度的话，使用点语法是没有提示的。(<strong>因为id类型不可以使用点语法</strong>)，这个时候，我们可以使用<strong>泛型</strong>来修饰我们定义的可变数组。</p>
+<pre><code>@property (nonatomic, strong) NSMutableArray&lt;NSString *&gt; *names;
+</code></pre><p>这样子之后，我们只能往该数组里面添加字符串类型的元素了。此时我们获取元素的时候就能明确地知道是字符串类型的。</p>
+<h3 id="举一反三"><a href="#举一反三" class="headerlink" title="举一反三"></a>举一反三</h3><p>我们定义字典也可以使用泛型</p>
+<pre><code>// 代表着字典的key为NSString类型，value为NSNumber类型
+@property (nonatomic, strong) NSDictionary&lt;NSString *, NSNumber *&gt; *books;
+</code></pre><h3 id="自定义泛型"><a href="#自定义泛型" class="headerlink" title="自定义泛型"></a>自定义泛型</h3><p><strong>例子：</strong>定义一个<code>ScottBag</code>类，一个<code>ScottBook</code>类，如果我们给<code>ScottBag</code>类添加如下两个方法：</p>
+<pre><code>@interface ScottBag : NSObject
+
+- (void)add:(id)param;
+- (id)get:(NSInteger *)index;
+</code></pre><p>那么我们可以用<code>ScottBag</code>类生成的对象去<code>add</code>任意对象。</p>
+<hr>
+<p>如果我们给<code>ScottBag</code>类添加自定义泛型:</p>
+<pre><code>@interface ScottBag&lt;ObjectType&gt; : NSObject
+
+- (void)add:(ObjectType)param;
+- (ObjectType)get:(NSInteger *)index;
+</code></pre><p>那么我们可以用以下方式只能向<code>ScottBag</code>类生成的对象中添加规定的类型对象，如下，我们就规定<code>ScottBag</code>类生成的对象只能添加<code>ScottBook</code>类型的对象：</p>
+<pre><code>ScottBag&lt;ScottBook *&gt; *bag = [[ScottBag alloc] init];
+// &lt;#(ScottBook *)#&gt;表示ScottBook类型的对象
+[bag add:&lt;#(ScottBook *)#&gt;];
+</code></pre><h2 id="StoryBoard-Refrence"><a href="#StoryBoard-Refrence" class="headerlink" title="StoryBoard Refrence"></a>StoryBoard Refrence</h2><p>我们都知道以前如果我们要使用StoryBoard来做项目的话，要么就是所有的控制器都放在一个StoryBoard中，通过连线的方式进行通信，要么就是通过代码来读取不同StoryBoard种的控制器来通信。</p>
+<p>为了解决这一问题，在iOS9中引入了<code>StoryBoard Refrence</code>这个概念，<code>Storyboard Reference</code>允许你从<code>segue</code>中引用其他<code>storyboard</code>中的<code>viewController</code>。这意味中你可以保持不同功能模块化，同时<code>Storyboard</code>的体积变小并易与管理。不仅容易理解了，和团队一起工作时，合并（工作成果）也变的简单了。</p>
+<h2 id="Search-API"><a href="#Search-API" class="headerlink" title="Search API"></a>Search API</h2><p>这个在实际开发中并没有使用到，不过大家可以自己学习。—&gt;<a href="http://www.cocoachina.com/ios/20150819/13116.html" target="_blank" rel="external">传送门</a></p>
+<h2 id="UIStackView"><a href="#UIStackView" class="headerlink" title="UIStackView"></a>UIStackView</h2><p>这个在开发中暂时没有用到，在这里记录一下学习的资料。—&gt;<a href="http://www.cocoachina.com/ios/20150623/12233.html" target="_blank" rel="external">传送门</a></p>
+<h2 id="3D-touch"><a href="#3D-touch" class="headerlink" title="3D touch"></a>3D touch</h2><h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>在iPhone6s问世之后，很多果粉都争先要体验3D Touch给用户带来的额外维度上的交互，这个设计之所以叫做3D Touch，其原理上是增加了一个压力的感触，通过区分轻按和重按来进行不同的用户交互。</p>
+<h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><p>3D Touch是一个很新颖的设计，可是苹果文档也给我们说了</p>
+<blockquote>
+<p>With Xcode 7.0 you must develop on a device that supports 3D Touch. Simulator in Xcode 7.0 does not support 3D Touch.</p>
+</blockquote>
+<p>WTF,是不是看到这里心都凉了一半，是的，Xcode7是支持3D Touch开发的，可是模拟器并不支持这个手势。由于我没有6s测试机，因此就不做深入了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得我的文章对您有用，请赏点茶水钱。您的支持将鼓励我继续创作!</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xv28v.com1.z0.glb.clouddn.com/IMG_1070.JPG" alt="Scott_Mr Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag">#iOS</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/14/初识RunTime/" rel="next" title="初识Runtime">
+                <i class="fa fa-chevron-left"></i> 初识Runtime
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/19/利用RunTime实现简单的字典转模型/" rel="prev" title="利用Runtime实现简单的字典转模型">
+                利用Runtime实现简单的字典转模型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/06/15/iOS9新特性/"
+     data-title="iOS9新特性"
+     data-content=""
+     data-url="http://yoursite.com/2016/06/15/iOS9新特性/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/15/iOS9新特性/"
+           data-title="iOS9新特性" data-url="http://yoursite.com/2016/06/15/iOS9新特性/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://ww3.sinaimg.cn/small/c665b82ajw8eqh9gafb8yj20ku0ku0ti.jpg"
+               alt="Scott_Mr" />
+          <p class="site-author-name" itemprop="name">Scott_Mr</p>
+          <p class="site-description motion-element" itemprop="description">耕耘着自己的一亩三分地</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LZAscott" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/3328555050/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="新浪微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  新浪微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTPS"><span class="nav-number">2.</span> <span class="nav-text">HTTPS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bitcode"><span class="nav-number">3.</span> <span class="nav-text">Bitcode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#URL-Scheme引入白名单"><span class="nav-number">4.</span> <span class="nav-text">URL Scheme引入白名单</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#属性值nil"><span class="nav-number">5.</span> <span class="nav-text">属性值nil</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型"><span class="nav-number">6.</span> <span class="nav-text">泛型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#举一反三"><span class="nav-number">6.1.</span> <span class="nav-text">举一反三</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义泛型"><span class="nav-number">6.2.</span> <span class="nav-text">自定义泛型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StoryBoard-Refrence"><span class="nav-number">7.</span> <span class="nav-text">StoryBoard Refrence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-API"><span class="nav-number">8.</span> <span class="nav-text">Search API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UIStackView"><span class="nav-number">9.</span> <span class="nav-text">UIStackView</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3D-touch"><span class="nav-number">10.</span> <span class="nav-text">3D touch</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引言"><span class="nav-number">10.1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实践"><span class="nav-number">10.2.</span> <span class="nav-text">实践</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Scott_Mr</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"scott123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

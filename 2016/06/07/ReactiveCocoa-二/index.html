@@ -1,0 +1,819 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ReactiveCocoa," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="http://ww3.sinaimg.cn/small/c665b82ajw8eqh9gafb8yj20ku0ku0ti.jpg?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言通过ReactiveCocoa(一)的学习，相信大家对ReactiveCocoa有了一些基本认识吧。下面就让我们来学习ReactiveCocoa的一些基本使用吧！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReactiveCocoa(二)">
+<meta property="og:url" content="http://yoursite.com/2016/06/07/ReactiveCocoa-二/index.html">
+<meta property="og:site_name" content="Scott_Mr">
+<meta property="og:description" content="前言通过ReactiveCocoa(一)的学习，相信大家对ReactiveCocoa有了一些基本认识吧。下面就让我们来学习ReactiveCocoa的一些基本使用吧！">
+<meta property="og:updated_time" content="2016-06-07T13:41:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ReactiveCocoa(二)">
+<meta name="twitter:description" content="前言通过ReactiveCocoa(一)的学习，相信大家对ReactiveCocoa有了一些基本认识吧。下面就让我们来学习ReactiveCocoa的一些基本使用吧！">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/07/ReactiveCocoa-二/"/>
+
+  <title> ReactiveCocoa(二) | Scott_Mr </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Scott_Mr</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">越努力，越幸运！</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ReactiveCocoa(二)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-07T21:37:02+08:00" content="2016-06-07">
+              2016-06-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/ReactiveCocoa/" itemprop="url" rel="index">
+                    <span itemprop="name">ReactiveCocoa</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/07/ReactiveCocoa-二/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/07/ReactiveCocoa-二/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">阅读量：
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>通过<a href="http://lzascott.github.io/2016/06/06/ReactiveCocoa-%E4%B8%80/" target="_blank" rel="external">ReactiveCocoa(一)</a>的学习，相信大家对ReactiveCocoa有了一些基本认识吧。下面就让我们来学习ReactiveCocoa的一些基本使用吧！<br><a id="more"></a></p>
+<h2 id="ReactiveCocoa基本使用"><a href="#ReactiveCocoa基本使用" class="headerlink" title="ReactiveCocoa基本使用"></a>ReactiveCocoa基本使用</h2><h4 id="代替代理"><a href="#代替代理" class="headerlink" title="代替代理"></a>代替代理</h4><p>在ReactiveCocoa(一)中讲到可以通过<code>RACSubject</code>代替代理，我们也可以通过<code>rac_signalForSelector</code>同样代替代理。</p>
+<h6 id="代码演练"><a href="#代码演练" class="headerlink" title="代码演练"></a>代码演练</h6><pre><code>// 需求：自定义redView,监听红色view中按钮点击
+// 之前都是需要通过代理监听，给红色View添加一个代理属性，点击按钮的时候，通知代理做事情
+// rac_signalForSelector:把调用某个对象的方法的信息转换成信号，就要调用这个方法，就会发送信号。
+// 这里表示只要redV调用btnClick:,就会发出信号，订阅就好了。
+[[redV rac_signalForSelector:@selector(btnClick:)] subscribeNext:^(id x) {
+    NSLog(@&quot;点击红色按钮&quot;);
+}];
+</code></pre><h4 id="代替KVO"><a href="#代替KVO" class="headerlink" title="代替KVO"></a>代替KVO</h4><p><code>rac_valuesAndChangesForKeyPath:</code>用于监听某个对象的某个属性发生变化。</p>
+<h6 id="代码演练-1"><a href="#代码演练-1" class="headerlink" title="代码演练"></a>代码演练</h6><pre><code>// 需求:每点击一次，年龄增加一次
+// 定义一个age属性
+- (void)obserVer {
+    [[self rac_valuesForKeyPath:@&quot;age&quot; observer:nil] subscribeNext:^(id x) {
+        NSLog(@&quot;%@&quot;,x);
+    }];}
+
+- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event {
+    self.age ++;
+}
+</code></pre><h4 id="监听事件"><a href="#监听事件" class="headerlink" title="监听事件"></a>监听事件</h4><p><code>rac_signalForControlEvents:</code>用于监听某个事件。</p>
+<h6 id="代码演练-2"><a href="#代码演练-2" class="headerlink" title="代码演练"></a>代码演练</h6><pre><code>// 把按钮点击事件转化成信号，点击按钮，就会发送信号
+[[self.btn rac_signalForControlEvents:UIControlEventTouchUpInside]         subscribeNext:^(id x) {
+        NSLog(@&quot;监听按钮点击事件&quot;);
+ }];
+</code></pre><h4 id="代替通知"><a href="#代替通知" class="headerlink" title="代替通知"></a>代替通知</h4><p><code>rac_addObserverForName:</code>用于监听某个通知。</p>
+<h6 id="代码演练-3"><a href="#代码演练-3" class="headerlink" title="代码演练"></a>代码演练</h6><pre><code>[[[NSNotificationCenter defaultCenter] rac_addObserverForName:UIKeyboardWillShowNotification object:nil] subscribeNext:^(id x) {
+    NSLog(@&quot;弹出键盘&quot;);
+}];
+</code></pre><h4 id="监听文本框文字改变"><a href="#监听文本框文字改变" class="headerlink" title="监听文本框文字改变"></a>监听文本框文字改变</h4><p><code>rac_textSignal:</code>用于监听文本框文字发生改变</p>
+<h6 id="代码演练-4"><a href="#代码演练-4" class="headerlink" title="代码演练"></a>代码演练</h6><pre><code>[[self.textField rac_textSignal] subscribeNext:^(id x) {
+    NSLog(@&quot;text:%@&quot;,x);
+}];
+</code></pre><h4 id="处理当界面有多个请求时，需要都获取到数据，才能展示界面"><a href="#处理当界面有多个请求时，需要都获取到数据，才能展示界面" class="headerlink" title="处理当界面有多个请求时，需要都获取到数据，才能展示界面"></a>处理当界面有多个请求时，需要都获取到数据，才能展示界面</h4><p><code>rac_liftSelector:withSignalsFromArray:Signals:</code>当传入的Signals(信号数组)，每一个signal都至少sendNext过一次，就会去触发selector参数的方法。</p>
+<p><strong>注意：几个信号，参数一的方法就几个参数，每个参数对应信号发出的数据，否则运行时会报错。</strong></p>
+<h6 id="代码演练-5"><a href="#代码演练-5" class="headerlink" title="代码演练"></a>代码演练</h6><pre><code>- (void)test{
+    // 创建信号A
+    RACSignal *signalA = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) {
+            NSLog(@&quot;数据请求1&quot;);
+            [subscriber sendNext:@&quot;发送请求1回来的数据&quot;];
+            return [RACDisposable disposableWithBlock:^{
+                NSLog(@&quot;随便写写&quot;);
+            }];
+        }];
+
+    // 创建信号B
+    RACSignal *signalB = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) {
+        NSLog(@&quot;数据请求2&quot;);
+        [subscriber sendNext:@&quot;发送请求2回来的数据&quot;];
+        return nil;
+    }];
+
+    // RAC:就可以判断两个信号有没有都发出内容
+    // SignalsFromArray:监听哪些信号的发出
+    // 当signals数组中的所有信号都发送sendNext就会触发方法调用者(self)的selector
+    // 注意:selector方法的参数不能乱写,有几个信号就对应几个参数
+    // 不需要主动订阅signalA,signalB,方法内部会自动订阅
+    [self rac_liftSelector:@selector(doneNextWithA:andB:) withSignalsFromArray:@[signalA,signalB]];
+}
+
+- (void)doneNextWithA:(NSString *)a andB:(NSString *)b {
+        NSLog(@&quot;请求完成，更新UI--a:%@,b:%@&quot;,a,b);
+}
+</code></pre><h2 id="ReactiveCocoa常见宏"><a href="#ReactiveCocoa常见宏" class="headerlink" title="ReactiveCocoa常见宏"></a>ReactiveCocoa常见宏</h2><h4 id="RAC-TARGET-…"><a href="#RAC-TARGET-…" class="headerlink" title="RAC(TARGET, …)"></a>RAC(TARGET, …)</h4><ul>
+<li><p>用于给某个对象的某个属性绑定。</p>
+<pre><code>// 只要文本框文字改变，就会修改label的文字
+RAC(self.labelView,text) = _textField.rac_textSignal;
+</code></pre></li>
+</ul>
+<h4 id="RACObserve-TARGET-KEYPATH"><a href="#RACObserve-TARGET-KEYPATH" class="headerlink" title="RACObserve(TARGET,KEYPATH)"></a>RACObserve(TARGET,KEYPATH)</h4><ul>
+<li><p>监听某个对象的某个属性，返回的是信号</p>
+<pre><code>[RACObserve(self, age) subscribeNext:^(id x) {
+    NSLog(@&quot;%@&quot;,x);
+}];
+</code></pre></li>
+</ul>
+<h4 id="weakify-Obj-和-strongify-Obj"><a href="#weakify-Obj-和-strongify-Obj" class="headerlink" title="@weakify(Obj)和@strongify(Obj)"></a>@weakify(Obj)和@strongify(Obj)</h4><ul>
+<li><p>一般都是成对出现，为了避免引起循环引用导致内存泄漏的，和block的使用类似。</p>
+<pre><code>@weakify(self);
+[[_redView rac_signalForSelector:@selector(btnClick:)] subscribeNext:^(id x) {
+@strongify(self);
+NavViewController *navVC = [[UIStoryboard storyboardWithName:@&quot;Main&quot; bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([NavViewController class])];
+[self.navigationController pushViewController:navVC animated:YES];
+   }];
+</code></pre></li>
+</ul>
+<h4 id="RACTuplePack"><a href="#RACTuplePack" class="headerlink" title="RACTuplePack"></a>RACTuplePack</h4><ul>
+<li><p>把数据包装成RACTuple（元组类）</p>
+<pre><code>// 把参数中的数据包装成元组
+   RACTuple *tuple = RACTuplePack(@&quot;Scott_Mr&quot;,@20);
+</code></pre></li>
+</ul>
+<h4 id="RACTupleUnpack"><a href="#RACTupleUnpack" class="headerlink" title="RACTupleUnpack"></a>RACTupleUnpack</h4><ul>
+<li><p>把RACTuple（元组类）解包成对应的数据。</p>
+<pre><code>// 解包元组，会把元组的值，按顺序给参数里面的变量赋值
+// name = @&quot;Scott_Mr&quot; age = @20
+RACTupleUnpack(NSString *name,NSNumber *age) = tuple;
+NSLog(@&quot;%@,%@&quot;,name,age);
+</code></pre></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得我的文章对您有用，请赏点茶水钱。您的支持将鼓励我继续创作!</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xv28v.com1.z0.glb.clouddn.com/IMG_1070.JPG" alt="Scott_Mr Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ReactiveCocoa/" rel="tag">#ReactiveCocoa</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/06/ReactiveCocoa-一/" rel="next" title="ReactiveCocoa(一)">
+                <i class="fa fa-chevron-left"></i> ReactiveCocoa(一)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/08/Xcode常用快捷键/" rel="prev" title="Xcode常用快捷键">
+                Xcode常用快捷键 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/06/07/ReactiveCocoa-二/"
+     data-title="ReactiveCocoa(二)"
+     data-content=""
+     data-url="http://yoursite.com/2016/06/07/ReactiveCocoa-二/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/07/ReactiveCocoa-二/"
+           data-title="ReactiveCocoa(二)" data-url="http://yoursite.com/2016/06/07/ReactiveCocoa-二/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://ww3.sinaimg.cn/small/c665b82ajw8eqh9gafb8yj20ku0ku0ti.jpg"
+               alt="Scott_Mr" />
+          <p class="site-author-name" itemprop="name">Scott_Mr</p>
+          <p class="site-description motion-element" itemprop="description">耕耘着自己的一亩三分地</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LZAscott" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/3328555050/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="新浪微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  新浪微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ReactiveCocoa基本使用"><span class="nav-number">2.</span> <span class="nav-text">ReactiveCocoa基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代替代理"><span class="nav-number">2.0.1.</span> <span class="nav-text">代替代理</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#代码演练"><span class="nav-number">2.0.1.0.1.</span> <span class="nav-text">代码演练</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代替KVO"><span class="nav-number">2.0.2.</span> <span class="nav-text">代替KVO</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#代码演练-1"><span class="nav-number">2.0.2.0.1.</span> <span class="nav-text">代码演练</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#监听事件"><span class="nav-number">2.0.3.</span> <span class="nav-text">监听事件</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#代码演练-2"><span class="nav-number">2.0.3.0.1.</span> <span class="nav-text">代码演练</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代替通知"><span class="nav-number">2.0.4.</span> <span class="nav-text">代替通知</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#代码演练-3"><span class="nav-number">2.0.4.0.1.</span> <span class="nav-text">代码演练</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#监听文本框文字改变"><span class="nav-number">2.0.5.</span> <span class="nav-text">监听文本框文字改变</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#代码演练-4"><span class="nav-number">2.0.5.0.1.</span> <span class="nav-text">代码演练</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理当界面有多个请求时，需要都获取到数据，才能展示界面"><span class="nav-number">2.0.6.</span> <span class="nav-text">处理当界面有多个请求时，需要都获取到数据，才能展示界面</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#代码演练-5"><span class="nav-number">2.0.6.0.1.</span> <span class="nav-text">代码演练</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ReactiveCocoa常见宏"><span class="nav-number">3.</span> <span class="nav-text">ReactiveCocoa常见宏</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RAC-TARGET-…"><span class="nav-number">3.0.1.</span> <span class="nav-text">RAC(TARGET, …)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RACObserve-TARGET-KEYPATH"><span class="nav-number">3.0.2.</span> <span class="nav-text">RACObserve(TARGET,KEYPATH)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#weakify-Obj-和-strongify-Obj"><span class="nav-number">3.0.3.</span> <span class="nav-text">@weakify(Obj)和@strongify(Obj)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RACTuplePack"><span class="nav-number">3.0.4.</span> <span class="nav-text">RACTuplePack</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RACTupleUnpack"><span class="nav-number">3.0.5.</span> <span class="nav-text">RACTupleUnpack</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Scott_Mr</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"scott123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,791 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Git," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="http://ww3.sinaimg.cn/small/c665b82ajw8eqh9gafb8yj20ku0ku0ti.jpg?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="什么是GitGit是Linux发明者Linus开发的一款新时代的版本控制系统，那什么是版本控制系统呢？怎么理解？网上一大堆详细的介绍，但是大多枯燥乏味，对于新手也很难理解，这里我只举几个例子。
+熟悉编程的都知道，我们在软件开发中源代码其实是最重要的，那么对源代码的管理变得异常重要：
+
+为了防止代码的丢失，肯定本地机器与远程服务器都要存放一份，而且还需要有一套机制让本地可以跟远程同步；
+我们开发的时">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git从入门到速成">
+<meta property="og:url" content="http://yoursite.com/2016/06/04/Git从入门到速成/index.html">
+<meta property="og:site_name" content="Scott_Mr">
+<meta property="og:description" content="什么是GitGit是Linux发明者Linus开发的一款新时代的版本控制系统，那什么是版本控制系统呢？怎么理解？网上一大堆详细的介绍，但是大多枯燥乏味，对于新手也很难理解，这里我只举几个例子。
+熟悉编程的都知道，我们在软件开发中源代码其实是最重要的，那么对源代码的管理变得异常重要：
+
+为了防止代码的丢失，肯定本地机器与远程服务器都要存放一份，而且还需要有一套机制让本地可以跟远程同步；
+我们开发的时">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/git1.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/git2.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/git3.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/git4.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/git5.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/git6.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/git7.png">
+<meta property="og:image" content="http://7xv28v.com1.z0.glb.clouddn.com/git8.png">
+<meta property="og:updated_time" content="2016-06-05T13:37:27.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git从入门到速成">
+<meta name="twitter:description" content="什么是GitGit是Linux发明者Linus开发的一款新时代的版本控制系统，那什么是版本控制系统呢？怎么理解？网上一大堆详细的介绍，但是大多枯燥乏味，对于新手也很难理解，这里我只举几个例子。
+熟悉编程的都知道，我们在软件开发中源代码其实是最重要的，那么对源代码的管理变得异常重要：
+
+为了防止代码的丢失，肯定本地机器与远程服务器都要存放一份，而且还需要有一套机制让本地可以跟远程同步；
+我们开发的时">
+<meta name="twitter:image" content="http://7xv28v.com1.z0.glb.clouddn.com/git1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/04/Git从入门到速成/"/>
+
+  <title> Git从入门到速成 | Scott_Mr </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Scott_Mr</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">越努力，越幸运！</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Git从入门到速成
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-04T13:15:49+08:00" content="2016-06-04">
+              2016-06-04
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/04/Git从入门到速成/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/04/Git从入门到速成/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">阅读量：
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="什么是Git"><a href="#什么是Git" class="headerlink" title="什么是Git"></a>什么是Git</h2><p>Git是Linux发明者Linus开发的一款新时代的<strong>版本控制系统</strong>，那什么是版本控制系统呢？怎么理解？网上一大堆详细的介绍，但是大多枯燥乏味，对于新手也很难理解，这里我只举几个例子。</p>
+<p>熟悉编程的都知道，我们在软件开发中源代码其实是最重要的，那么对源代码的管理变得异常重要：</p>
+<ul>
+<li>为了防止代码的丢失，肯定本地机器与远程服务器都要存放一份，而且还需要有一套机制让本地可以跟远程同步；</li>
+<li>我们开发的时候免不了有bug，有时候刚发布的功能就出现了严重的bug,这个时候需要对代码进行还原；</li>
+<li>随着我们版本迭代的功能越来越多，但是我们需要清除的知道历史每一个版本的代码更改记录，甚至知道每个人历史提交代码的情况<a id="more"></a>
+等等类似以上的情况，这些都是版本控制系统能解决的问题。所以说，版本控制是一种记录一个或者若干个文件内容变换，以便将来查阅特定版本修改情况的系统，对于软件开发领域来说版本控制是最重要的一个环节，而Git是当下比较流行、好用的版本控制系统。</li>
+</ul>
+<h2 id="Git安装"><a href="#Git安装" class="headerlink" title="Git安装"></a>Git安装</h2><p>上面说了，Git是一个版本控制系统，你也可以理解成一个工具，跟Java类似，使用之前必须得先安装，所以第一步必须要安装，由于我用的是Mac，Mac上系统自带Git。所以安装这一步骤就省略，相信大家可以搞的定。</p>
+<h2 id="如何学习Git"><a href="#如何学习Git" class="headerlink" title="如何学习Git"></a>如何学习Git</h2><p>安装好Git之后，怎么学习是个问题，其实关于Git有很多图形化的软件，但是我强烈建议大家从命令行开始学习理解，我知道没有接触过命令行的同学内心可能是拒绝的，但是我的亲身实践证明，只有一开始学习命令行，之后你对Git的每一步操作才能理解其意义，而等你熟练之后 ，你想用任何的图形化的软件去操作完全没有问题。</p>
+<h2 id="Git命令列表"><a href="#Git命令列表" class="headerlink" title="Git命令列表"></a>Git命令列表</h2><p>怎么判断你Git有没有安装成功呢？请在命令行里输入git，如果出现以下提示证明你已经安装成功了。</p>
+<p><img src="http://7xv28v.com1.z0.glb.clouddn.com/git1.png" alt="如图"></p>
+<p>Git所有的操作命令都是以git开头，上面列举了最常用的一些Git命令，紧接着会有一句引文解释这个命令的意思，都不是很难理解的单词，不妨试着看一下，不过没有实际操作你仍然不好理解，下面我们来以一个实际的操作来介绍下一些常用的命令的含义。</p>
+<h2 id="Git具体命令"><a href="#Git具体命令" class="headerlink" title="Git具体命令"></a>Git具体命令</h2><p>第一步：我们先新建一个文件夹，在文件夹里新建一个文件(ps:<strong>我是用命令行去新建的</strong>)</p>
+<ul>
+<li><p>新建文件夹：<code>mkdir test</code></p>
+</li>
+<li><p>跳转到文件夹目录：<code>cd test</code></p>
+</li>
+<li><p>新建test.md文件: <code>touch test.md</code></p>
+</li>
+</ul>
+<p><strong>提醒：在进行任何Git操作之前，都要先切换到Git仓库目录，也就是要先切换到项目的文件夹目录下</strong></p>
+<p>这个时候我们先随便操作一个命令，比如git status，可以看到如下提示：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/git2.png" alt="如图"></p>
+<p>意思就是当前目录还不是一个Git仓库。</p>
+<h3 id="git-init"><a href="#git-init" class="headerlink" title="git init"></a>git init</h3><p>这个时候用到了第一个命令，代表初始化git仓库，输入git init之后会提示：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/git3.png" alt="如图"></p>
+<p>可以看到初始化成功了，至此test目录已经是一个git仓库了。</p>
+<h3 id="git-status"><a href="#git-status" class="headerlink" title="git status"></a>git status</h3><p>紧接着我们输入git status命令，会有如下提示:<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/git4.png" alt="如图"></p>
+<p>默认就直接在master分支，关于分支的概念后面会提，这时最主要的是提示test.md这个文件<br><code>Untracked files</code>就是说test.md这个文件还没有被跟踪，还没有提交在git仓库里呢，而且提示你可以用git add去操作你想要提交的文件。</p>
+<p><code>git status</code>这个命令就是查看状态，这个命令可以算是使用最频繁的了，建议大家没事就输入这个命令来查看你当前git仓库的一些状态。</p>
+<h3 id="git-add"><a href="#git-add" class="headerlink" title="git add"></a>git add</h3><p>上面提示test.md文件还没有提交到git仓库里，这个时候我们可以随便编辑下test.md文件，然后输入<code>git add test.md</code>，然后再输入<code>git status</code>：<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/git5.png" alt="如图"></p>
+<p>此时提示以下文件 <code>Changes to be committed</code>,意思就是test.md文件等待被提交，当然你也可以使用 <code>git rm -cached</code>这个命令去移除这个缓存。</p>
+<h3 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h3><p>接着，我们输入 <code>git commit -m &quot;first commit&quot;</code>，这个命令是什么意思呢？commit是提交的意思，-m 代表提交信息，执行了以上命令代表我们已经正式进行了第一次提交。这个时候再输入 <code>git status</code> ，会提示 <code>nothing to commit</code> 。<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/git6.png" alt="图6"></p>
+<h3 id="git-log"><a href="#git-log" class="headerlink" title="git log"></a>git log</h3><p>这个时候，我们输入 <code>git log</code>命令，就会看到如下:<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/git7.png" alt="图7"></p>
+<p><code>git log</code>这个命令可以查看所有commit产生的记录，所以可以看到已经产生了一条commit记录，而提交时候的附带信息叫 <code>“first commit”</code> 。</p>
+<h3 id="git-add-amp-git-commit"><a href="#git-add-amp-git-commit" class="headerlink" title="git add &amp; git commit"></a>git add &amp; git commit</h3><p>看到这里估计很多人都会有疑问，我想要提交直接进行commit不就行了么为什么需要先add一次呢？首先 <code>git add</code> 是把改动添加到一个<strong>暂存区</strong>，你可以理解成一个缓存区域，临时保存你的改动，而 <code>git commit</code> 才是最后真正的提交，当然也有办法把这两步合并成一步，不过后面再介绍，建议新手先按部就班的一步步来。</p>
+<h3 id="git-branch"><a href="#git-branch" class="headerlink" title="git branch"></a>git branch</h3><p>branch即分支的意思，分支的概念很重要，尤其是团队协作的时候，假设两个人都做同一个项目，这个时候分支就是保证两人能协同合作的最大力气了。</p>
+<p>举个🌰：A、B两人都在做同一个项目，但是不同的模块，这个时候A新建了一个分支叫a，B新建了一个分支叫b，这样A、B做的所有代码改动都在各自的分支，互不影响，等到两人都把各自的模块都做完了，最后再统一把分支合并起来。</p>
+<p>执行 <code>git init</code>初始化git仓库之后会默认生成一个主分支master，也是你所在的默认分支，也基本是实际开发正式环境下的分支，一般情况下master分支不会轻易直接在上面操作的，你们可以输入<code>git branch</code>查看下当前分支情况；如果我们想在此基础上新建一个分支呢，很简单，执行 <code>git branch a</code>就新建了一个名字叫a的分支，这时候分支a跟分支master是一模一样的内容，我们再输入<code>git branch</code> 查看当前的分支情况；</p>
+<p>但是可以看到master分支前有个 * 号，(<strong>注意: * 所指的分支代表当前所在的分支</strong>) 即虽然新建了一个 a 的分支，但是当前所在的分支还是在master上，如果我们想在 a 分支上进行开发，首先要先切换到 a 分支上才行，所以下一步要切换分支。<code>git checkout a</code><br>执行这个命令，然后再输入<code>git branch</code>查看分支情况，可以看到当前我们所在的分支已经是a了，这个时候，A同学就可以在他新建的a分支进行写代码了。<br>那就有人说了，我要先新建再切换，未免有点麻烦，有没有一步到位的，答案是肯定的：<br><code>git checkout -b a</code>这个命令代表的意思就是新建一个a分支，并且自动切换到a分支</p>
+<h3 id="git-merge"><a href="#git-merge" class="headerlink" title="git merge"></a>git merge</h3><p>A同学在a分支上代码写完了，并且测试也OK了，准备要上线了，这个时候就需要把他的代码合并到分支master上，然后发布。<code>git merge</code>就是合并分支用到的命令，这对这个情况，需要先做两步:</p>
+<ul>
+<li>第一步是切换到master分支，如果你已经在那就不用切换了</li>
+<li>第二步执行git merge a,意思就是把 a 分支的代码合并过来，不出意外，这个时候 a 分支的代码就顺利合并到master分支来了，为什么说不出意外呢？因为这个时候可能因为产生冲突而导致合并失败。</li>
+</ul>
+<h3 id="git-branch-d"><a href="#git-branch-d" class="headerlink" title="git branch -d"></a>git branch -d</h3><p>有新建分支，那肯定就有删除分支，加入这个分支新建错了，或者a分支的代码已经顺利合并到master分支来了，那么a分支没用了，需要删除，这个时候执行代码 <code>git branch -d a</code><br>就可以把a分支删除了。</p>
+<h3 id="git-branch-D"><a href="#git-branch-D" class="headerlink" title="git branch -D"></a>git branch -D</h3><p>有些时候可能会删除失败，比如如果a分支的代码还没有合并到master分支，你执行 <code>git branch -d a</code>是删除不了的，它会智能的提示你a分支还有未合并的代码，但是如果你非要删除，那就执行 <code>git branch -D a</code>就可以强制删除a分支了。</p>
+<h3 id="git-tag"><a href="#git-tag" class="headerlink" title="git tag"></a>git tag</h3><p>我们在客户端开发的时候经常有版本的概念，比如v1.0、v1.1之类的，不同的版本肯定对应不同的代码，所以我们一般要给我们的代码加上标签，这样假设v1.1版本出了一个新bug，但是又不知道v1.0是不是有这个bug，有了标签就可以顺利切换到v1.0的代码，重新打个包测试就知道了。<br>所以如果想要新建一个标签很简单，比如 <code>git tag v1.0</code>就代表我在当前代码状态下新建了一个v1.0的标签，输入 <code>git tag</code>可以查看历史tag记录。</p>
+<p>想要切换到某个tag怎么办？<br>也很简单，执行 <code>git checkout v1.0</code>这样就顺利的切换到v1.0 tag的代码状态了。</p>
+<h2 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h2><p>OK，以上全是一些最基本的git操作，而且全是在本地环境进行操作的，完全没有涉及到远程仓库。毕竟这篇文章是针对小白的，大神可以忽略。</p>
+<p>附上一张git操作的图<br><img src="http://7xv28v.com1.z0.glb.clouddn.com/git8.png" alt="图8"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得我的文章对您有用，请赏点茶水钱。您的支持将鼓励我继续创作!</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xv28v.com1.z0.glb.clouddn.com/IMG_1070.JPG" alt="Scott_Mr Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag">#Git</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/10/两个imageView实现图片轮播/" rel="next" title="两个imageView实现图片轮播">
+                <i class="fa fa-chevron-left"></i> 两个imageView实现图片轮播
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/04/收藏/" rel="prev" title="收藏">
+                收藏 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/06/04/Git从入门到速成/"
+     data-title="Git从入门到速成"
+     data-content=""
+     data-url="http://yoursite.com/2016/06/04/Git从入门到速成/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/04/Git从入门到速成/"
+           data-title="Git从入门到速成" data-url="http://yoursite.com/2016/06/04/Git从入门到速成/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://ww3.sinaimg.cn/small/c665b82ajw8eqh9gafb8yj20ku0ku0ti.jpg"
+               alt="Scott_Mr" />
+          <p class="site-author-name" itemprop="name">Scott_Mr</p>
+          <p class="site-description motion-element" itemprop="description">耕耘着自己的一亩三分地</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LZAscott" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/3328555050/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="新浪微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  新浪微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Git"><span class="nav-number">1.</span> <span class="nav-text">什么是Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git安装"><span class="nav-number">2.</span> <span class="nav-text">Git安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何学习Git"><span class="nav-number">3.</span> <span class="nav-text">如何学习Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git命令列表"><span class="nav-number">4.</span> <span class="nav-text">Git命令列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git具体命令"><span class="nav-number">5.</span> <span class="nav-text">Git具体命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#git-init"><span class="nav-number">5.1.</span> <span class="nav-text">git init</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-status"><span class="nav-number">5.2.</span> <span class="nav-text">git status</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-add"><span class="nav-number">5.3.</span> <span class="nav-text">git add</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-commit"><span class="nav-number">5.4.</span> <span class="nav-text">git commit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-log"><span class="nav-number">5.5.</span> <span class="nav-text">git log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-add-amp-git-commit"><span class="nav-number">5.6.</span> <span class="nav-text">git add & git commit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-branch"><span class="nav-number">5.7.</span> <span class="nav-text">git branch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-merge"><span class="nav-number">5.8.</span> <span class="nav-text">git merge</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-branch-d"><span class="nav-number">5.9.</span> <span class="nav-text">git branch -d</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-branch-D"><span class="nav-number">5.10.</span> <span class="nav-text">git branch -D</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-tag"><span class="nav-number">5.11.</span> <span class="nav-text">git tag</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结束语"><span class="nav-number">6.</span> <span class="nav-text">结束语</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Scott_Mr</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"scott123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
