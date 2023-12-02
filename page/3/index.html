@@ -171,9 +171,13 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <ol>
-<li>如果使用retain，只是引用计数 +1，并没有生成新的对象，所以效率好。</li>
-<li>但是使用copy安全。因为NSString为NSMutableString 的基类，如果将NSMutableString 以retain的形式赋值给NSString后，后续修改NSMutableString会导致NSString内容的变化，这通常不是我们希望的，所以NSString要使用copy。比如：
+        <meta name="referrer" content="no-referrer" />
+
+<h1 id="一、原因"><a href="#一、原因" class="headerlink" title="一、原因"></a>一、原因</h1><h2 id="1-1-一方面"><a href="#1-1-一方面" class="headerlink" title="1.1 一方面"></a>1.1 一方面</h2><p>如果使用retain，只是引用计数 +1，并没有生成新的对象，所以效率好。</p>
+<h2 id="1-2-另一方面"><a href="#1-2-另一方面" class="headerlink" title="1.2 另一方面"></a>1.2 另一方面</h2><p>但是使用copy安全。因为NSString为NSMutableString 的基类，如果将NSMutableString 以retain的形式赋值给NSString后，后续修改NSMutableString会导致NSString内容的变化，这通常不是我们希望的，所以NSString要使用copy。比如：</p>
+<pre><code><figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">NSMutableString</span> *mName = [<span class="symbol">NSMutableString</span> stringWithString:@<span class="string">&quot;li&quot;</span>];  </span><br><span class="line"><span class="symbol">Person</span> *p = [[[<span class="symbol">Person</span> alloc] init] autorelease];  </span><br><span class="line">p.name = mName;  </span><br><span class="line">[mName setString:@<span class="string">&quot;zhang&quot;</span>];  </span><br><span class="line"><span class="symbol">NSLog</span>(@<span class="string">&quot;p.name:%@&quot;</span>, p.name); </span><br></pre></td></tr></table></figure>
+    
+</code></pre>
         
           <a class="article-more-a" href="/2015/01/10/NSString%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8copy-%E8%80%8C%E4%B8%8D%E4%BD%BF%E7%94%A8retain/#more">more >></a>
         

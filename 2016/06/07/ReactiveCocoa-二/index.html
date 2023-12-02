@@ -8,15 +8,15 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>ReactiveCocoa(二) | Leoli的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言通过ReactiveCocoa(一)的学习，相信大家对ReactiveCocoa有了一些基本认识吧。下面就让我们来学习ReactiveCocoa的一些基本使用吧！">
+  <meta name="description" content="一、前言通过ReactiveCocoa(一)的学习，相信大家对ReactiveCocoa有了一些基本认识吧。下面就让我们来学习ReactiveCocoa的一些基本使用吧！">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ReactiveCocoa(二)">
 <meta property="og:url" content="http://yoursite.com/2016/06/07/ReactiveCocoa-%E4%BA%8C/index.html">
 <meta property="og:site_name" content="Leoli的博客">
-<meta property="og:description" content="前言通过ReactiveCocoa(一)的学习，相信大家对ReactiveCocoa有了一些基本认识吧。下面就让我们来学习ReactiveCocoa的一些基本使用吧！">
+<meta property="og:description" content="一、前言通过ReactiveCocoa(一)的学习，相信大家对ReactiveCocoa有了一些基本认识吧。下面就让我们来学习ReactiveCocoa的一些基本使用吧！">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2016-06-07T13:37:02.000Z">
-<meta property="article:modified_time" content="2016-06-07T13:41:14.000Z">
+<meta property="article:modified_time" content="2023-12-02T08:18:40.849Z">
 <meta property="article:author" content="Leoli">
 <meta property="article:tag" content="ReactiveCocoa">
 <meta name="twitter:card" content="summary">
@@ -171,11 +171,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>通过<a href="http://lzascott.github.io/2016/06/06/ReactiveCocoa-%E4%B8%80/">ReactiveCocoa(一)</a>的学习，相信大家对ReactiveCocoa有了一些基本认识吧。下面就让我们来学习ReactiveCocoa的一些基本使用吧！</p>
+        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>通过<a href="http://lzascott.github.io/2016/06/06/ReactiveCocoa-%E4%B8%80/">ReactiveCocoa(一)</a>的学习，相信大家对ReactiveCocoa有了一些基本认识吧。下面就让我们来学习ReactiveCocoa的一些基本使用吧！</p>
 <span id="more"></span>
 
-<h2 id="ReactiveCocoa基本使用"><a href="#ReactiveCocoa基本使用" class="headerlink" title="ReactiveCocoa基本使用"></a>ReactiveCocoa基本使用</h2><h4 id="代替代理"><a href="#代替代理" class="headerlink" title="代替代理"></a>代替代理</h4><p>在ReactiveCocoa(一)中讲到可以通过<code>RACSubject</code>代替代理，我们也可以通过<code>rac_signalForSelector</code>同样代替代理。</p>
-<h6 id="代码演练"><a href="#代码演练" class="headerlink" title="代码演练"></a>代码演练</h6><pre><code>// 需求：自定义redView,监听红色view中按钮点击
+<h2 id="二、ReactiveCocoa基本使用"><a href="#二、ReactiveCocoa基本使用" class="headerlink" title="二、ReactiveCocoa基本使用"></a>二、ReactiveCocoa基本使用</h2><h3 id="2-1-代替代理"><a href="#2-1-代替代理" class="headerlink" title="2.1 代替代理"></a>2.1 代替代理</h3><p>在ReactiveCocoa(一)中讲到可以通过<code>RACSubject</code>代替代理，我们也可以通过<code>rac_signalForSelector</code>同样代替代理。</p>
+<h4 id="2-1-1-代码演练"><a href="#2-1-1-代码演练" class="headerlink" title="2.1.1 代码演练"></a>2.1.1 代码演练</h4><pre><code>// 需求：自定义redView,监听红色view中按钮点击
 // 之前都是需要通过代理监听，给红色View添加一个代理属性，点击按钮的时候，通知代理做事情
 // rac_signalForSelector:把调用某个对象的方法的信息转换成信号，就要调用这个方法，就会发送信号。
 // 这里表示只要redV调用btnClick:,就会发出信号，订阅就好了。
@@ -183,8 +183,8 @@
     NSLog(@&quot;点击红色按钮&quot;);
 &#125;];
 </code></pre>
-<h4 id="代替KVO"><a href="#代替KVO" class="headerlink" title="代替KVO"></a>代替KVO</h4><p><code>rac_valuesAndChangesForKeyPath:</code>用于监听某个对象的某个属性发生变化。</p>
-<h6 id="代码演练-1"><a href="#代码演练-1" class="headerlink" title="代码演练"></a>代码演练</h6><pre><code>// 需求:每点击一次，年龄增加一次
+<h3 id="2-2-代替KVO"><a href="#2-2-代替KVO" class="headerlink" title="2.2 代替KVO"></a>2.2 代替KVO</h3><p><code>rac_valuesAndChangesForKeyPath:</code>用于监听某个对象的某个属性发生变化。</p>
+<h4 id="2-2-1-代码演练"><a href="#2-2-1-代码演练" class="headerlink" title="2.2.1 代码演练"></a>2.2.1 代码演练</h4><pre><code>// 需求:每点击一次，年龄增加一次
 // 定义一个age属性
 - (void)obserVer &#123;
     [[self rac_valuesForKeyPath:@&quot;age&quot; observer:nil] subscribeNext:^(id x) &#123;
@@ -195,25 +195,25 @@
     self.age ++;
 &#125;
 </code></pre>
-<h4 id="监听事件"><a href="#监听事件" class="headerlink" title="监听事件"></a>监听事件</h4><p><code>rac_signalForControlEvents:</code>用于监听某个事件。</p>
-<h6 id="代码演练-2"><a href="#代码演练-2" class="headerlink" title="代码演练"></a>代码演练</h6><pre><code>// 把按钮点击事件转化成信号，点击按钮，就会发送信号
+<h3 id="2-3-监听事件"><a href="#2-3-监听事件" class="headerlink" title="2.3 监听事件"></a>2.3 监听事件</h3><p><code>rac_signalForControlEvents:</code>用于监听某个事件。</p>
+<h4 id="2-3-1-代码演练"><a href="#2-3-1-代码演练" class="headerlink" title="2.3.1 代码演练"></a>2.3.1 代码演练</h4><pre><code>// 把按钮点击事件转化成信号，点击按钮，就会发送信号
 [[self.btn rac_signalForControlEvents:UIControlEventTouchUpInside] 		subscribeNext:^(id x) &#123;
         NSLog(@&quot;监听按钮点击事件&quot;);
  &#125;];
 </code></pre>
-<h4 id="代替通知"><a href="#代替通知" class="headerlink" title="代替通知"></a>代替通知</h4><p><code>rac_addObserverForName:</code>用于监听某个通知。</p>
-<h6 id="代码演练-3"><a href="#代码演练-3" class="headerlink" title="代码演练"></a>代码演练</h6><pre><code>[[[NSNotificationCenter defaultCenter] rac_addObserverForName:UIKeyboardWillShowNotification object:nil] subscribeNext:^(id x) &#123;
+<h3 id="2-4-代替通知"><a href="#2-4-代替通知" class="headerlink" title="2.4 代替通知"></a>2.4 代替通知</h3><p><code>rac_addObserverForName:</code>用于监听某个通知。</p>
+<h4 id="2-4-1-代码演练"><a href="#2-4-1-代码演练" class="headerlink" title="2.4.1 代码演练"></a>2.4.1 代码演练</h4><pre><code>[[[NSNotificationCenter defaultCenter] rac_addObserverForName:UIKeyboardWillShowNotification object:nil] subscribeNext:^(id x) &#123;
     NSLog(@&quot;弹出键盘&quot;);
 &#125;];
 </code></pre>
-<h4 id="监听文本框文字改变"><a href="#监听文本框文字改变" class="headerlink" title="监听文本框文字改变"></a>监听文本框文字改变</h4><p><code>rac_textSignal:</code>用于监听文本框文字发生改变</p>
-<h6 id="代码演练-4"><a href="#代码演练-4" class="headerlink" title="代码演练"></a>代码演练</h6><pre><code>[[self.textField rac_textSignal] subscribeNext:^(id x) &#123;
+<h3 id="2-5-监听文本框文字改变"><a href="#2-5-监听文本框文字改变" class="headerlink" title="2.5 监听文本框文字改变"></a>2.5 监听文本框文字改变</h3><p><code>rac_textSignal:</code>用于监听文本框文字发生改变</p>
+<h4 id="2-5-1-代码演练"><a href="#2-5-1-代码演练" class="headerlink" title="2.5.1 代码演练"></a>2.5.1 代码演练</h4><pre><code>[[self.textField rac_textSignal] subscribeNext:^(id x) &#123;
     NSLog(@&quot;text:%@&quot;,x);
 &#125;];
 </code></pre>
-<h4 id="处理当界面有多个请求时，需要都获取到数据，才能展示界面"><a href="#处理当界面有多个请求时，需要都获取到数据，才能展示界面" class="headerlink" title="处理当界面有多个请求时，需要都获取到数据，才能展示界面"></a>处理当界面有多个请求时，需要都获取到数据，才能展示界面</h4><p><code>rac_liftSelector:withSignalsFromArray:Signals:</code>当传入的Signals(信号数组)，每一个signal都至少sendNext过一次，就会去触发selector参数的方法。</p>
+<h3 id="2-6-处理当界面有多个请求时，需要都获取到数据，才能展示界面"><a href="#2-6-处理当界面有多个请求时，需要都获取到数据，才能展示界面" class="headerlink" title="2.6 处理当界面有多个请求时，需要都获取到数据，才能展示界面"></a>2.6 处理当界面有多个请求时，需要都获取到数据，才能展示界面</h3><p><code>rac_liftSelector:withSignalsFromArray:Signals:</code>当传入的Signals(信号数组)，每一个signal都至少sendNext过一次，就会去触发selector参数的方法。</p>
 <p><strong>注意：几个信号，参数一的方法就几个参数，每个参数对应信号发出的数据，否则运行时会报错。</strong></p>
-<h6 id="代码演练-5"><a href="#代码演练-5" class="headerlink" title="代码演练"></a>代码演练</h6><pre><code>- (void)test&#123;
+<h4 id="2-6-1-代码演练"><a href="#2-6-1-代码演练" class="headerlink" title="2.6.1 代码演练"></a>2.6.1 代码演练</h4><pre><code>- (void)test&#123;
     // 创建信号A
     RACSignal *signalA = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;
             NSLog(@&quot;数据请求1&quot;);
@@ -242,47 +242,20 @@
         NSLog(@&quot;请求完成，更新UI--a:%@,b:%@&quot;,a,b);
 &#125;
 </code></pre>
-<h2 id="ReactiveCocoa常见宏"><a href="#ReactiveCocoa常见宏" class="headerlink" title="ReactiveCocoa常见宏"></a>ReactiveCocoa常见宏</h2><h4 id="RAC-TARGET-…"><a href="#RAC-TARGET-…" class="headerlink" title="RAC(TARGET, …)"></a>RAC(TARGET, …)</h4><ul>
-<li><p>用于给某个对象的某个属性绑定。</p>
-<pre><code>  // 只要文本框文字改变，就会修改label的文字
-  RAC(self.labelView,text) = _textField.rac_textSignal;
-</code></pre>
-</li>
+<h2 id="三、ReactiveCocoa常见宏"><a href="#三、ReactiveCocoa常见宏" class="headerlink" title="三、ReactiveCocoa常见宏"></a>三、ReactiveCocoa常见宏</h2><h3 id="3-1-RAC-TARGET-…"><a href="#3-1-RAC-TARGET-…" class="headerlink" title="3.1 RAC(TARGET, …)"></a>3.1 RAC(TARGET, …)</h3><ul>
+<li>用于给某个对象的某个属性绑定。  <figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 只要文本框文字改变，就会修改<span class="keyword">label</span>的文字</span><br><span class="line">   RAC(<span class="literal">self</span>.<span class="keyword">label</span>View,text) = _textField.rac_textSignal;</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h4 id="RACObserve-TARGET-KEYPATH"><a href="#RACObserve-TARGET-KEYPATH" class="headerlink" title="RACObserve(TARGET,KEYPATH)"></a>RACObserve(TARGET,KEYPATH)</h4><ul>
-<li><p>监听某个对象的某个属性，返回的是信号</p>
-<pre><code>  [RACObserve(self, age) subscribeNext:^(id x) &#123;
-      NSLog(@&quot;%@&quot;,x);
-  &#125;];
-</code></pre>
-</li>
+<h3 id="3-2-RACObserve-TARGET-KEYPATH"><a href="#3-2-RACObserve-TARGET-KEYPATH" class="headerlink" title="3.2 RACObserve(TARGET,KEYPATH)"></a>3.2 RACObserve(TARGET,KEYPATH)</h3><ul>
+<li>监听某个对象的某个属性，返回的是信号  <figure class="highlight hy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[RACObserve(<span class="name">self</span>, age) subscribeNext:^(<span class="name"><span class="built_in">id</span></span> x) &#123;</span><br><span class="line">	  NSLog(@<span class="string">&quot;%@&quot;</span>,x)<span class="comment">;</span></span><br><span class="line">&#125;]<span class="comment">;</span></span><br></pre></td></tr></table></figure></li>
 </ul>
-<h4 id="weakify-Obj-和-strongify-Obj"><a href="#weakify-Obj-和-strongify-Obj" class="headerlink" title="@weakify(Obj)和@strongify(Obj)"></a>@weakify(Obj)和@strongify(Obj)</h4><ul>
-<li><p>一般都是成对出现，为了避免引起循环引用导致内存泄漏的，和block的使用类似。</p>
-<pre><code>  @weakify(self);
-  [[_redView rac_signalForSelector:@selector(btnClick:)] subscribeNext:^(id x) &#123;
-  @strongify(self);
-  NavViewController *navVC = [[UIStoryboard storyboardWithName:@&quot;Main&quot; bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([NavViewController class])];
-  [self.navigationController pushViewController:navVC animated:YES];
-     &#125;];
-</code></pre>
-</li>
+<h3 id="3-3-weakify-Obj-和-strongify-Obj"><a href="#3-3-weakify-Obj-和-strongify-Obj" class="headerlink" title="3.3 @weakify(Obj)和@strongify(Obj)"></a>3.3 @weakify(Obj)和@strongify(Obj)</h3><ul>
+<li>一般都是成对出现，为了避免引起循环引用导致内存泄漏的，和block的使用类似。  <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@weakify</span>(<span class="keyword">self</span>);</span><br><span class="line">   [[_redView rac_signalForSelector:<span class="meta">@selector</span>(btnClick:)] subscribeNext:<span class="operator">^</span>(id x) &#123;</span><br><span class="line">       <span class="meta">@strongify</span>(<span class="keyword">self</span>);</span><br><span class="line">       <span class="type">NavViewController</span> <span class="operator">*</span>navVC <span class="operator">=</span> [[<span class="type">UIStoryboard</span> storyboardWithName:@<span class="string">&quot;Main&quot;</span> bundle:<span class="literal">nil</span>] instantiateViewControllerWithIdentifier:<span class="type">NSStringFromClass</span>([<span class="type">NavViewController</span> <span class="keyword">class</span>])];</span><br><span class="line">       [<span class="keyword">self</span>.navigationController pushViewController:navVC animated:<span class="type">YES</span>];</span><br><span class="line">  	&#125;];</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h4 id="RACTuplePack"><a href="#RACTuplePack" class="headerlink" title="RACTuplePack"></a>RACTuplePack</h4><ul>
-<li><p>把数据包装成RACTuple（元组类）</p>
-<pre><code>// 把参数中的数据包装成元组
-   RACTuple *tuple = RACTuplePack(@&quot;Scott_Mr&quot;,@20);
-</code></pre>
-</li>
+<h3 id="3-4-RACTuplePack"><a href="#3-4-RACTuplePack" class="headerlink" title="3.4 RACTuplePack"></a>3.4 RACTuplePack</h3><ul>
+<li>把数据包装成RACTuple（元组类）  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 把参数中的数据包装成元组</span></span><br><span class="line">  RACTuple *tuple = <span class="built_in">RACTuplePack</span>(@<span class="string">&quot;Scott_Mr&quot;</span>,@<span class="number">20</span>);</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h4 id="RACTupleUnpack"><a href="#RACTupleUnpack" class="headerlink" title="RACTupleUnpack"></a>RACTupleUnpack</h4><ul>
-<li><p>把RACTuple（元组类）解包成对应的数据。</p>
-<pre><code>// 解包元组，会把元组的值，按顺序给参数里面的变量赋值
-// name = @&quot;Scott_Mr&quot; age = @20
-RACTupleUnpack(NSString *name,NSNumber *age) = tuple;
-NSLog(@&quot;%@,%@&quot;,name,age);
-</code></pre>
-</li>
+<h3 id="3-5-RACTupleUnpack"><a href="#3-5-RACTupleUnpack" class="headerlink" title="3.5 RACTupleUnpack"></a>3.5 RACTupleUnpack</h3><ul>
+<li>把RACTuple（元组类）解包成对应的数据。  <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 解包元组，会把元组的值，按顺序给参数里面的变量赋值</span></span><br><span class="line">   <span class="comment">// name = @&quot;Scott_Mr&quot; age = @20</span></span><br><span class="line">   RACTupleUnpack(<span class="built_in">NSString</span> *name,<span class="built_in">NSNumber</span> *age) = tuple;</span><br><span class="line">   <span class="built_in">NSLog</span>(<span class="string">@&quot;%@,%@&quot;</span>,name,age);</span><br></pre></td></tr></table></figure></li>
 </ul>
 
       
@@ -442,7 +415,7 @@ NSLog(@&quot;%@,%@&quot;,name,age);
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ReactiveCocoa%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">ReactiveCocoa基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E6%9B%BF%E4%BB%A3%E7%90%86"><span class="toc-number">2.0.1.</span> <span class="toc-text">代替代理</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%BC%94%E7%BB%83"><span class="toc-number">2.0.1.0.1.</span> <span class="toc-text">代码演练</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E6%9B%BFKVO"><span class="toc-number">2.0.2.</span> <span class="toc-text">代替KVO</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%BC%94%E7%BB%83-1"><span class="toc-number">2.0.2.0.1.</span> <span class="toc-text">代码演练</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%91%E5%90%AC%E4%BA%8B%E4%BB%B6"><span class="toc-number">2.0.3.</span> <span class="toc-text">监听事件</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%BC%94%E7%BB%83-2"><span class="toc-number">2.0.3.0.1.</span> <span class="toc-text">代码演练</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E6%9B%BF%E9%80%9A%E7%9F%A5"><span class="toc-number">2.0.4.</span> <span class="toc-text">代替通知</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%BC%94%E7%BB%83-3"><span class="toc-number">2.0.4.0.1.</span> <span class="toc-text">代码演练</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%91%E5%90%AC%E6%96%87%E6%9C%AC%E6%A1%86%E6%96%87%E5%AD%97%E6%94%B9%E5%8F%98"><span class="toc-number">2.0.5.</span> <span class="toc-text">监听文本框文字改变</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%BC%94%E7%BB%83-4"><span class="toc-number">2.0.5.0.1.</span> <span class="toc-text">代码演练</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E5%BD%93%E7%95%8C%E9%9D%A2%E6%9C%89%E5%A4%9A%E4%B8%AA%E8%AF%B7%E6%B1%82%E6%97%B6%EF%BC%8C%E9%9C%80%E8%A6%81%E9%83%BD%E8%8E%B7%E5%8F%96%E5%88%B0%E6%95%B0%E6%8D%AE%EF%BC%8C%E6%89%8D%E8%83%BD%E5%B1%95%E7%A4%BA%E7%95%8C%E9%9D%A2"><span class="toc-number">2.0.6.</span> <span class="toc-text">处理当界面有多个请求时，需要都获取到数据，才能展示界面</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%BC%94%E7%BB%83-5"><span class="toc-number">2.0.6.0.1.</span> <span class="toc-text">代码演练</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ReactiveCocoa%E5%B8%B8%E8%A7%81%E5%AE%8F"><span class="toc-number">3.</span> <span class="toc-text">ReactiveCocoa常见宏</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#RAC-TARGET-%E2%80%A6"><span class="toc-number">3.0.1.</span> <span class="toc-text">RAC(TARGET, …)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RACObserve-TARGET-KEYPATH"><span class="toc-number">3.0.2.</span> <span class="toc-text">RACObserve(TARGET,KEYPATH)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#weakify-Obj-%E5%92%8C-strongify-Obj"><span class="toc-number">3.0.3.</span> <span class="toc-text">@weakify(Obj)和@strongify(Obj)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RACTuplePack"><span class="toc-number">3.0.4.</span> <span class="toc-text">RACTuplePack</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RACTupleUnpack"><span class="toc-number">3.0.5.</span> <span class="toc-text">RACTupleUnpack</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81ReactiveCocoa%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">二、ReactiveCocoa基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E4%BB%A3%E6%9B%BF%E4%BB%A3%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 代替代理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-1-%E4%BB%A3%E7%A0%81%E6%BC%94%E7%BB%83"><span class="toc-number">2.1.1.</span> <span class="toc-text">2.1.1 代码演练</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E4%BB%A3%E6%9B%BFKVO"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 代替KVO</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-%E4%BB%A3%E7%A0%81%E6%BC%94%E7%BB%83"><span class="toc-number">2.2.1.</span> <span class="toc-text">2.2.1 代码演练</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E7%9B%91%E5%90%AC%E4%BA%8B%E4%BB%B6"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 监听事件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-1-%E4%BB%A3%E7%A0%81%E6%BC%94%E7%BB%83"><span class="toc-number">2.3.1.</span> <span class="toc-text">2.3.1 代码演练</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E4%BB%A3%E6%9B%BF%E9%80%9A%E7%9F%A5"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 代替通知</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-1-%E4%BB%A3%E7%A0%81%E6%BC%94%E7%BB%83"><span class="toc-number">2.4.1.</span> <span class="toc-text">2.4.1 代码演练</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E7%9B%91%E5%90%AC%E6%96%87%E6%9C%AC%E6%A1%86%E6%96%87%E5%AD%97%E6%94%B9%E5%8F%98"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 监听文本框文字改变</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-1-%E4%BB%A3%E7%A0%81%E6%BC%94%E7%BB%83"><span class="toc-number">2.5.1.</span> <span class="toc-text">2.5.1 代码演练</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-%E5%A4%84%E7%90%86%E5%BD%93%E7%95%8C%E9%9D%A2%E6%9C%89%E5%A4%9A%E4%B8%AA%E8%AF%B7%E6%B1%82%E6%97%B6%EF%BC%8C%E9%9C%80%E8%A6%81%E9%83%BD%E8%8E%B7%E5%8F%96%E5%88%B0%E6%95%B0%E6%8D%AE%EF%BC%8C%E6%89%8D%E8%83%BD%E5%B1%95%E7%A4%BA%E7%95%8C%E9%9D%A2"><span class="toc-number">2.6.</span> <span class="toc-text">2.6 处理当界面有多个请求时，需要都获取到数据，才能展示界面</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-6-1-%E4%BB%A3%E7%A0%81%E6%BC%94%E7%BB%83"><span class="toc-number">2.6.1.</span> <span class="toc-text">2.6.1 代码演练</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81ReactiveCocoa%E5%B8%B8%E8%A7%81%E5%AE%8F"><span class="toc-number">3.</span> <span class="toc-text">三、ReactiveCocoa常见宏</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-RAC-TARGET-%E2%80%A6"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 RAC(TARGET, …)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-RACObserve-TARGET-KEYPATH"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 RACObserve(TARGET,KEYPATH)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-weakify-Obj-%E5%92%8C-strongify-Obj"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 @weakify(Obj)和@strongify(Obj)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-RACTuplePack"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 RACTuplePack</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-RACTupleUnpack"><span class="toc-number">3.5.</span> <span class="toc-text">3.5 RACTupleUnpack</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>

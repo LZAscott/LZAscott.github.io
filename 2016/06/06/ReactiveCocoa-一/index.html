@@ -8,15 +8,15 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>ReactiveCocoa(一) | Leoli的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言之前总听别人说什么Reactive Cocoa + MVVM，但是没有找到讲解Reactive Cocoa相关的资料。结果进入新公司，项目里面有部分代码使用到了Reactive Cocoa,所以笔者在这记录自己学习Reactive Cocoa的笔记，同时也希望大家通过阅读这篇文章能学到点什么。">
+  <meta name="description" content="一、前言之前总听别人说什么Reactive Cocoa + MVVM，但是没有找到讲解Reactive Cocoa相关的资料。结果进入新公司，项目里面有部分代码使用到了Reactive Cocoa,所以笔者在这记录自己学习Reactive Cocoa的笔记，同时也希望大家通过阅读这篇文章能学到点什么。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ReactiveCocoa(一)">
 <meta property="og:url" content="http://yoursite.com/2016/06/06/ReactiveCocoa-%E4%B8%80/index.html">
 <meta property="og:site_name" content="Leoli的博客">
-<meta property="og:description" content="前言之前总听别人说什么Reactive Cocoa + MVVM，但是没有找到讲解Reactive Cocoa相关的资料。结果进入新公司，项目里面有部分代码使用到了Reactive Cocoa,所以笔者在这记录自己学习Reactive Cocoa的笔记，同时也希望大家通过阅读这篇文章能学到点什么。">
+<meta property="og:description" content="一、前言之前总听别人说什么Reactive Cocoa + MVVM，但是没有找到讲解Reactive Cocoa相关的资料。结果进入新公司，项目里面有部分代码使用到了Reactive Cocoa,所以笔者在这记录自己学习Reactive Cocoa的笔记，同时也希望大家通过阅读这篇文章能学到点什么。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2016-06-06T15:32:32.000Z">
-<meta property="article:modified_time" content="2016-06-07T13:34:21.000Z">
+<meta property="article:modified_time" content="2023-12-02T08:06:32.258Z">
 <meta property="article:author" content="Leoli">
 <meta property="article:tag" content="ReactiveCocoa">
 <meta name="twitter:card" content="summary">
@@ -171,148 +171,49 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前总听别人说什么Reactive Cocoa + MVVM，但是没有找到讲解Reactive Cocoa相关的资料。结果进入新公司，项目里面有部分代码使用到了Reactive Cocoa,所以笔者在这记录自己学习Reactive Cocoa的笔记，同时也希望大家通过阅读这篇文章能学到点什么。</p>
+        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>之前总听别人说什么Reactive Cocoa + MVVM，但是没有找到讲解Reactive Cocoa相关的资料。结果进入新公司，项目里面有部分代码使用到了Reactive Cocoa,所以笔者在这记录自己学习Reactive Cocoa的笔记，同时也希望大家通过阅读这篇文章能学到点什么。</p>
 <span id="more"></span>
 
-<h2 id="Reactive-Cocoa简介"><a href="#Reactive-Cocoa简介" class="headerlink" title="Reactive Cocoa简介"></a>Reactive Cocoa简介</h2><p>Reactive Cocoa(简称RAC，PS:<strong>不是ARC(自动引用计数)</strong>),是由Github开源的一个应用于iOS和OS开发的新框架，cocoa是苹果整套框架的简称，因此很多苹果框架都喜欢以cocoa结尾。</p>
-<h2 id="Reactive-Cocoa作用"><a href="#Reactive-Cocoa作用" class="headerlink" title="Reactive Cocoa作用"></a>Reactive Cocoa作用</h2><ul>
+<h2 id="二、Reactive-Cocoa简介"><a href="#二、Reactive-Cocoa简介" class="headerlink" title="二、Reactive Cocoa简介"></a>二、Reactive Cocoa简介</h2><p>Reactive Cocoa(简称RAC，PS:<strong>不是ARC(自动引用计数)</strong>),是由Github开源的一个应用于iOS和OS开发的新框架，cocoa是苹果整套框架的简称，因此很多苹果框架都喜欢以cocoa结尾。</p>
+<h2 id="三、Reactive-Cocoa作用"><a href="#三、Reactive-Cocoa作用" class="headerlink" title="三、Reactive Cocoa作用"></a>三、Reactive Cocoa作用</h2><ul>
 <li>在我们iOS开发中，当某些事件响应的时候，需要处理某些业务逻辑，这些事情都以不同的方式来处理。</li>
 <li>我们之前熟悉的事件处理方式有：action、delegate、kvo、block以及notification。其实这些事件都可以使用RAC处理。</li>
 <li>RAC为事件提供了很多处理方法，而且利用RAC处理事件很方便，可以把需要处理的事件和监听事件的代码放到一块，这样便于我们管理，就不需要跳转到对应的方法里面。非常符合我们开发中<strong>高聚合，低耦合</strong>的思想。</li>
 </ul>
-<h2 id="编程思想"><a href="#编程思想" class="headerlink" title="编程思想"></a>编程思想</h2><p>在开发过程中我们要学习一个框架，还是有必要先了解它的<strong>编程思想</strong>。</p>
+<h2 id="四、编程思想"><a href="#四、编程思想" class="headerlink" title="四、编程思想"></a>四、编程思想</h2><p>在开发过程中我们要学习一个框架，还是有必要先了解它的<strong>编程思想</strong>。</p>
 <p>先了解一下我们已知的编程思想：</p>
-<ol>
-<li><p><strong>面向过程</strong>: 处理事情以过程为中心，一步一步的实现。</p>
-</li>
-<li><p><strong>面向对象</strong>: 万物皆对象。</p>
-</li>
-<li><p><strong>链式编程</strong>: 是将多个操作通过点号(.)连接起来成为一句代码，使代码可读性好。如：<br> add(1).add(2).add(3)</p>
-<ul>
-<li><p>**链式编程特点: **方法的返回值是block，block必须有返回值(对象本身),block参数就是我们要操作的值</p>
-</li>
-<li><p>**代表作: **masonry框架</p>
-</li>
-<li><p>模仿masonry框架，仿写一个加法计算器，练习链式编程思想</p>
-<pre><code>// 创建一个NSObject的分类,  .h代码：
-@class CaculatorMaker;
-@interface NSObject (Caculator)
-
-+ (int)makeCaculator:(void(^)(CaculatorMaker *make))caculator;
-
-@end
-
-
-// .m代码
-@implementation NSObject (Caculator)
-
-+ (int)makeCaculator:(void(^)(CaculatorMaker *make))caculator &#123;
-    CaculatorMaker *maker = [[CaculatorMaker alloc] init];
-
-    caculator(maker);
-
-    return maker.result;
-&#125;
-@end
-
-
-/**********************************************************/
-
-//创建一个CaculatorMaker类， .h代码：
-@interface CaculatorMaker : NSObject
-
-@property (nonatomic, assign) int result;
-
-- (CaculatorMaker *(^)(int result))add;
-
-@end
-
-
-//.m代码
-- (CaculatorMaker *(^)(int result))add &#123;
-    return ^(int result)&#123;
-        _result += result;
-        return self;
-    &#125;;
-&#125;
-    
-
-//调用：
-- (void)viewDidLoad &#123;
-    [super viewDidLoad];
-    int result = [NSObject makeCaculator:^(CaculatorMaker *make) &#123;
-        make.add(1).add(3);
-    &#125;];
-    NSLog(@&quot;%d&quot;,result);
-&#125;
+<p><strong>1、面向过程</strong>: 处理事情以过程为中心，一步一步的实现。</p>
+<p><strong>2、面向对象</strong>: 万物皆对象。</p>
+<p><strong>3、链式编程</strong>: 是将多个操作通过点号(.)连接起来成为一句代码，使代码可读性好。如：</p>
+<pre><code>add(1).add(2).add(3)
+ 
 </code></pre>
-</li>
-</ul>
-</li>
-<li><p>**响应式编程: **不需要考虑调用顺序，只需要考虑调用结果，类似于蝴蝶效应，产生一个事件，会影响很多东西，这些事件就像流一样发送出去，最后影响结果。</p>
+<p>链式编程特点: 方法的返回值是block，block必须有返回值(对象本身),block参数就是我们要操作的值</p>
 <ul>
-<li>**代表作: **KVO的运用</li>
+<li>代表作: masonry框架</li>
 </ul>
-</li>
-<li><p>**函数式编程: **是把操作尽量使用一系列的函数或者方法调用</p>
+<p>模仿masonry框架，仿写一个加法计算器，练习链式编程思想</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个NSObject的分类,  .h代码：</span></span><br><span class="line"><span class="class"><span class="keyword">@class</span> <span class="title">CaculatorMaker</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSObject</span> (<span class="title">Caculator</span>)</span></span><br><span class="line">		</span><br><span class="line">+ (<span class="type">int</span>)makeCaculator:(<span class="type">void</span>(^)(CaculatorMaker *make))caculator;</span><br><span class="line">		</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line">		  </span><br><span class="line">		  </span><br><span class="line"><span class="comment">// .m代码</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">NSObject</span> (<span class="title">Caculator</span>)</span></span><br><span class="line">		</span><br><span class="line">+ (<span class="type">int</span>)makeCaculator:(<span class="type">void</span>(^)(CaculatorMaker *make))caculator &#123;</span><br><span class="line">	CaculatorMaker *maker = [[CaculatorMaker alloc] init];</span><br><span class="line">		</span><br><span class="line">	caculator(maker);</span><br><span class="line">		</span><br><span class="line">	<span class="keyword">return</span> maker.result;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**********************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//创建一个CaculatorMaker类， .h代码：</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CaculatorMaker</span> : <span class="title">NSObject</span></span></span><br><span class="line">		</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="type">int</span> result;</span><br><span class="line">		</span><br><span class="line">- (CaculatorMaker *(^)(<span class="type">int</span> result))add;</span><br><span class="line">		</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line">		  </span><br><span class="line">		  </span><br><span class="line"><span class="comment">//.m代码</span></span><br><span class="line">- (CaculatorMaker *(^)(<span class="type">int</span> result))add &#123;</span><br><span class="line">     <span class="keyword">return</span> ^(<span class="type">int</span> result)&#123;</span><br><span class="line">        _result += result;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">     &#125;;</span><br><span class="line">&#125;</span><br><span class="line">			  </span><br><span class="line"></span><br><span class="line"><span class="comment">//调用：</span></span><br><span class="line">- (<span class="type">void</span>)viewDidLoad &#123;</span><br><span class="line">	[<span class="variable language_">super</span> viewDidLoad];</span><br><span class="line">	<span class="type">int</span> result = [<span class="built_in">NSObject</span> makeCaculator:^(CaculatorMaker *make) &#123;</span><br><span class="line">		make.add(<span class="number">1</span>).add(<span class="number">3</span>);</span><br><span class="line">	&#125;];</span><br><span class="line">	<span class="built_in">NSLog</span>(<span class="string">@&quot;%d&quot;</span>,result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>4、响应式编程</strong>:不需要考虑调用顺序，只需要考虑调用结果，类似于蝴蝶效应，产生一个事件，会影响很多东西，这些事件就像流一样发送出去，最后影响结果。</p>
 <ul>
-<li><p>**函数式编程特点: **每个方法必须有返回值(对象本身)，把block当做参数，block参数就是需要操作的值，block返回值就是操作结果</p>
-</li>
-<li><p><strong>使用函数式编程实现一个加法计算器并自带判断是否等于某个值的功能</strong></p>
-<pre><code>//创建一个CaculatorMaker类，.h代码：
-@interface CaculatorMaker : NSObject
-
-@property (nonatomic, assign) int result;
-@property (nonatomic, assign, getter=isEqual) BOOL equal;
-
-- (CaculatorMaker *)add:(int(^)(int result))caculator;
-- (CaculatorMaker *)equal:(BOOL(^)(int result))caculator;
-
-@end
-
-
-//.m代码：
-@implementation CaculatorMaker
-
-- (CaculatorMaker *)add:(int(^)(int result))caculator &#123;
-      _result = caculator(_result);
-      return self;
-&#125;
-
-- (CaculatorMaker *)equal:(BOOL(^)(int result))caculator &#123;
-      _equal = caculator(_result);
-      return self;
-&#125;
-@end
-
-
-
-//调用:
-CaculatorMaker *maker = [[CaculatorMaker alloc] init];
-BOOL isEqual = [[[maker add:^int(int result) &#123;
-    result += 5;
-    return result;
-&#125;] equal:^BOOL(int result) &#123;
-    return result == 5;
-&#125;] isEqual];
-  
-NSLog(@&quot;%d&quot;,isEqual);
-</code></pre>
-</li>
+<li>代表作: KVO的运用</li>
 </ul>
-</li>
-<li><p><strong>Reactive Cocoa编程思想</strong></p>
-<p> Reactive Cocoa结合了几种编程思想:</p>
+<p><strong>5、函数式编程</strong>:是把操作尽量使用一系列的函数或者方法调用</p>
+<ul>
+<li>函数式编程特点: 每个方法必须有返回值(对象本身)，把block当做参数，block参数就是需要操作的值，block返回值就是操作结果</li>
+</ul>
+<p>使用函数式编程实现一个加法计算器并自带判断是否等于某个值的功能</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建一个CaculatorMaker类，.h代码：</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CaculatorMaker</span> : <span class="title">NSObject</span></span></span><br><span class="line">	</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="type">int</span> result;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>, <span class="keyword">getter</span>=isEqual) <span class="type">BOOL</span> equal;</span><br><span class="line">		</span><br><span class="line">- (CaculatorMaker *)add:(<span class="type">int</span>(^)(<span class="type">int</span> result))caculator;</span><br><span class="line">- (CaculatorMaker *)equal:(<span class="type">BOOL</span>(^)(<span class="type">int</span> result))caculator;</span><br><span class="line">		</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line">	</span><br><span class="line"><span class="comment">//.m代码：</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CaculatorMaker</span></span></span><br><span class="line">		</span><br><span class="line">- (CaculatorMaker *)add:(<span class="type">int</span>(^)(<span class="type">int</span> result))caculator &#123;</span><br><span class="line">		_result = caculator(_result);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br><span class="line">		</span><br><span class="line">- (CaculatorMaker *)equal:(<span class="type">BOOL</span>(^)(<span class="type">int</span> result))caculator &#123;</span><br><span class="line">		_equal = caculator(_result);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//调用:</span></span><br><span class="line">CaculatorMaker *maker = [[CaculatorMaker alloc] init];</span><br><span class="line"><span class="type">BOOL</span> isEqual = [[[maker add:^<span class="type">int</span>(<span class="type">int</span> result) &#123;</span><br><span class="line">	result += <span class="number">5</span>;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;] equal:^<span class="type">BOOL</span>(<span class="type">int</span> result) &#123;</span><br><span class="line">	<span class="keyword">return</span> result == <span class="number">5</span>;</span><br><span class="line">&#125;] isEqual];</span><br><span class="line">		    </span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@&quot;%d&quot;</span>,isEqual);</span><br></pre></td></tr></table></figure>
+<p><strong>Reactive Cocoa编程思想</strong></p>
+<p>Reactive Cocoa结合了几种编程思想:</p>
 <ul>
 <li><strong>响应式编程思想</strong></li>
 <li><strong>函数式编程思想</strong></li>
 </ul>
-<p> 所以，你有可能听说Reactive Cocoa被描述为<strong>函数响应式编程(FRP)<strong>。<br> 以后使用Reactive Cocoa解决问题时，就不需要考虑调用顺序，直接考虑结果，把每次操作都写成一系列嵌套方法或者函数，使代码</strong>高聚合</strong>，易于管理。</p>
-</li>
-</ol>
-<h2 id="Reactive-Cocoa基础类"><a href="#Reactive-Cocoa基础类" class="headerlink" title="Reactive Cocoa基础类"></a>Reactive Cocoa基础类</h2><p>个人认为在Reactive Cocoa中最核心的类就是<code>RACSignal</code>,搞定这个类基本就可以使用Reactive Cocoa开发了。</p>
-<h4 id="RACSignal"><a href="#RACSignal" class="headerlink" title="RACSignal"></a>RACSignal</h4><p><code>RACSignal:</code>信号类，一般表示将来有数据传递，只要数据改变，信号内部接收到数据，就会马上发出数据。</p>
-<h6 id="RACSignal简单使用："><a href="#RACSignal简单使用：" class="headerlink" title="RACSignal简单使用："></a>RACSignal简单使用：</h6><pre><code>// RACSignal使用步骤：
+<p>所以，你有可能听说Reactive Cocoa被描述为<strong>函数响应式编程(FRP)<strong>。<br>    以后使用Reactive Cocoa解决问题时，就不需要考虑调用顺序，直接考虑结果，把每次操作都写成一系列嵌套方法或者函数，使代码</strong>高聚合</strong>，易于管理。</p>
+<h2 id="五、Reactive-Cocoa基础类"><a href="#五、Reactive-Cocoa基础类" class="headerlink" title="五、Reactive Cocoa基础类"></a>五、Reactive Cocoa基础类</h2><p>个人认为在Reactive Cocoa中最核心的类就是<code>RACSignal</code>,搞定这个类基本就可以使用Reactive Cocoa开发了。</p>
+<h3 id="5-1-RACSignal"><a href="#5-1-RACSignal" class="headerlink" title="5.1 RACSignal"></a>5.1 RACSignal</h3><p><code>RACSignal:</code>信号类，一般表示将来有数据传递，只要数据改变，信号内部接收到数据，就会马上发出数据。</p>
+<h4 id="5-1-1-RACSignal简单使用："><a href="#5-1-1-RACSignal简单使用：" class="headerlink" title="5.1.1 RACSignal简单使用："></a>5.1.1 RACSignal简单使用：</h4><pre><code>// RACSignal使用步骤：
 // 1.创建信号 + (RACSignal *)createSignal:(RACDisposable * (^)(id&lt;RACSubscriber&gt; subscriber))didSubscribe
 // 2.订阅信号,才会激活信号. - (RACDisposable *)subscribeNext:(void (^)(id x))nextBlock
 // 3.发送信号 - (void)sendNext:(id)value
@@ -360,16 +261,16 @@ RACSignal *siganl = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber
 <li>默认一个信号都是冷信号，也就是值改变了，也不会触发，只有订阅了这个信号，这个信号才会变为热信号，值改变了才会触发。</li>
 <li>如何订阅信号：调用信号类<code>RACSignal</code>的<code>subscribeNext</code>就能订阅。</li>
 </ul>
-<h4 id="RACSubscriber"><a href="#RACSubscriber" class="headerlink" title="RACSubscriber"></a>RACSubscriber</h4><p><code>RACSubscriber:</code>表示订阅者的意思,用于发送信号，这是一个协议，不是一个类，只要遵守这个协议，并且实现方法才能成为订阅者。通过create创建的信号，都有一个订阅者，帮助他发送数据。</p>
-<h4 id="RACDisposable"><a href="#RACDisposable" class="headerlink" title="RACDisposable"></a>RACDisposable</h4><p><code>RACDisposable:</code>用于取消订阅或者清理资源，当信号发送完成或者发送错误的时候，就会自动触发它。</p>
+<h3 id="5-2-RACSubscriber"><a href="#5-2-RACSubscriber" class="headerlink" title="5.2 RACSubscriber"></a>5.2 RACSubscriber</h3><p><code>RACSubscriber:</code>表示订阅者的意思,用于发送信号，这是一个协议，不是一个类，只要遵守这个协议，并且实现方法才能成为订阅者。通过create创建的信号，都有一个订阅者，帮助他发送数据。</p>
+<h3 id="5-3-RACDisposable"><a href="#5-3-RACDisposable" class="headerlink" title="5.3 RACDisposable"></a>5.3 RACDisposable</h3><p><code>RACDisposable:</code>用于取消订阅或者清理资源，当信号发送完成或者发送错误的时候，就会自动触发它。</p>
 <ul>
 <li>使用场景：当不想监听某个信号时，可以通过它来主动取消订阅信号</li>
 </ul>
-<h4 id="RACSubject"><a href="#RACSubject" class="headerlink" title="RACSubject"></a>RACSubject</h4><p><code>RACSubject:</code>信号提供者，自己可以充当信号，又可以发送信号。</p>
+<h3 id="5-4-RACSubject"><a href="#5-4-RACSubject" class="headerlink" title="5.4 RACSubject"></a>5.4 RACSubject</h3><p><code>RACSubject:</code>信号提供者，自己可以充当信号，又可以发送信号。</p>
 <ul>
 <li>使用场景：通常用来代替代理，有了它，就不需要定义代理了</li>
 </ul>
-<h6 id="RACSubject简单使用"><a href="#RACSubject简单使用" class="headerlink" title="RACSubject简单使用"></a>RACSubject简单使用</h6><pre><code>// RACSubject使用步骤
+<h4 id="5-4-1-RACSubject简单使用"><a href="#5-4-1-RACSubject简单使用" class="headerlink" title="5.4.1 RACSubject简单使用"></a>5.4.1 RACSubject简单使用</h4><pre><code>// RACSubject使用步骤
 // 1.创建信号 [RACSubject subject]，跟RACSiganl不一样，创建信号时没有block。
 // 2.订阅信号 - (RACDisposable *)subscribeNext:(void (^)(id x))nextBlock
 // 3.发送信号 sendNext:(id)value
@@ -394,7 +295,7 @@ RACSubject *subject = [RACSubject subject];
 // 3.发送信号
 [subject sendNext:@&quot;1&quot;];
 </code></pre>
-<h6 id="RACSubject代替代理"><a href="#RACSubject代替代理" class="headerlink" title="RACSubject代替代理"></a>RACSubject代替代理</h6><pre><code> // 需求:
+<h4 id="5-4-2-RACSubject代替代理"><a href="#5-4-2-RACSubject代替代理" class="headerlink" title="5.4.2 RACSubject代替代理"></a>5.4.2 RACSubject代替代理</h4><pre><code> // 需求:
 // 1.给当前控制器添加一个按钮，modal到另一个控制器界面
 // 2.另一个控制器view中有个按钮，点击按钮，通知当前控制器
 
@@ -441,13 +342,13 @@ twoVc.delegateSignal = [RACSubject subject];
 &#125;
 @end
 </code></pre>
-<h4 id="RACReplaySubject"><a href="#RACReplaySubject" class="headerlink" title="RACReplaySubject"></a>RACReplaySubject</h4><p><code>RACReplaySubject:</code>重复提供信号类，<code>RACSubject</code>的子类。</p>
+<h3 id="5-5-RACReplaySubject"><a href="#5-5-RACReplaySubject" class="headerlink" title="5.5 RACReplaySubject"></a>5.5 RACReplaySubject</h3><p><code>RACReplaySubject:</code>重复提供信号类，<code>RACSubject</code>的子类。</p>
 <ul>
 <li><code>RACReplaySubject</code>与<code>RACSubject</code>区别：<code>RACReplaySubject</code>可以先发送信号，在订阅信号，<code>RACSubject</code>就不可以。</li>
 <li>使用场景一：如果一个信号每被订阅一次，就需要把之前的值重复发送一遍，使用重复提供信号类。</li>
 <li>使用场景二：可以设置capacity数量来限制缓存的value的数量,即只缓充最新的几个值。</li>
 </ul>
-<h6 id="RACReplaySubject简单使用"><a href="#RACReplaySubject简单使用" class="headerlink" title="RACReplaySubject简单使用"></a>RACReplaySubject简单使用</h6><pre><code>// RACReplaySubject使用步骤:
+<h5 id="5-5-1-RACReplaySubject简单使用"><a href="#5-5-1-RACReplaySubject简单使用" class="headerlink" title="5.5.1 RACReplaySubject简单使用"></a>5.5.1 RACReplaySubject简单使用</h5><pre><code>// RACReplaySubject使用步骤:
 // 1.创建信号 [RACSubject subject]，跟RACSiganl不一样，创建信号时没有block。
 // 2.可以先订阅信号，也可以先发送信号。
 // 2.1 订阅信号 - (RACDisposable *)subscribeNext:(void (^)(id x))nextBlock
@@ -479,12 +380,12 @@ RACReplaySubject *replaySubject = [RACReplaySubject subject];
     NSLog(@&quot;第二个订阅者接收到的数据%@&quot;,x);
 &#125;];
 </code></pre>
-<h4 id="RACTuple"><a href="#RACTuple" class="headerlink" title="RACTuple"></a>RACTuple</h4><p><code>RACTuple:</code>元组类,类似NSArray,用来包装值.</p>
-<h4 id="RACSequence"><a href="#RACSequence" class="headerlink" title="RACSequence"></a>RACSequence</h4><p><code>RACSequence:</code>RAC中的集合类，用于代替NSArray,NSDictionary,可以使用它来快速遍历数组和字典。</p>
+<h3 id="5-6-RACTuple"><a href="#5-6-RACTuple" class="headerlink" title="5.6 RACTuple"></a>5.6 RACTuple</h3><p><code>RACTuple:</code>元组类,类似NSArray,用来包装值.</p>
+<h3 id="5-7-RACSequence"><a href="#5-7-RACSequence" class="headerlink" title="5.7 RACSequence"></a>5.7 RACSequence</h3><p><code>RACSequence:</code>RAC中的集合类，用于代替NSArray,NSDictionary,可以使用它来快速遍历数组和字典。</p>
 <ul>
 <li>使用场景：字典转模型</li>
 </ul>
-<h6 id="RACSequence和RACTuple简单使用："><a href="#RACSequence和RACTuple简单使用：" class="headerlink" title="RACSequence和RACTuple简单使用："></a><code>RACSequence</code>和<code>RACTuple</code>简单使用：</h6><pre><code>// 1.遍历数组
+<h4 id="5-7-1-RACSequence和RACTuple简单使用："><a href="#5-7-1-RACSequence和RACTuple简单使用：" class="headerlink" title="5.7.1 RACSequence和RACTuple简单使用："></a>5.7.1 <code>RACSequence</code>和<code>RACTuple</code>简单使用：</h4><pre><code>// 1.遍历数组
 NSArray *numbers = @[@1,@2,@3,@4];
 
 // 这里其实是三步
@@ -561,11 +462,11 @@ NSArray *flags = [[dictArr.rac_sequence map:^id(id value) &#123;
 
 &#125;] array];
 </code></pre>
-<h4 id="RACCommand"><a href="#RACCommand" class="headerlink" title="RACCommand"></a>RACCommand</h4><p><code>RACCommand:</code>RAC中用于处理事件的类，可以把事件如何处理,事件中的数据如何传递，包装到这个类中，他可以很方便的监控事件的执行过程。</p>
+<h3 id="5-8-RACCommand"><a href="#5-8-RACCommand" class="headerlink" title="5.8 RACCommand"></a>5.8 RACCommand</h3><p><code>RACCommand:</code>RAC中用于处理事件的类，可以把事件如何处理,事件中的数据如何传递，包装到这个类中，他可以很方便的监控事件的执行过程。</p>
 <ul>
 <li>使用场景：监听按钮点击，网络请求</li>
 </ul>
-<h6 id="RACCommand简单使用"><a href="#RACCommand简单使用" class="headerlink" title="RACCommand简单使用"></a>RACCommand简单使用</h6><pre><code> // 一、RACCommand使用步骤:
+<h4 id="5-8-1-RACCommand简单使用"><a href="#5-8-1-RACCommand简单使用" class="headerlink" title="5.8.1 RACCommand简单使用"></a>5.8.1 RACCommand简单使用</h4><pre><code> // 一、RACCommand使用步骤:
 // 1.创建命令 initWithSignalBlock:(RACSignal * (^)(id input))signalBlock
 // 2.在signalBlock中，创建RACSignal，并且作为signalBlock的返回值
 // 3.执行命令 - (RACSignal *)execute:(id)input
@@ -647,9 +548,9 @@ _conmmand = command;
    // 5.执行命令
 [self.conmmand execute:@1];
 </code></pre>
-<h4 id="RACMulticastConnection"><a href="#RACMulticastConnection" class="headerlink" title="RACMulticastConnection"></a>RACMulticastConnection</h4><p><code>RACMulticastConnection:</code>用于当一个信号被多次订阅时，为了保证创建信号时，避免多次调用创建信号中的block，造成副作用，可以使用这个类处理。</p>
+<h3 id="5-9-RACMulticastConnection"><a href="#5-9-RACMulticastConnection" class="headerlink" title="5.9 RACMulticastConnection"></a>5.9 RACMulticastConnection</h3><p><code>RACMulticastConnection:</code>用于当一个信号被多次订阅时，为了保证创建信号时，避免多次调用创建信号中的block，造成副作用，可以使用这个类处理。</p>
 <p><strong>使用注意：</strong>RACMulticastConnection通过RACSignal的-publish或者-muticast:方法创建。</p>
-<h6 id="RACMulticastConnection简单使用"><a href="#RACMulticastConnection简单使用" class="headerlink" title="RACMulticastConnection简单使用"></a>RACMulticastConnection简单使用</h6><pre><code>// RACMulticastConnection使用步骤:
+<h4 id="5-9-1-RACMulticastConnection简单使用"><a href="#5-9-1-RACMulticastConnection简单使用" class="headerlink" title="5.9.1 RACMulticastConnection简单使用"></a>5.9.1 RACMulticastConnection简单使用</h4><pre><code>// RACMulticastConnection使用步骤:
 // 1.创建信号 + (RACSignal *)createSignal:(RACDisposable * (^)(id&lt;RACSubscriber&gt; subscriber))didSubscribe
 // 2.创建连接 RACMulticastConnection *connect = [signal publish];
 // 3.订阅信号,注意：订阅的不在是之前的信号，而是连接的信号。 [connect.signal subscribeNext:nextBlock]
@@ -709,9 +610,9 @@ RACMulticastConnection *connect = [signal publish];
 // 4.连接,激活信号
 [connect connect];
 </code></pre>
-<h4 id="RACScheduler"><a href="#RACScheduler" class="headerlink" title="RACScheduler"></a>RACScheduler</h4><p><code>RACScheduler:</code>RAC中的队列，用GCD封装的。</p>
-<h4 id="RACUnit"><a href="#RACUnit" class="headerlink" title="RACUnit"></a>RACUnit</h4><p><code>RACUnit:</code>表⽰stream不包含有意义的值,也就是看到这个，可以直接理解为nil。</p>
-<h4 id="RACEvent"><a href="#RACEvent" class="headerlink" title="RACEvent"></a>RACEvent</h4><p><code>RACEvent:</code>把数据包装成信号事件(signal event)。它主要通过RACSignal的-materialize来使用。</p>
+<h3 id="5-10-RACScheduler"><a href="#5-10-RACScheduler" class="headerlink" title="5.10 RACScheduler"></a>5.10 RACScheduler</h3><p><code>RACScheduler:</code>RAC中的队列，用GCD封装的。</p>
+<h3 id="5-11-RACUnit"><a href="#5-11-RACUnit" class="headerlink" title="5.11 RACUnit"></a>5.11 RACUnit</h3><p><code>RACUnit:</code>表⽰stream不包含有意义的值,也就是看到这个，可以直接理解为nil。</p>
+<h3 id="5-12-RACEvent"><a href="#5-12-RACEvent" class="headerlink" title="5.12 RACEvent"></a>5.12 RACEvent</h3><p><code>RACEvent:</code>把数据包装成信号事件(signal event)。它主要通过RACSignal的-materialize来使用。</p>
 
       
 
@@ -870,7 +771,7 @@ RACMulticastConnection *connect = [signal publish];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reactive-Cocoa%E7%AE%80%E4%BB%8B"><span class="toc-number">2.</span> <span class="toc-text">Reactive Cocoa简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reactive-Cocoa%E4%BD%9C%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">Reactive Cocoa作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E7%A8%8B%E6%80%9D%E6%83%B3"><span class="toc-number">4.</span> <span class="toc-text">编程思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reactive-Cocoa%E5%9F%BA%E7%A1%80%E7%B1%BB"><span class="toc-number">5.</span> <span class="toc-text">Reactive Cocoa基础类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#RACSignal"><span class="toc-number">5.0.1.</span> <span class="toc-text">RACSignal</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#RACSignal%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">5.0.1.0.1.</span> <span class="toc-text">RACSignal简单使用：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RACSubscriber"><span class="toc-number">5.0.2.</span> <span class="toc-text">RACSubscriber</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RACDisposable"><span class="toc-number">5.0.3.</span> <span class="toc-text">RACDisposable</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RACSubject"><span class="toc-number">5.0.4.</span> <span class="toc-text">RACSubject</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#RACSubject%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="toc-number">5.0.4.0.1.</span> <span class="toc-text">RACSubject简单使用</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#RACSubject%E4%BB%A3%E6%9B%BF%E4%BB%A3%E7%90%86"><span class="toc-number">5.0.4.0.2.</span> <span class="toc-text">RACSubject代替代理</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RACReplaySubject"><span class="toc-number">5.0.5.</span> <span class="toc-text">RACReplaySubject</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#RACReplaySubject%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="toc-number">5.0.5.0.1.</span> <span class="toc-text">RACReplaySubject简单使用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RACTuple"><span class="toc-number">5.0.6.</span> <span class="toc-text">RACTuple</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RACSequence"><span class="toc-number">5.0.7.</span> <span class="toc-text">RACSequence</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#RACSequence%E5%92%8CRACTuple%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">5.0.7.0.1.</span> <span class="toc-text">RACSequence和RACTuple简单使用：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RACCommand"><span class="toc-number">5.0.8.</span> <span class="toc-text">RACCommand</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#RACCommand%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="toc-number">5.0.8.0.1.</span> <span class="toc-text">RACCommand简单使用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RACMulticastConnection"><span class="toc-number">5.0.9.</span> <span class="toc-text">RACMulticastConnection</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#RACMulticastConnection%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="toc-number">5.0.9.0.1.</span> <span class="toc-text">RACMulticastConnection简单使用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RACScheduler"><span class="toc-number">5.0.10.</span> <span class="toc-text">RACScheduler</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RACUnit"><span class="toc-number">5.0.11.</span> <span class="toc-text">RACUnit</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RACEvent"><span class="toc-number">5.0.12.</span> <span class="toc-text">RACEvent</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Reactive-Cocoa%E7%AE%80%E4%BB%8B"><span class="toc-number">2.</span> <span class="toc-text">二、Reactive Cocoa简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81Reactive-Cocoa%E4%BD%9C%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">三、Reactive Cocoa作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%BC%96%E7%A8%8B%E6%80%9D%E6%83%B3"><span class="toc-number">4.</span> <span class="toc-text">四、编程思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81Reactive-Cocoa%E5%9F%BA%E7%A1%80%E7%B1%BB"><span class="toc-number">5.</span> <span class="toc-text">五、Reactive Cocoa基础类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-RACSignal"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 RACSignal</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-1-RACSignal%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">5.1.1.</span> <span class="toc-text">5.1.1 RACSignal简单使用：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-RACSubscriber"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 RACSubscriber</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-RACDisposable"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 RACDisposable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-RACSubject"><span class="toc-number">5.4.</span> <span class="toc-text">5.4 RACSubject</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-4-1-RACSubject%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="toc-number">5.4.1.</span> <span class="toc-text">5.4.1 RACSubject简单使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-4-2-RACSubject%E4%BB%A3%E6%9B%BF%E4%BB%A3%E7%90%86"><span class="toc-number">5.4.2.</span> <span class="toc-text">5.4.2 RACSubject代替代理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-RACReplaySubject"><span class="toc-number">5.5.</span> <span class="toc-text">5.5 RACReplaySubject</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#5-5-1-RACReplaySubject%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="toc-number">5.5.0.1.</span> <span class="toc-text">5.5.1 RACReplaySubject简单使用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-6-RACTuple"><span class="toc-number">5.6.</span> <span class="toc-text">5.6 RACTuple</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-7-RACSequence"><span class="toc-number">5.7.</span> <span class="toc-text">5.7 RACSequence</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-7-1-RACSequence%E5%92%8CRACTuple%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">5.7.1.</span> <span class="toc-text">5.7.1 RACSequence和RACTuple简单使用：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-8-RACCommand"><span class="toc-number">5.8.</span> <span class="toc-text">5.8 RACCommand</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-8-1-RACCommand%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="toc-number">5.8.1.</span> <span class="toc-text">5.8.1 RACCommand简单使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-9-RACMulticastConnection"><span class="toc-number">5.9.</span> <span class="toc-text">5.9 RACMulticastConnection</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-9-1-RACMulticastConnection%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="toc-number">5.9.1.</span> <span class="toc-text">5.9.1 RACMulticastConnection简单使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-10-RACScheduler"><span class="toc-number">5.10.</span> <span class="toc-text">5.10 RACScheduler</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-11-RACUnit"><span class="toc-number">5.11.</span> <span class="toc-text">5.11 RACUnit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-12-RACEvent"><span class="toc-number">5.12.</span> <span class="toc-text">5.12 RACEvent</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
