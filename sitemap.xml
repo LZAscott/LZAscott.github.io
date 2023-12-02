@@ -2,15 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2016/06/14/%E6%B5%8B%E8%AF%95%E4%B8%80%E4%B8%8B/</loc>
-    
-    <lastmod>2023-12-02</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://yoursite.com/technology/index.html</loc>
     
     <lastmod>2023-12-02</lastmod>
@@ -310,14 +301,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/%E6%95%99%E7%A8%8B/</loc>
+    <loc>http://yoursite.com/tags/%E8%BD%AE%E6%92%AD/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/%E8%BD%AE%E6%92%AD/</loc>
+    <loc>http://yoursite.com/tags/%E6%95%99%E7%A8%8B/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -424,14 +415,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/technology/</loc>
+    <loc>http://yoursite.com/categories/%E6%94%B6%E8%97%8F/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/%E6%94%B6%E8%97%8F/</loc>
+    <loc>http://yoursite.com/categories/technology/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
