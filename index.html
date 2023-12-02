@@ -607,6 +607,16 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前在看一些第三方源码的时候，时不时的能碰到一些关于运行时相关的代码。于是乎，就阅读了一些关于运行时的文章，感觉写的都不错，写此篇文章为了记录一下，同时也重新学习一遍。</p>
+<h2 id="Runtime简介"><a href="#Runtime简介" class="headerlink" title="Runtime简介"></a>Runtime简介</h2><ul>
+<li>Runtime简称运行时，OC就是运行时机制。</li>
+<li>C语言中函数的调用在编译的时候就会决定调用哪个函数。</li>
+<li>对于OC来说，属于动态调用过程，在编译的时候并不能决定调用哪个函数，只有真正运行的时候才会根据函数的名称找到对应的函数来调用。</li>
+<li>事实证明：<ol>
+<li>在编译阶段，OC可以调用任何函数，即使这个函数并未实现，只要申明就不会报错。</li>
+<li>在编译阶段，C语言调用未实现的函数就会报错。</li>
+</ol>
+</li>
+</ul>
         
           <a class="article-more-a" href="/2016/06/14/%E5%88%9D%E8%AF%86RunTime/#more">more >></a>
         
