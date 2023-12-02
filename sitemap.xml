@@ -266,14 +266,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/ReactiveCocoa/</loc>
+    <loc>http://yoursite.com/tags/React-Native/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/React-Native/</loc>
+    <loc>http://yoursite.com/tags/ReactiveCocoa/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -308,13 +308,6 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/Runtime/</loc>
-    <lastmod>2023-12-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://yoursite.com/tags/%E6%95%99%E7%A8%8B/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
@@ -322,7 +315,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/%E6%94%B6%E8%97%8F/</loc>
+    <loc>http://yoursite.com/tags/Runtime/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -330,6 +323,13 @@
   
   <url>
     <loc>http://yoursite.com/tags/const%E3%80%81define/</loc>
+    <lastmod>2023-12-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/%E6%94%B6%E8%97%8F/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -366,14 +366,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/ReactiveCocoa/</loc>
+    <loc>http://yoursite.com/categories/React-Native/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/React-Native/</loc>
+    <loc>http://yoursite.com/categories/ReactiveCocoa/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -401,14 +401,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/Runtime/</loc>
+    <loc>http://yoursite.com/categories/%E6%95%99%E7%A8%8B/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/%E6%95%99%E7%A8%8B/</loc>
+    <loc>http://yoursite.com/categories/Runtime/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
