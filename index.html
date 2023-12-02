@@ -364,7 +364,7 @@ var _hmt = _hmt || [];
 	  <!-- 添加分类与标签 -->
 	  
 		  
-		  <h1 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h1><p>利用Xcode的命令<code>security</code>和<code>codesign</code>处理ipa重签。重签名与Xcode打包签名本质上是一个原理，具体流程如下，提前需要准备以下2个文件：</p>
+			<h1 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h1><p>利用Xcode的命令<code>security</code>和<code>codesign</code>处理ipa重签。重签名与Xcode打包签名本质上是一个原理，具体流程如下，提前需要准备以下2个文件：</p>
 <table>
 <thead>
 <tr>
@@ -381,40 +381,7 @@ var _hmt = _hmt || [];
 <td>选择对应的证书，通用会检索系统钥匙串安装的可用的证书，会自动过滤掉过期的</td>
 </tr>
 </tbody></table>
-<h1 id="二、使用的命令"><a href="#二、使用的命令" class="headerlink" title="二、使用的命令"></a>二、使用的命令</h1><h2 id="2-1-添加p12证书"><a href="#2-1-添加p12证书" class="headerlink" title="2.1 添加p12证书"></a>2.1 添加p12证书</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">security import /Users/admin/Desktop/dis.p12 -P &#x27;123456&#x27;</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-2-解压ipa包"><a href="#2-2-解压ipa包" class="headerlink" title="2.2 解压ipa包"></a>2.2 解压ipa包</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">unzip yourApp.ipa</span><br><span class="line"></span><br><span class="line">// 查找.app目录，删除系统临时文件</span><br><span class="line">rm -rf ./Payload/yourAppName.app/.DS_Store</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-3-修改Payload-yourName-app中的icon图标、info-plist文件的信息等"><a href="#2-3-修改Payload-yourName-app中的icon图标、info-plist文件的信息等" class="headerlink" title="2.3 修改Payload&#x2F;yourName.app中的icon图标、info.plist文件的信息等"></a>2.3 修改Payload&#x2F;yourName.app中的icon图标、info.plist文件的信息等</h2><p>(如有需要)，比如版本号，应用名称等</p>
-<h2 id="2-4-删除之前的签名-CodeSignature"><a href="#2-4-删除之前的签名-CodeSignature" class="headerlink" title="2.4 删除之前的签名 -&gt; .CodeSignature"></a>2.4 删除之前的签名 -&gt; .CodeSignature</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf ./Payload/yourAppName.app/_CodeSignature</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-5-用授权文件生成entitlements-plist文件"><a href="#2-5-用授权文件生成entitlements-plist文件" class="headerlink" title="2.5 用授权文件生成entitlements.plist文件"></a>2.5 用授权文件生成entitlements.plist文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 查看授权文件内容命令</span><br><span class="line">security cms -D -i &quot;xxx.mobileprovision&quot;</span><br><span class="line"></span><br><span class="line">// 输出原来的 Entitlements 配置(可能需要与4.2对比，比如是更新包名的应用，bundle id是变的！)</span><br><span class="line">security cms -D -i embedded.mobileprovision &gt; entitlement_full.plist</span><br><span class="line"></span><br><span class="line">// 只保留 Entitlements 属性内容</span><br><span class="line">/usr/libexec/PlistBuddy -x -c \&#x27;Print:Entitlements\&#x27; entitlement_full.plist &gt; entitlement.plist</span><br></pre></td></tr></table></figure>
-
-<p><strong>注：本步骤的 Entitlements 属性内容 非常重要，不能多字段，否则重签是有效，但导致ipa包安装失败~</strong></p>
-<h2 id="2-6-替换描述文件"><a href="#2-6-替换描述文件" class="headerlink" title="2.6 替换描述文件"></a>2.6 替换描述文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 把新的描述文件复制替换到解压后的目录中。</span><br><span class="line">cp ./embedded.mobileprovision ./Payload/yourAppName.app/embedded.mobileprovision</span><br></pre></td></tr></table></figure>
-<p>如果需要查看系统中已经保存的描述文件：“~&#x2F;Library&#x2F;MobileDevice&#x2F;Provisioning\ Profiles&#x2F;”</p>
-<h2 id="2-7-重新签名"><a href="#2-7-重新签名" class="headerlink" title="2.7 重新签名"></a>2.7 重新签名</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 这一步需要读取你钥匙串中的开发者证书，可以用以下命令查看下有哪些证书：</span><br><span class="line">security find-identity -p codesigning -v</span><br><span class="line"></span><br><span class="line">// 先重签名framework和dylib（不重签的话，就删除无法签名的插件文件：PlugIns文件夹、Watch文件夹）</span><br><span class="line">/usr/bin/codesign --force --sign &quot;iPhone Distribution:xxxxx&quot; --entitlements entitlements.plist /Payload/XX.app/Frameworks/xxx.framework</span><br><span class="line"></span><br><span class="line">// 再签名.app：</span><br><span class="line">$ /usr/bin/codesign -f -s &quot;iPhone Distribution:xxxxx&quot; ./Desktop/Payload/yourAppName.app</span><br><span class="line"></span><br><span class="line">// 成功后提示：</span><br><span class="line">./Payload/yourAppName.app: replacing existing signature.</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-8-压缩Payload，就完成了重签"><a href="#2-8-压缩Payload，就完成了重签" class="headerlink" title="2.8 压缩Payload，就完成了重签"></a>2.8 压缩Payload，就完成了重签</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zip -ry ABC.ipa Payload</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-9-验证：查看签名信息并在真机上进行安装"><a href="#2-9-验证：查看签名信息并在真机上进行安装" class="headerlink" title="2.9 验证：查看签名信息并在真机上进行安装"></a>2.9 验证：查看签名信息并在真机上进行安装</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 验证签名正确性：</span><br><span class="line">codesign -v Payload/XX.app</span><br><span class="line"></span><br><span class="line">// 查看app的签名信息:</span><br><span class="line">codesign -vv -d Payload/XX.app</span><br></pre></td></tr></table></figure>
-<h2 id="2-10-删除安装的P12证书"><a href="#2-10-删除安装的P12证书" class="headerlink" title="2.10 删除安装的P12证书"></a>2.10 删除安装的P12证书</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">security delete-certificate -c &quot;iPhone Distribution: xxxxxx&quot;</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-11-其他命令"><a href="#2-11-其他命令" class="headerlink" title="2.11 其他命令"></a>2.11 其他命令</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 检查一下是否安装了AppleWWDRCA.cer：</span><br><span class="line">security find-certificate -c &quot;Apple Worldwide Developer Relations Certification Authority&quot;</span><br><span class="line"></span><br><span class="line">// 查看app的 entitlements</span><br><span class="line">codesign --entitlements :- -d Payload/yourAppName.app</span><br></pre></td></tr></table></figure>
-
-<h1 id="三、参考引用"><a href="#三、参考引用" class="headerlink" title="三、参考引用"></a>三、参考引用</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/HanProjectCoder/ResignForiOS">HanProjectCoder&#x2F;ResignForiOS: ipa resign</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/fastlane/fastlane/tree/master/sigh">fastlane&#x2F;sigh at master · fastlane&#x2F;fastlane</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/cjsliuj/Scalpel">cjsliuj&#x2F;Scalpel: A MacOS app with resign, dylib link injection&#x2F;delete, ipa metadata edit.</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/jerryandliujie/article/details/84845162">Scalpel的实现：一款集动态库注入与删除、IPA重签名、IPA元数据修改为一体的MacOS App</a></li>
-<li><a target="_blank" rel="noopener" href="https://gist.github.com/FredCox3/0617eba0818a3ba957b7">cfgutil man page</a></li>
-<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/7485806/install-p12-or-cer-in-console-macos">shell - install .p12 or .cer in console macos - Stack Overflow</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/hongbaoshi/reSignature/blob/master/reSignature/TFSignature.py">reSignature&#x2F;TFSignature.py at master · hongbaoshi&#x2F;reSignature</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ce2893d99bd4">iOS开发中的应用打包方式及重签名的一些总结 - 简书</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.0x5e.cn/2016/09/25/ios-codesign-things/">iOS代码签名与重签名 · 0x5e的博客</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/technotes/tn2206/_index.html">Technical Note TN2206: macOS Code Signing In Depth</a></li>
-</ul>
-
+		  
 				  
 	  
       
@@ -2023,10 +1990,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Xcode</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
@@ -2036,6 +1999,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">重签名</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Xcode</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2055,15 +2022,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Runtime</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">const、define</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">收藏</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Runtime</a>
               </li>
              
               <li class="article-tag-list-item">
