@@ -290,6 +290,155 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-NSString为什么使用copy-而不使用retain" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/ba545077.html">NSString为什么使用copy,而不使用retain?</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/ba545077.html" class="archive-article-date">
+  	<time datetime="2015-01-10T14:09:17.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2015-01-10</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">225字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">1min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+			<meta name="referrer" content="no-referrer" />
+
+<h1 id="一、原因"><a href="#一、原因" class="headerlink" title="一、原因"></a>一、原因</h1><h2 id="1-1-一方面"><a href="#1-1-一方面" class="headerlink" title="1.1 一方面"></a>1.1 一方面</h2><p>如果使用retain，只是引用计数 +1，并没有生成新的对象，所以效率好。</p>
+<h2 id="1-2-另一方面"><a href="#1-2-另一方面" class="headerlink" title="1.2 另一方面"></a>1.2 另一方面</h2><p>但是使用copy安全。因为NSString为NSMutableString 的基类，如果将NSMutableString 以retain的形式赋值给NSString后，后续修改NSMutableString会导致NSString内容的变化，这通常不是我们希望的，所以NSString要使用copy。比如：</p>
+<pre><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NSMutableString *mName = [NSMutableString stringWithString:@&quot;li&quot;];  </span><br><span class="line">Person *p = [[[Person alloc] init] autorelease];  </span><br><span class="line">p.name = mName;  </span><br><span class="line">[mName setString:@&quot;zhang&quot;];  </span><br><span class="line">NSLog(@&quot;p.name:%@&quot;, p.name); </span><br></pre></td></tr></table></figure>
+    
+</code></pre>
+		  
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">NSString、copy</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/ba545077.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
     <article id="post-从零开始搭建Hexo-Github博客-基于Next主题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -493,10 +642,10 @@ window.MathJax = {
 	  <br>
 	  <div class="footer-center">
 	    <i class="fa fa-file-word-o" aria-hidden="true"></i>
-		<span> 21 篇</span>
+		<span> 22 篇</span>
 		<span class="post-meta-divider">|</span>
 		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-		<span> <span class="post-count">31.1k</span></span>
+		<span> <span class="post-count">32.3k</span></span>
       </div>
 	  
 	  <!-- 添加不蒜子统计 -->
@@ -669,6 +818,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iOS开发</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">启动优化</a>
               </li>
              
               <li class="article-tag-list-item">

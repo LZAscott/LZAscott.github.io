@@ -7,20 +7,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
   <link rel="dns-prefetch" href="http://example.com">
-  <title>nil、Nil、NULL、NSNull的理解 | Leoli的博客</title>
+  <title>【iOS开发高手课-02】App启动速度怎么做优化与监控 | Leoli的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta name="description" content="前言在工作当中我们在调用官方的api的时候，有时候一个参数即可以写成nil，而写成NULL也不会报错。也是一直没有搞明白为什么。然后通过查阅资料，发现原来除了nil,NULL,还有Nil,NSNull，是不是感觉很晕，我也是懵逼了。于是做一下笔记记录一下。">
+  <meta name="description" content="前言 这系列文章是根据阅读学习【iOS开发高手课】归纳总结整理的。  App启动速度的快慢往小了说是影响用户体验，往大了说是将用户拒之门外。启动速度优化的重要性不言而喻。 启动 冷启动：App点击启动前，它的进程不在系统里，需要系统新创建一个进程分配给它启动的情况。这是一次完整的启动过程。 热启动：App在冷启动之后用户将App退到后台，在App的进程还在系统里的情况下，用户重新启动进入App的过">
 <meta property="og:type" content="article">
-<meta property="og:title" content="nil、Nil、NULL、NSNull的理解">
-<meta property="og:url" content="http://example.com/post/937a3ecd.html">
+<meta property="og:title" content="【iOS开发高手课-02】App启动速度怎么做优化与监控">
+<meta property="og:url" content="http://example.com/post/f5f2ab0f.html">
 <meta property="og:site_name" content="Leoli的博客">
-<meta property="og:description" content="前言在工作当中我们在调用官方的api的时候，有时候一个参数即可以写成nil，而写成NULL也不会报错。也是一直没有搞明白为什么。然后通过查阅资料，发现原来除了nil,NULL,还有Nil,NSNull，是不是感觉很晕，我也是懵逼了。于是做一下笔记记录一下。">
+<meta property="og:description" content="前言 这系列文章是根据阅读学习【iOS开发高手课】归纳总结整理的。  App启动速度的快慢往小了说是影响用户体验，往大了说是将用户拒之门外。启动速度优化的重要性不言而喻。 启动 冷启动：App点击启动前，它的进程不在系统里，需要系统新创建一个进程分配给它启动的情况。这是一次完整的启动过程。 热启动：App在冷启动之后用户将App退到后台，在App的进程还在系统里的情况下，用户重新启动进入App的过">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2016-06-06T15:22:30.000Z">
-<meta property="article:modified_time" content="2023-12-02T10:27:22.218Z">
+<meta property="article:published_time" content="2023-12-02T17:15:12.000Z">
+<meta property="article:modified_time" content="2023-12-02T18:03:40.693Z">
 <meta property="article:author" content="Leoli">
-<meta property="article:tag" content="iOS开发">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="启动优化">
 <meta name="twitter:card" content="summary">
   
   
@@ -290,26 +291,26 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-nil、Nil、NULL、NSNull的理解" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-【iOS开发高手课-02】App启动速度怎么做优化与监控" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title_code_ant" itemprop="name">
-	  <a href="/post/937a3ecd.html">nil、Nil、NULL、NSNull的理解</a>
+	  <a href="/post/f5f2ab0f.html">【iOS开发高手课-02】App启动速度怎么做优化与监控</a>
 	</h1>
   
 
         
 		
-		  <a href="/post/937a3ecd.html" class="archive-article-date">
-  	<time datetime="2016-06-06T15:22:30.000Z" itemprop="datePublished">
+		  <a href="/post/f5f2ab0f.html" class="archive-article-date">
+  	<time datetime="2023-12-02T17:15:12.000Z" itemprop="datePublished">
 	<!-- <i class="icon-calendar icon"></i> -->
 
 	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
 	&nbsp;
-	2016-06-06</time>
+	2023-12-03</time>
 	
 	<!-- busuanzi阅读量统计
 	
@@ -328,7 +329,7 @@ var _hmt = _hmt || [];
 		&nbsp; &nbsp; &nbsp;
 		<i class="fa fa-eye" aria-hidden="true"></i>
 		&nbsp;
-		<span class="waline-pageview-count" data-path="/post/937a3ecd.html"><i class="fa fa-spinner fa-spin"></i></span>
+		<span class="waline-pageview-count" data-path="/post/f5f2ab0f.html"><i class="fa fa-spinner fa-spin"></i></span>
 	</span>
 	
 
@@ -342,6 +343,15 @@ var _hmt = _hmt || [];
 <div class="word-count">
 	
       
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
     
 	
     <span class="post-time">
@@ -349,7 +359,7 @@ var _hmt = _hmt || [];
 	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
         <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">704字</span>
+        <span class="post-count">1.2k字</span>
       </span>
     </span>
 
@@ -358,7 +368,7 @@ var _hmt = _hmt || [];
       <span class="post-meta-item-icon">
 	    <i class="fa fa-pagelines" aria-hidden="true"></i>
         <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">2min</span>
+        <span class="post-count">4min</span>
       </span>
     </span>
 	
@@ -373,67 +383,43 @@ var _hmt = _hmt || [];
 	  <!-- 添加分类与标签 -->
 	  
 		  
-		  <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在工作当中我们在调用官方的api的时候，有时候一个参数即可以写成<code>nil</code>，而写成<code>NULL</code>也不会报错。也是一直没有搞明白为什么。然后通过查阅资料，发现原来除了<code>nil</code>,<code>NULL</code>,还有<code>Nil</code>,<code>NSNull</code>，是不是感觉很晕，我也是懵逼了。于是做一下笔记记录一下。</p>
-<span id="more"></span>
-
-<h2 id="nil"><a href="#nil" class="headerlink" title="nil"></a>nil</h2><p>我们给对象赋值时一般都会使用<code>object = nil</code>,表示我想把这个对象释放掉；</p>
-<p>或者对象由于某种原因，经过多次release，于是对象引用计数为0了，系统将这块内存释放掉，这个时候这个对象为nil,我们称它为<strong>“空对象”</strong>。（**注意：这里强调的是“空对象”，下面我会拿它和“值为空的对象”做对比!**）</p>
-<p>所以对于这种空对象，所有关于retain的操作都会引起程序crash(<strong>注意:我是说关于retain操作，而向一个nil对象发送消息是不会crash的</strong>),例如字典添加键值或者数组添加新元素等，具体可以参考如下代码：</p>
-<pre><code>- (void)viewDidLoad &#123;
-    [super viewDidLoad];
-
-    NSMutableArray *mArr = [[NSMutableArray alloc] init];
-    NSMutableDictionary *mDic = [[NSMutableDictionary alloc] init];
-    
-    // 以下用法不会引起crash
-//    id object = [[NSObject alloc] init];
-//    [mArr addObject:object];
-//    [mDic setObject:object forKey:@&quot;objectKey&quot;];
-    
-    
-    // 以下用法会导致crash
-    id obj = nil;
-    [mArr addObject:obj];
-    [mDic setObject:obj forKey:@&quot;objKey&quot;];
-    
-&#125;
-</code></pre>
-<h2 id="NSNull"><a href="#NSNull" class="headerlink" title="NSNull"></a>NSNull</h2><p><code>NSNull</code>和<code>nil</code>的区别在于<code>nil</code>是一个空对象，已经完全从内存中消失了，而如果我们想表达“我们需要有这样一个容器，但是这个容器里面什么也没有”的时候，我们就要用到<code>NSNull</code>，我称它为”值为空的对象”。如果你查阅开发文档你会发现<code>NSNull</code>这个类是继承<code>NSObject</code>，并且只有一个<code>+ (NSNull *) null;</code>类方法。这就说明<code>NSNull</code>对象拥有一个有效的内存地址，所以在程序中对它的任何引用都是不会导致程序崩溃的。参考代码如下：</p>
-<pre><code>- (void)viewDidLoad &#123;
-    [super viewDidLoad];
-
-    NSMutableArray *mArr = [[NSMutableArray alloc] init];
-    NSMutableDictionary *mDic = [[NSMutableDictionary alloc] init];
-    
-    id obj = nil;
-    if (obj == nil) &#123;
-        obj = [NSNull null];
-    &#125;
-    
-    [mArr addObject:obj];
-    [mDic setObject:obj forKey:@&quot;objKey&quot;];
-    NSLog(@&quot;%@--%@&quot;,[mArr firstObject],mDic[@&quot;objKey&quot;]);
-&#125;
-</code></pre>
-<h2 id="Nil"><a href="#Nil" class="headerlink" title="Nil"></a>Nil</h2><p><code>Nil</code>和<code>nil</code>在使用上没有严格规定的，也就是说凡是使用<code>nil</code>的地方都可以使用<code>Nil</code>来代替，反之亦然。只不过从编程命名规范来说，我们约定俗成地将<code>Nil</code>表示成一个空类，<code>nil</code>表示一个空对象。参考代码如下:</p>
-<pre><code>- (void)viewDidLoad &#123;
-    [super viewDidLoad];
-
-    id obj = nil;
-    if (obj == nil) &#123;
-        NSLog(@&quot;obj is nil&quot;);
-    &#125;
-    
-    Class classA = Nil;
-    if (classA == Nil) &#123;
-        NSLog(@&quot;classA is Nil&quot;);
-    &#125;
-&#125;
-</code></pre>
-<h2 id="NULL"><a href="#NULL" class="headerlink" title="NULL"></a>NULL</h2><p>我们知道<code>Object-C</code>来源于C、支持C，当然也有别于C，而<code>NULL</code>就是典型C语言的语法，它表示一个空指针，参考代码如下：</p>
-<pre><code>NSInteger *point = NULL;
-</code></pre>
-
+		  <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
+<p>这系列文章是根据阅读学习【iOS开发高手课】归纳总结整理的。</p>
+</blockquote>
+<p>App启动速度的快慢往小了说是影响用户体验，往大了说是将用户拒之门外。启动速度优化的重要性不言而喻。</p>
+<h1 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h1><ul>
+<li>冷启动：App点击启动前，它的进程不在系统里，需要系统新创建一个进程分配给它启动的情况。这是一次完整的启动过程。</li>
+<li>热启动：App在冷启动之后用户将App退到后台，在App的进程还在系统里的情况下，用户重新启动进入App的过程，这个过程做的事情非常少。</li>
+</ul>
+<p>那么到这里，针对<font color="red">App启动速度怎么做优化</font>，我们应该关注<font color="red">App的冷启动和热启动，减少冷启动，尽量让App在后台时能通过热启动打开。</font>怎么理解呢？对于iOS，系统严格管控手机的内存，当发现内存不足时，系统会发送全局通知，让大家把不要的内存释放出来，如果大家都不释放，后台的应用就会被干掉，当然前台的应用如果占用内存超过阈值的话也会被干掉(kill)。所以，解决<font color="red">App启动速度怎么做优化</font>，我们在写代码时，能注意到App内存使用情况，节省内存空间，减少不必要的内存创建，及时地释放内存等，都是对优化起到举足轻重的作用。</p>
+<p>以上就是冷启动和热启动。接下来我们主要讨论<font color="red">App冷启动</font>的优化</p>
+<h1 id="App的启动主要包括三个阶段"><a href="#App的启动主要包括三个阶段" class="headerlink" title="App的启动主要包括三个阶段"></a>App的启动主要包括三个阶段</h1><h2 id="main-函数执行前"><a href="#main-函数执行前" class="headerlink" title="main()函数执行前"></a>main()函数执行前</h2><p>在执行main()函数前，系统主要做以下几件事情：</p>
+<ul>
+<li>加载可执行文件（App的.o文件的集合）；</li>
+<li>加载动态链接库，进行rebase指针调整和bind符号绑定；</li>
+<li>Objc运行时的初始处理，包括Objc相关类的注册、category注册、Selector唯一性检查等；</li>
+<li>初始化，包括了执行+load()方法，attribute((constructor)) 修饰的函数的调用、创建 C++ 静态全局变量。</li>
+</ul>
+<p>相应地，这个阶段对于启动速度优化来说，可以做的事情包括：</p>
+<ul>
+<li>减少动态库加载。每个库本身都有依赖关系，苹果公司建议使用更少的动态库，并且建议在使用动态库的数量较多时，尽量将多个动态库进行合并。数量上，苹果公司最多可支持6个非系统动态库合并为一个。</li>
+<li>减少加载启动后不会去使用的类或方法。</li>
+<li>+load()方法里的内容可以放到首屏渲染完成后再去执行，或使用+initialize() 方法替换掉。因为，在一个+load()方法里，进行运行时方法替换操作会带来4毫秒的消耗。不要小看这4毫秒，积少成多，执行 +load() 方法对启动速度的影响会越来越大。</li>
+<li>控制C++全局变量的数量。</li>
+</ul>
+<h2 id="main-函数执行后"><a href="#main-函数执行后" class="headerlink" title="main()函数执行后"></a>main()函数执行后</h2><p>main()函数执行后的阶段，指的从main()函数执行开始，到appDelegate的didFinishLaunchingWithOptions方法里首屏渲染相关方法执行完成。</p>
+<p>首页的业务代码都是要在这个阶段，也就是首屏渲染前执行的，它主要包括了：</p>
+<ul>
+<li>首屏初始化所需配置文件的读写操作；</li>
+<li>首屏列表数据的获取；</li>
+<li>首屏渲染的大量计算等。</li>
+</ul>
+<p>相应的优化：</p>
+<p>从功能上梳理出哪些是首屏渲染必须的初始化功能，哪些是App启动必要的初始化功能，而哪些是只需要在对应功能开始使用时才需要初始化的，梳理完之后，将这些功能放在合适的时机进行。</p>
+<h2 id="首屏完成渲染后"><a href="#首屏完成渲染后" class="headerlink" title="首屏完成渲染后"></a>首屏完成渲染后</h2><p>首屏渲染后的这个阶段，主要完成的是非首屏其他业务服务模块的初始化、监听的注册、配置文件的读取等。从函数上看，这个阶段指的就是截止到didFinishLaunchingWithOptions方法作用域内执行首屏渲染之后的所有方法执行完成。简单的说，<font color="red">就是从渲染完成时开始，到didFinishLaunchingWithOptions方法作用域结束时结束。</font></p>
+<p>这个阶段用户已经能够看到App的首页信息了，所以优化的优先级排在最后。但是，那些会卡主主线程的方法还是需要最优先处理的，不然还是会影响到用户后面的交互操作。</p>
+<p>明白了App启动阶段完成的工作后，我们就可以有的放矢的进行启动速度的优化了，主要包括<font color="red">功能级别</font>和<font color="red">方法级别</font>的启动优化。</p>
+<h1 id="功能级别的启动优化"><a href="#功能级别的启动优化" class="headerlink" title="功能级别的启动优化"></a>功能级别的启动优化</h1><h1 id="方法级别的启动优化"><a href="#方法级别的启动优化" class="headerlink" title="方法级别的启动优化"></a>方法级别的启动优化</h1>
 				  
 	  
       
@@ -482,19 +468,19 @@ var _hmt = _hmt || [];
 	
 	<!-- <br>
 	<strong class="create-time">发布时间：</strong>
-	2016-06-06 -->
+	2023-12-03 -->
 	
 	<br>
 	<strong class="update-time">最后更新：</strong>
-	2023年12月02日 18:27:22
+	2023年12月03日 02:03:40
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
-	<a href="http://example.com/post/937a3ecd.html" title="nil、Nil、NULL、NSNull的理解" target="_blank">nil、Nil、NULL、NSNull的理解</a> -->
+	<a href="http://example.com/post/f5f2ab0f.html" title="【iOS开发高手课-02】App启动速度怎么做优化与监控" target="_blank">【iOS开发高手课-02】App启动速度怎么做优化与监控</a> -->
 	
 	<br>
 	<strong class="article-url">本文链接：</strong>
-	<a href="http://example.com/post/937a3ecd.html" title="nil、Nil、NULL、NSNull的理解" target="_blank">http://example.com/post/937a3ecd.html</a>
+	<a href="http://example.com/post/f5f2ab0f.html" title="【iOS开发高手课-02】App启动速度怎么做优化与监控" target="_blank">http://example.com/post/f5f2ab0f.html</a>
 	
 	<br>
 	<strong class="copyright">版权声明：</strong>
@@ -520,7 +506,11 @@ var _hmt = _hmt || [];
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">iOS开发</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">iOS</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">启动优化</a>
         		</li>
       		
 		</ul>
@@ -579,7 +569,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/post/937a3ecd.html" alt="微信分享二维码">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/post/f5f2ab0f.html" alt="微信分享二维码">
     </div>
 </div>
 
@@ -596,18 +586,9 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/post/29245a66.html" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          ReactiveCocoa(一)
-        
-      </div>
-    </a>
   
-  
-    <a href="/post/a47a005e.html" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">两个App之间调起通信</div>
+    <a href="/post/ebb4149f.html" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">iOS包重签名技术知识</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -633,7 +614,7 @@ var _hmt = _hmt || [];
           <span class="tooltip-content">
 			<span style="font-size: 20px;font-weight: bold;">目录</span>
             <div class="toc-article">
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nil"><span class="toc-number">2.</span> <span class="toc-text">nil</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSNull"><span class="toc-number">3.</span> <span class="toc-text">NSNull</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nil"><span class="toc-number">4.</span> <span class="toc-text">Nil</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NULL"><span class="toc-number">5.</span> <span class="toc-text">NULL</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8"><span class="toc-number">2.</span> <span class="toc-text">启动</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#App%E7%9A%84%E5%90%AF%E5%8A%A8%E4%B8%BB%E8%A6%81%E5%8C%85%E6%8B%AC%E4%B8%89%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="toc-number">3.</span> <span class="toc-text">App的启动主要包括三个阶段</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#main-%E5%87%BD%E6%95%B0%E6%89%A7%E8%A1%8C%E5%89%8D"><span class="toc-number">3.1.</span> <span class="toc-text">main()函数执行前</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#main-%E5%87%BD%E6%95%B0%E6%89%A7%E8%A1%8C%E5%90%8E"><span class="toc-number">3.2.</span> <span class="toc-text">main()函数执行后</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A6%96%E5%B1%8F%E5%AE%8C%E6%88%90%E6%B8%B2%E6%9F%93%E5%90%8E"><span class="toc-number">3.3.</span> <span class="toc-text">首屏完成渲染后</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E7%BA%A7%E5%88%AB%E7%9A%84%E5%90%AF%E5%8A%A8%E4%BC%98%E5%8C%96"><span class="toc-number">4.</span> <span class="toc-text">功能级别的启动优化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E7%BA%A7%E5%88%AB%E7%9A%84%E5%90%AF%E5%8A%A8%E4%BC%98%E5%8C%96"><span class="toc-number">5.</span> <span class="toc-text">方法级别的启动优化</span></a></li></ol>
             </div>
           </span>
         </div>
