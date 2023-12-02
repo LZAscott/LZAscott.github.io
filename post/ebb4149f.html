@@ -7,18 +7,20 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
   <link rel="dns-prefetch" href="http://example.com">
-  <title>标签: React Native | Leoli的博客</title>
+  <title>iOS包重签名技术知识 | Leoli的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta name="description" content="个人技术博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Leoli的博客">
-<meta property="og:url" content="http://example.com/tags/React-Native/index.html">
+  <meta name="description" content="一、简介利用Xcode的命令security和codesign处理ipa重签。重签名与Xcode打包签名本质上是一个原理，具体流程如下，提前需要准备以下2个文件：    文件名 备注    Provisioning Profile 描述文件，会像Xcode一样双击安装在电脑上的描述文件，用命令行可以列举出来，可以过滤过期的证书   Signing Certificate 选择对应的证书，通用会检索">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS包重签名技术知识">
+<meta property="og:url" content="http://example.com/post/ebb4149f.html">
 <meta property="og:site_name" content="Leoli的博客">
-<meta property="og:description" content="个人技术博客">
+<meta property="og:description" content="一、简介利用Xcode的命令security和codesign处理ipa重签。重签名与Xcode打包签名本质上是一个原理，具体流程如下，提前需要准备以下2个文件：    文件名 备注    Provisioning Profile 描述文件，会像Xcode一样双击安装在电脑上的描述文件，用命令行可以列举出来，可以过滤过期的证书   Signing Certificate 选择对应的证书，通用会检索">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-12-02T11:49:59.000Z">
+<meta property="article:modified_time" content="2023-12-02T12:10:09.945Z">
 <meta property="article:author" content="Leoli">
-<meta property="article:tag" content="iOS,swift,python,mac,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验">
+<meta property="article:tag" content="重签名">
 <meta name="twitter:card" content="summary">
   
   
@@ -284,112 +286,424 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-iOS包重签名技术知识" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title_code_ant" itemprop="name">
+	  <a href="/post/ebb4149f.html">iOS包重签名技术知识</a>
+	</h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/41e657ca.html" class="archive-article-date">
-  	<time datetime="2016-08-15T08:09:22.000Z" itemprop="datePublished">
+
+        
+		
+		  <a href="/post/ebb4149f.html" class="archive-article-date">
+  	<time datetime="2023-12-02T11:49:59.000Z" itemprop="datePublished">
 	<!-- <i class="icon-calendar icon"></i> -->
 
 	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
 	&nbsp;
-	2016-08-15</time>
+	2023-12-02</time>
 	
 	<!-- busuanzi阅读量统计
+	
+	<span>
+		&nbsp; &nbsp; &nbsp;
+		<span class="post-meta-item-text">阅读量:</span>
+		<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+		<span class="post-meta-item-text">次</span>
+	</span>
 	
 	-->
 	
     <!-- waline阅读量统计 -->
 	
+	<span>
+		&nbsp; &nbsp; &nbsp;
+		<i class="fa fa-eye" aria-hidden="true"></i>
+		&nbsp;
+		<span class="waline-pageview-count" data-path="/post/ebb4149f.html"><i class="fa fa-spinner fa-spin"></i></span>
+	</span>
+	
 
 </a>
 
 
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/41e657ca.html">React Native--环境配置</a>
-    </h2>
-  
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">798字</span>
+      </span>
+    </span>
 
-        <div class="article-info info-on-right">
-          
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">3min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <h1 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h1><p>利用Xcode的命令<code>security</code>和<code>codesign</code>处理ipa重签。重签名与Xcode打包签名本质上是一个原理，具体流程如下，提前需要准备以下2个文件：</p>
+<table>
+<thead>
+<tr>
+<th>文件名</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Provisioning Profile</td>
+<td>描述文件，会像Xcode一样双击安装在电脑上的描述文件，用命令行可以列举出来，可以过滤过期的证书</td>
+</tr>
+<tr>
+<td>Signing Certificate</td>
+<td>选择对应的证书，通用会检索系统钥匙串安装的可用的证书，会自动过滤掉过期的</td>
+</tr>
+</tbody></table>
+<h1 id="二、使用的命令"><a href="#二、使用的命令" class="headerlink" title="二、使用的命令"></a>二、使用的命令</h1><h2 id="2-1-添加p12证书"><a href="#2-1-添加p12证书" class="headerlink" title="2.1 添加p12证书"></a>2.1 添加p12证书</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">security import /Users/admin/Desktop/dis.p12 -P &#x27;123456&#x27;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-解压ipa包"><a href="#2-2-解压ipa包" class="headerlink" title="2.2 解压ipa包"></a>2.2 解压ipa包</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">unzip yourApp.ipa</span><br><span class="line"></span><br><span class="line">// 查找.app目录，删除系统临时文件</span><br><span class="line">rm -rf ./Payload/yourAppName.app/.DS_Store</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-修改Payload-yourName-app中的icon图标、info-plist文件的信息等"><a href="#2-3-修改Payload-yourName-app中的icon图标、info-plist文件的信息等" class="headerlink" title="2.3 修改Payload&#x2F;yourName.app中的icon图标、info.plist文件的信息等"></a>2.3 修改Payload&#x2F;yourName.app中的icon图标、info.plist文件的信息等</h2><p>(如有需要)，比如版本号，应用名称等</p>
+<h2 id="2-4-删除之前的签名-CodeSignature"><a href="#2-4-删除之前的签名-CodeSignature" class="headerlink" title="2.4 删除之前的签名 -&gt; .CodeSignature"></a>2.4 删除之前的签名 -&gt; .CodeSignature</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf ./Payload/yourAppName.app/_CodeSignature</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-5-用授权文件生成entitlements-plist文件"><a href="#2-5-用授权文件生成entitlements-plist文件" class="headerlink" title="2.5 用授权文件生成entitlements.plist文件"></a>2.5 用授权文件生成entitlements.plist文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 查看授权文件内容命令</span><br><span class="line">security cms -D -i &quot;xxx.mobileprovision&quot;</span><br><span class="line"></span><br><span class="line">// 输出原来的 Entitlements 配置(可能需要与4.2对比，比如是更新包名的应用，bundle id是变的！)</span><br><span class="line">security cms -D -i embedded.mobileprovision &gt; entitlement_full.plist</span><br><span class="line"></span><br><span class="line">// 只保留 Entitlements 属性内容</span><br><span class="line">/usr/libexec/PlistBuddy -x -c \&#x27;Print:Entitlements\&#x27; entitlement_full.plist &gt; entitlement.plist</span><br></pre></td></tr></table></figure>
+
+<p><strong>注：本步骤的 Entitlements 属性内容 非常重要，不能多字段，否则重签是有效，但导致ipa包安装失败~</strong></p>
+<h2 id="2-6-替换描述文件"><a href="#2-6-替换描述文件" class="headerlink" title="2.6 替换描述文件"></a>2.6 替换描述文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 把新的描述文件复制替换到解压后的目录中。</span><br><span class="line">cp ./embedded.mobileprovision ./Payload/yourAppName.app/embedded.mobileprovision</span><br></pre></td></tr></table></figure>
+<p>如果需要查看系统中已经保存的描述文件：“~&#x2F;Library&#x2F;MobileDevice&#x2F;Provisioning\ Profiles&#x2F;”</p>
+<h2 id="2-7-重新签名"><a href="#2-7-重新签名" class="headerlink" title="2.7 重新签名"></a>2.7 重新签名</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 这一步需要读取你钥匙串中的开发者证书，可以用以下命令查看下有哪些证书：</span><br><span class="line">security find-identity -p codesigning -v</span><br><span class="line"></span><br><span class="line">// 先重签名framework和dylib（不重签的话，就删除无法签名的插件文件：PlugIns文件夹、Watch文件夹）</span><br><span class="line">/usr/bin/codesign --force --sign &quot;iPhone Distribution:xxxxx&quot; --entitlements entitlements.plist /Payload/XX.app/Frameworks/xxx.framework</span><br><span class="line"></span><br><span class="line">// 再签名.app：</span><br><span class="line">$ /usr/bin/codesign -f -s &quot;iPhone Distribution:xxxxx&quot; ./Desktop/Payload/yourAppName.app</span><br><span class="line"></span><br><span class="line">// 成功后提示：</span><br><span class="line">./Payload/yourAppName.app: replacing existing signature.</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-8-压缩Payload，就完成了重签"><a href="#2-8-压缩Payload，就完成了重签" class="headerlink" title="2.8 压缩Payload，就完成了重签"></a>2.8 压缩Payload，就完成了重签</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zip -ry ABC.ipa Payload</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-9-验证：查看签名信息并在真机上进行安装"><a href="#2-9-验证：查看签名信息并在真机上进行安装" class="headerlink" title="2.9 验证：查看签名信息并在真机上进行安装"></a>2.9 验证：查看签名信息并在真机上进行安装</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 验证签名正确性：</span><br><span class="line">codesign -v Payload/XX.app</span><br><span class="line"></span><br><span class="line">// 查看app的签名信息:</span><br><span class="line">codesign -vv -d Payload/XX.app</span><br></pre></td></tr></table></figure>
+<h2 id="2-10-删除安装的P12证书"><a href="#2-10-删除安装的P12证书" class="headerlink" title="2.10 删除安装的P12证书"></a>2.10 删除安装的P12证书</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">security delete-certificate -c &quot;iPhone Distribution: xxxxxx&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-11-其他命令"><a href="#2-11-其他命令" class="headerlink" title="2.11 其他命令"></a>2.11 其他命令</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 检查一下是否安装了AppleWWDRCA.cer：</span><br><span class="line">security find-certificate -c &quot;Apple Worldwide Developer Relations Certification Authority&quot;</span><br><span class="line"></span><br><span class="line">// 查看app的 entitlements</span><br><span class="line">codesign --entitlements :- -d Payload/yourAppName.app</span><br></pre></td></tr></table></figure>
+
+<h1 id="三、参考引用"><a href="#三、参考引用" class="headerlink" title="三、参考引用"></a>三、参考引用</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/HanProjectCoder/ResignForiOS">HanProjectCoder&#x2F;ResignForiOS: ipa resign</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/fastlane/fastlane/tree/master/sigh">fastlane&#x2F;sigh at master · fastlane&#x2F;fastlane</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/cjsliuj/Scalpel">cjsliuj&#x2F;Scalpel: A MacOS app with resign, dylib link injection&#x2F;delete, ipa metadata edit.</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/jerryandliujie/article/details/84845162">Scalpel的实现：一款集动态库注入与删除、IPA重签名、IPA元数据修改为一体的MacOS App</a></li>
+<li><a target="_blank" rel="noopener" href="https://gist.github.com/FredCox3/0617eba0818a3ba957b7">cfgutil man page</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/7485806/install-p12-or-cer-in-console-macos">shell - install .p12 or .cer in console macos - Stack Overflow</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/hongbaoshi/reSignature/blob/master/reSignature/TFSignature.py">reSignature&#x2F;TFSignature.py at master · hongbaoshi&#x2F;reSignature</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ce2893d99bd4">iOS开发中的应用打包方式及重签名的一些总结 - 简书</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.0x5e.cn/2016/09/25/ios-codesign-things/">iOS代码签名与重签名 · 0x5e的博客</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/technotes/tn2206/_index.html">Technical Note TN2206: macOS Code Signing In Depth</a></li>
+</ul>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+		<!-- reward type 1 -->
+		
+          <div class="page-reward">
+            <a href="javascript:;" class="page-reward-btn tooltip-top" target="">
+            <div class="tooltip tooltip-east">
+              <span class="tooltip-item">赏</span>
+              <span class="tooltip-content">
+                <span class="tooltip-text">
+                  <span class="tooltip-inner">
+                    <p class="reward-p"><i class="icon icon-quo-left"></i>感觉不错 支持一下<i class="icon icon-quo-right"></i></p>
+                    <div class="reward-box">
+                      
+                      
+                        <div class="reward-box-item">
+                          <img class="reward-img" src="/img/wechatpay-min.png">
+                          <span class="reward-type">微信</span>
+                        </div>
+                      
+                    </div>
+                  </span>
+                </span>
+              </span>
+            </div></a>
+          </div>
+		
+		
+		<!-- reward type 2 -->
+		
+      
+	
+	  <!-- 添加版权声明 -->
+      
+        <!-- 添加版权声明 -->
+<!--https://blog.csdn.net/weixin_41287260/article/details/103050336-->
+
+<div class="declare">
+	<strong class="author">本文作者：</strong>
+	
+	  Leoli
+	
+	
+	<!-- <br>
+	<strong class="create-time">发布时间：</strong>
+	2023-12-02 -->
+	
+	<br>
+	<strong class="update-time">最后更新：</strong>
+	2023年12月02日 20:10:09
+	
+	<!-- <br>
+	<strong class="article-titles">本文标题：</strong>
+	<a href="http://example.com/post/ebb4149f.html" title="iOS包重签名技术知识" target="_blank">iOS包重签名技术知识</a> -->
+	
+	<br>
+	<strong class="article-url">本文链接：</strong>
+	<a href="http://example.com/post/ebb4149f.html" title="iOS包重签名技术知识" target="_blank">http://example.com/post/ebb4149f.html</a>
+	
+	<br>
+	<strong class="copyright">版权声明：</strong>
+	本作品采用
+	<a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+	许可协议进行许可，转载请注明出处！
+	
+	
+</div>
+<!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">React Native</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">重签名</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+	  
+	  <!-- 添加展开全文 -->
+      
+	  
+	  <!-- 添加分享 -->
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/post/ebb4149f.html" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
   </div>
 </article>
-  
-  
-    </div></section>
-  
 
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/post/4a17b156.html" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
     
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+      <div class="toc-container tooltip-left">
+        <i class="icon-font icon-category"></i>
+        <div class="tooltip tooltip-east">
+          <span class="tooltip-item"></span>
+          <span class="tooltip-content">
+			<span style="font-size: 20px;font-weight: bold;">目录</span>
+            <div class="toc-article">
+              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">一、简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BD%BF%E7%94%A8%E7%9A%84%E5%91%BD%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">二、使用的命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E6%B7%BB%E5%8A%A0p12%E8%AF%81%E4%B9%A6"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 添加p12证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E8%A7%A3%E5%8E%8Bipa%E5%8C%85"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 解压ipa包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E4%BF%AE%E6%94%B9Payload-yourName-app%E4%B8%AD%E7%9A%84icon%E5%9B%BE%E6%A0%87%E3%80%81info-plist%E6%96%87%E4%BB%B6%E7%9A%84%E4%BF%A1%E6%81%AF%E7%AD%89"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 修改Payload&#x2F;yourName.app中的icon图标、info.plist文件的信息等</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E5%88%A0%E9%99%A4%E4%B9%8B%E5%89%8D%E7%9A%84%E7%AD%BE%E5%90%8D-CodeSignature"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 删除之前的签名 -&gt; .CodeSignature</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-%E7%94%A8%E6%8E%88%E6%9D%83%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90entitlements-plist%E6%96%87%E4%BB%B6"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 用授权文件生成entitlements.plist文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-%E6%9B%BF%E6%8D%A2%E6%8F%8F%E8%BF%B0%E6%96%87%E4%BB%B6"><span class="toc-number">2.6.</span> <span class="toc-text">2.6 替换描述文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-7-%E9%87%8D%E6%96%B0%E7%AD%BE%E5%90%8D"><span class="toc-number">2.7.</span> <span class="toc-text">2.7 重新签名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-8-%E5%8E%8B%E7%BC%A9Payload%EF%BC%8C%E5%B0%B1%E5%AE%8C%E6%88%90%E4%BA%86%E9%87%8D%E7%AD%BE"><span class="toc-number">2.8.</span> <span class="toc-text">2.8 压缩Payload，就完成了重签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-9-%E9%AA%8C%E8%AF%81%EF%BC%9A%E6%9F%A5%E7%9C%8B%E7%AD%BE%E5%90%8D%E4%BF%A1%E6%81%AF%E5%B9%B6%E5%9C%A8%E7%9C%9F%E6%9C%BA%E4%B8%8A%E8%BF%9B%E8%A1%8C%E5%AE%89%E8%A3%85"><span class="toc-number">2.9.</span> <span class="toc-text">2.9 验证：查看签名信息并在真机上进行安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-10-%E5%88%A0%E9%99%A4%E5%AE%89%E8%A3%85%E7%9A%84P12%E8%AF%81%E4%B9%A6"><span class="toc-number">2.10.</span> <span class="toc-text">2.10 删除安装的P12证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-11-%E5%85%B6%E4%BB%96%E5%91%BD%E4%BB%A4"><span class="toc-number">2.11.</span> <span class="toc-text">2.11 其他命令</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%8F%82%E8%80%83%E5%BC%95%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">三、参考引用</span></a></li></ol>
+            </div>
+          </span>
+        </div>
+      </div>
+	
+  </div>
+</aside>
+
+<!-- 添加评论 -->
 
 
+  
+  <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet' />
 
-<!-- 主页添加mathjax公式 -->
-
-  <!-- mathjax http://docs.mathjax.org/en/latest/web/start.html -->
+<div id="waline"></div>
 <script>
-window.MathJax = {
-  tex: {
-    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-    processEscapes: true
-  },
-  chtml: {
-    scale: 1,                      // global scaling factor for all expressions
-    minScale: .5,                  // smallest scaling factor to use
-    mtextInheritFont: false,       // true to make mtext elements use surrounding font
-    merrorInheritFont: false,      // true to make merror text use surrounding font
-    mtextFont: '',                 // font to use for mtext, if not inheriting (empty means use MathJax fonts)
-    merrorFont: 'serif',           // font to use for merror, if not inheriting (empty means use MathJax fonts)
-    unknownFamily: 'serif',        // font to use for character that aren't in MathJax's fonts
-    mathmlSpacing: false,          // true for MathML spacing rules, false for TeX rules
-    skipAttributes: {},            // RFDa and other attributes NOT to copy to the output
-    exFactor: .5,                  // default size of ex in em units
-    displayAlign: 'center',        // default for indentalign when set to 'auto'
-    displayIndent: '0'             // default for indentshift when set to 'auto'
-  },
-  options: {
-    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-  }
-};
+	// 中文默认
+	const locale = {
+	  nick: ' 昵称: ',
+	  nickError: '昵称不能少于3个字符',
+	  mail: '邮箱: ',
+	  mailError: '请填写正确的邮件地址',
+	  link: '网址: ',
+	  placeholder: ' 客官留个言吧(◕ˇ∀ˇ◕)',
+	  sofa: '评论区空空荡荡，客官快来评论吧~',
+	  submit: '提交',
+	  reply: '回复',
+	  cancelReply: '取消回复',
+	  comment: '评论',
+	  more: '加载更多...',
+	  preview: '预览',
+	  emoji: '表情',
+	  uploadImage: '上传图片',
+	  seconds: '秒前',
+	  minutes: '分钟前',
+	  hours: '小时前',
+	  days: '天前',
+	  now: '刚刚',
+	  uploading: '正在上传',
+	  login: '登录',
+	  logout: '退出',
+	  admin: '博主',
+	  word: '字',
+	  wordHint: '评论字数应在 $0 到 $1 字之间！\n当前字数：$2',
+	};
+
+	Waline.init({
+	  el: '#waline',
+	  serverURL: 'your_waline_comments_url',
+	  locale,
+	  login: 'enable',
+	  lang: 'zh-CN ',
+	  dark: '',
+	  // 设置 emoji 为微博与哔哩哔哩
+	  emoji: [
+		'https://unpkg.com/@waline/emojis@1.1.0/weibo',
+		'https://unpkg.com/@waline/emojis@1.1.0/bilibili',
+	  ],
+	  wordLimit: 0,
+	  pageSize: 10,
+	  imageUploader: false,
+	  pageview: true,
+	  meta: ['nick', 'mail', 'link'],  //评论者相关属性，默认['nick', 'mail', 'link'],
+	  requiredMeta: ['nick'], //设置评论者属性必填项，默认[]（即匿名）
+	});
 </script>
+  
+  
+  
 
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  
+
+  
+
+  
 
 
-<!-- 主页添加mathjax公式 -->
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
           </div>
         </div>
       </div>
@@ -458,9 +772,9 @@ window.MathJax = {
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: false,
