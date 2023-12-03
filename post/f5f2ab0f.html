@@ -18,7 +18,7 @@
 <meta property="og:description" content="前言 这系列文章是根据阅读学习【iOS开发高手课】归纳总结整理的。  App启动速度的快慢往小了说是影响用户体验，往大了说是将用户拒之门外。启动速度优化的重要性不言而喻。 启动 冷启动：App点击启动前，它的进程不在系统里，需要系统新创建一个进程分配给它启动的情况。这是一次完整的启动过程。 热启动：App在冷启动之后用户将App退到后台，在App的进程还在系统里的情况下，用户重新启动进入App的过">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-12-02T17:15:12.000Z">
-<meta property="article:modified_time" content="2023-12-02T18:03:40.693Z">
+<meta property="article:modified_time" content="2023-12-02T18:06:31.356Z">
 <meta property="article:author" content="Leoli">
 <meta property="article:tag" content="iOS">
 <meta property="article:tag" content="启动优化">
@@ -389,7 +389,7 @@ var _hmt = _hmt || [];
 <p>App启动速度的快慢往小了说是影响用户体验，往大了说是将用户拒之门外。启动速度优化的重要性不言而喻。</p>
 <h1 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h1><ul>
 <li>冷启动：App点击启动前，它的进程不在系统里，需要系统新创建一个进程分配给它启动的情况。这是一次完整的启动过程。</li>
-<li>热启动：App在冷启动之后用户将App退到后台，在App的进程还在系统里的情况下，用户重新启动进入App的过程，这个过程做的事情非常少。</li>
+<li>热启动：App在冷启动之后用户将App退到后台，在App的进程还在系统里的情况下，用户重新启动进入App的过程，这个过程做的事情非常少。<span id="more"></span></li>
 </ul>
 <p>那么到这里，针对<font color="red">App启动速度怎么做优化</font>，我们应该关注<font color="red">App的冷启动和热启动，减少冷启动，尽量让App在后台时能通过热启动打开。</font>怎么理解呢？对于iOS，系统严格管控手机的内存，当发现内存不足时，系统会发送全局通知，让大家把不要的内存释放出来，如果大家都不释放，后台的应用就会被干掉，当然前台的应用如果占用内存超过阈值的话也会被干掉(kill)。所以，解决<font color="red">App启动速度怎么做优化</font>，我们在写代码时，能注意到App内存使用情况，节省内存空间，减少不必要的内存创建，及时地释放内存等，都是对优化起到举足轻重的作用。</p>
 <p>以上就是冷启动和热启动。接下来我们主要讨论<font color="red">App冷启动</font>的优化</p>
@@ -472,7 +472,7 @@ var _hmt = _hmt || [];
 	
 	<br>
 	<strong class="update-time">最后更新：</strong>
-	2023年12月03日 02:03:40
+	2023年12月03日 02:06:31
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
@@ -846,7 +846,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">NSString、copy</a>
+                <a href="javascript:void(0)" class="js-tag color4">NSString</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">copy</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -854,19 +858,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">React Native</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">ReactiveCocoa</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">iOS</a>
+                <a href="javascript:void(0)" class="js-tag color5">真机调试</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Xcode</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">React Native</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -882,15 +886,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">math</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">iOS开发</a>
+                <a href="javascript:void(0)" class="js-tag color4">iOS</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">启动优化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">app通信</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">math</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -906,7 +914,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">const、define</a>
+                <a href="javascript:void(0)" class="js-tag color1">const</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">define</a>
               </li>
              
               <li class="article-tag-list-item">
